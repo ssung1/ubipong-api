@@ -10,6 +10,13 @@ buildscript {
     }
 }
 
+// automatically creates getters, setters, and other boilerplate
+// "plugins" uses binary plugin; this is different from the
+// "apply plugin" syntax, which runs a script plugin
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.11'
+}
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
