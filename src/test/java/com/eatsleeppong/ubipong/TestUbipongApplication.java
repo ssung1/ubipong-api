@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class UbipongApplicationTests {
+public class TestUbipongApplication {
 	@Value("${challonge.api-key}")
 	private String apiKey;
 
