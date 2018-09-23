@@ -12,6 +12,9 @@ challonge:
 ---
 spring:
   profiles: integration-test
+challonge:
+  host: api.challonge.com
+  api-key: this-is-a-test-api-key
 
 ---
 spring:

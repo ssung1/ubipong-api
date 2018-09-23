@@ -11,10 +11,10 @@ import java.util.Map;
 
 @Service
 public class ChallongeMatch {
-    @Value("${challonge.host")
+    @Value("${challonge.host}")
     private String host;
 
-    @Value("${challonge.api-key")
+    @Value("${challonge.api-key}")
     private String apiKey;
 
     public String getMatchList(String tournament) {
