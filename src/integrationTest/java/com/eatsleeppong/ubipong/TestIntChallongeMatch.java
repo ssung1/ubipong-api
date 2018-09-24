@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong;
 
-import com.eatsleeppong.ubipong.repo.ChallongeMatch;
+import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class TestIntChallongeMatch {
     final String apiKey = "";
 
     @Autowired
-    private ChallongeMatch fixture;
+    private ChallongeMatchRepository fixture;
 
     @Test
     public void testGetMatchListWithParticipantId() {

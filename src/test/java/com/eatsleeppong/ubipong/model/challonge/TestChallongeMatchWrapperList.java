@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class TestChallongeChallongeMatchWrapperList {
+public class TestChallongeMatchWrapperList {
     /**
      * challonge api returns a list of matches
      */
