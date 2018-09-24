@@ -18,36 +18,18 @@ import java.util.Map;
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public class TestIntChallongeMatch {
-    final String apiKey = "";
+    private String tournament = "ecs_2018_rr_pg_1";
 
     @Autowired
     private ChallongeMatchRepository fixture;
 
     @Test
     public void testGetMatchListWithParticipantId() {
-        RestTemplate rs = new RestTemplate();
-
-        Map<String, String> uriMap = new HashMap<>();
-        uriMap.put("tournament", "ecs_2018_rr_pg_1");
-
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-            .scheme("https").host("api.challonge.com")
-            .path("/v1")
-            .path("/tournaments")
-            .path("/{tournament}")
-            .path("/matches.json")
-            .queryParam("participant_id", "82304119")
-            .queryParam("api_key", apiKey)
-            .build();
-
-        String response = rs.getForObject(uriComponents.expand(uriMap).toUri(),
-            String.class);
-
-        System.out.println(response);
+        System.out.println(fixture.getMatchList(tournament, 82304119));
     }
 
     @Test
-    public void testGetMtchList() {
-        System.out.println(fixture.getMatchList("ecs_2018_rr_pg_1"));
+    public void testGetMatchList() {
+        System.out.println(fixture.getMatchList(tournament));
     }
 }

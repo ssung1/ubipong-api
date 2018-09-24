@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong;
 
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +19,13 @@ import java.util.Map;
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public class TestIntChallongeParticipant {
-    final String apiKey = "";
+    private String tournament = "ecs_2018_rr_pg_1";
 
     @Autowired
-    private ChallongeMatchRepository fixture;
+    private ChallongeParticipantRepository fixture;
 
     @Test
     public void testGetParticipantList() {
-        RestTemplate rs = new RestTemplate();
-
-        Map<String, String> uriMap = new HashMap<>();
-        uriMap.put("tournament", "ecs_2018_rr_pg_1");
-
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-            .scheme("https").host("api.challonge.com")
-            .path("/v1")
-            .path("/tournaments")
-            .path("/{tournament}")
-            .path("/participants.json")
-            .queryParam("api_key", apiKey)
-            .build();
-
-        String response = rs.getForObject(uriComponents.expand(uriMap).toUri(),
-            String.class);
-
-        System.out.println(response);
+        System.out.println(fixture.getParticipantList(tournament));
     }
 }
