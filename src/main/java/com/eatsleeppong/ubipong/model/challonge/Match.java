@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.model;
+package com.eatsleeppong.ubipong.model.challonge;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

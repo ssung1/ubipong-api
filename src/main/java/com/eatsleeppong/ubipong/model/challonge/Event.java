@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class Event {
-    private List<MatchWrapper> matchWrapperList;
+    private List<Match> matchList;
 }
