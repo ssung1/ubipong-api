@@ -1,7 +1,6 @@
 package com.eatsleeppong.ubipong;
 
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +17,19 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("integration-test")
-public class TestIntChallongeParticipant {
+public class TestIntChallongeMatchRepository {
     private String tournament = "ecs_2018_rr_pg_1";
 
     @Autowired
-    private ChallongeParticipantRepository fixture;
+    private ChallongeMatchRepository fixture;
 
     @Test
-    public void testGetParticipantList() {
-        System.out.println(fixture.getParticipantList(tournament));
+    public void testGetMatchListWithParticipantId() {
+        System.out.println(fixture.getMatchList(tournament, 82304119));
+    }
+
+    @Test
+    public void testGetMatchList() {
+        System.out.println(fixture.getMatchList(tournament));
     }
 }

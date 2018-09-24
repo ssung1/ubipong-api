@@ -8,7 +8,7 @@ import org.springframework.web.util.UriBuilderFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class TestIntChallongeTournament {
+public class TestIntChallongeTournamentRepository {
     @Test
     public void testGetTournamentList() {
         RestTemplate rs = new RestTemplate();

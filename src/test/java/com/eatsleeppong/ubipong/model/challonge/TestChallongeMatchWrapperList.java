@@ -1,7 +1,12 @@
 package com.eatsleeppong.ubipong.model.challonge;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
@@ -14,8 +19,9 @@ public class TestChallongeMatchWrapperList {
     @Test
     public void testDeserializeMatchWrapperList() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        List<ChallongeMatchWrapper> event = mapper.readValue(eventJson, List.class);
+        List<ChallongeMatchWrapper> event = mapper.readValue(eventJson,
+            new TypeReference<List<ChallongeMatchWrapper>>(){});
 
-        System.out.println(event);
+        assertThat(event.get(0), isA(ChallongeMatchWrapper.class));
     }
 }

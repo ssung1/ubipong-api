@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.repo;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,6 +8,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -17,7 +19,8 @@ public class ChallongeParticipantRepository {
     @Value("${challonge.api-key}")
     private String apiKey;
 
-    public String getParticipantList(String tournament) {
+    public ChallongeParticipantWrapper[] getParticipantList(
+        String tournament) {
         RestTemplate rs = new RestTemplate();
 
         Map<String, String> uriMap = new HashMap<>();
@@ -33,6 +36,6 @@ public class ChallongeParticipantRepository {
             .build();
 
         return rs.getForObject(uriComponents.expand(uriMap).toUri(),
-            String.class);
+            ChallongeParticipantWrapper[].class);
     }
 }
