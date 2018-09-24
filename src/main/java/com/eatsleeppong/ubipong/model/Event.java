@@ -4,7 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
+
 @Data
 public class Event {
-    private List<Match> matchList;
+    private List<ChallongeMatch> challongeMatchList;
 }

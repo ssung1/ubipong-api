@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.model.Event;
-import com.eatsleeppong.ubipong.model.Match;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class EventManager {
         return new ArrayList<>();
     }
 
-    public Map<Integer, List<Match>> groupByPlayer(Event event) {
+    public Map<Integer, List<ChallongeMatch>> groupByPlayer( Event event) {
         return null;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Match {
+public class ChallongeMatch {
     private Integer id;
     private Integer tournamentId;
     private String state;

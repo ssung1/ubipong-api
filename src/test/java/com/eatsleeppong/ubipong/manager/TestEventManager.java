@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.model.Event;
-import com.eatsleeppong.ubipong.model.Match;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import org.junit.Test;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -19,18 +19,18 @@ public class TestEventManager {
     @Test
     public void testGroupByPlayerOneMatch() {
         // given
-        Match m1 = new Match();
+        ChallongeMatch m1 = new ChallongeMatch();
         m1.setPlayer1Id(1);
         m1.setPlayer2Id(2);
 
-        List<Match> matchList = new ArrayList<>();
+        List<ChallongeMatch> challongeMatchList = new ArrayList<>();
         Event event = new Event();
-        event.setMatchList(matchList);
+        event.setChallongeMatchList( challongeMatchList );
 
-        matchList.add(m1);
+        challongeMatchList.add(m1);
 
         // when
-        Map<Integer, List<Match>> groupedMatchList = 
+        Map<Integer, List<ChallongeMatch>> groupedMatchList =
             fixture.groupByPlayer(event);
 
         // then
