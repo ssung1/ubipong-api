@@ -1,12 +1,17 @@
 package com.eatsleeppong.ubipong.model.challonge;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 import java.util.Date;
 
+
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ChallongeMatch {
     private Integer id;
     private Integer tournamentId;
@@ -21,7 +26,7 @@ public class ChallongeMatch {
     private Integer loserId;
     private Date startedAt;
     private Date createdAt;
-    private Date updatedAtAt;
+    private Date updatedAt;
     private String identifier;
     private Boolean hasAttachment;
     private Integer round;
