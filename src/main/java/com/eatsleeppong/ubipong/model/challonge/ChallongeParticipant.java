@@ -43,5 +43,5 @@ public class ChallongeParticipant {
     private Boolean reactivatable;
     private Boolean checkInOpen;
     private List<Integer> groupPlayerIds;
-    private Boolean hasIrrevelantSeed;
+    private Boolean hasIrrelevantSeed;
 }

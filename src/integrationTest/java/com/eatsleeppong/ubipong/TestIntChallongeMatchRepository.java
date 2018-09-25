@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +29,15 @@ public class TestIntChallongeMatchRepository {
 
     @Test
     public void testGetMatchListWithParticipantId() {
-        System.out.println(fixture.getMatchList(tournament, 82304119));
+        ChallongeMatchWrapper[] matchList =
+            fixture.getMatchList(tournament, 82304119);
+        assertThat(matchList, arrayWithSize(3));
     }
 
     @Test
     public void testGetMatchList() {
-        System.out.println(fixture.getMatchList(tournament));
+        ChallongeMatchWrapper[] matchList =
+            fixture.getMatchList(tournament);
+        assertThat(matchList, arrayWithSize(6));
     }
 }

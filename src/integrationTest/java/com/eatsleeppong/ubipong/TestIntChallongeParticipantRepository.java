@@ -5,6 +5,8 @@ import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,8 +32,14 @@ public class TestIntChallongeParticipantRepository {
 
     @Test
     public void testGetParticipantList() {
-        Arrays.stream(fixture.getParticipantList(tournament))
+        List<String> nameList = Arrays
+            .stream(fixture.getParticipantList(tournament))
             .map(p -> p.getParticipant().getName())
-            .forEach(System.out::println);
+            .collect(Collectors.toList());
+
+        assertThat(nameList, hasItem("spongebob"));
+        assertThat(nameList, hasItem("patrick"));
+        assertThat(nameList, hasItem("squidward"));
+        assertThat(nameList, hasItem("plankton"));
     }
 }

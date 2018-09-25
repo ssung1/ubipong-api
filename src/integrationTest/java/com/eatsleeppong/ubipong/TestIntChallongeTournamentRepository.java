@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
@@ -10,6 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class TestIntChallongeTournamentRepository {
     @Test
+    @Ignore("we do not need a list of all tournaments")
     public void testGetTournamentList() {
         RestTemplate rs = new RestTemplate();
 
