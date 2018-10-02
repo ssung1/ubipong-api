@@ -35,7 +35,6 @@ public class ChallongeParticipantRepository {
             .queryParam("api_key", apiKey)
             .build();
 
-System.out.println(rs.getForObject(uriComponents.expand(uriMap).toUri(), String.class));
             return rs.getForObject(uriComponents.expand(uriMap).toUri(),
             ChallongeParticipantWrapper[].class);
     }
