@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong;
+package com.eatsleeppong.ubipong.repo;
 
 import org.junit.Ignore;
 import org.junit.Test;
