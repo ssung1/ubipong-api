@@ -11,14 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EventManager {
-    public List<Integer> getPlayerList(Event event) {
-        return new ArrayList<>();
-    }
-
-    public Map<Integer, List<ChallongeMatch>> groupByPlayer(Event event) {
-        return null;
-    }
-
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
         Integer playerId) {
         return matchList.stream()
@@ -29,7 +21,7 @@ public class EventManager {
     public List<ChallongeMatch> unwrapChallongeMatchWrapperArray(
         ChallongeMatchWrapper[] matchWrapperArray
     ) {
-        return Arrays.asList(matchWrapperArray).stream()
+        return Arrays.stream(matchWrapperArray)
             .map(ChallongeMatchWrapper::getChallongeMatch)
             .collect(Collectors.toList());
     }
