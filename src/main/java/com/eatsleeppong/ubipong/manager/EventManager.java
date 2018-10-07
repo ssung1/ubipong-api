@@ -6,11 +6,26 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class EventManager {
+    private ChallongeParticipantRepository participantRepository;
+    private ChallongeMatchRepository matchRepository;
+
+    public EventManager(
+        ChallongeParticipantRepository participantRepository,
+        ChallongeMatchRepository matchRepository
+    ) {
+        this.participantRepository = participantRepository;
+        this.matchRepository = matchRepository;
+    }
+
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
         Integer playerId) {
         return matchList.stream()
@@ -180,16 +195,16 @@ public class EventManager {
      *
      * form a matrix of
      *
-     *            player 1, player 2, player 3 ...
-     * player 1      x
-     * player 2                x
-     * player 3                          x
+     *               A         B         C
+     * A player      x        W 8 8
+     * B player     L -8 -8    x
+     * C player                          x
      * ...
      *
      * @param matchList
      * @param playerList
      */
-    public RoundRobinCell[][] createRoundRobinGrid(
+    private RoundRobinCell[][] createRoundRobinGrid(
         List<ChallongeMatch> matchList,
         List<ChallongeParticipant> playerList) {
 
@@ -252,7 +267,27 @@ public class EventManager {
         return resultAsList.toArray(new RoundRobinCell[0][0]);
     }
 
+    /**
+     * For a given match list and player list, form a grid of
+     *
+     * form a matrix of
+     *
+     *               A         B         C
+     * A player      x        W 8 8
+     * B player     L -8 -8    x
+     * C player                          x
+     * ...
+     *
+     * @param eventName
+     */
     public RoundRobinCell[][] createRoundRobinGrid(String eventName) {
-        return null;
+        List<ChallongeParticipant> participantList =
+            unwrapChallongeParticipantWrapperArray(
+                participantRepository.getParticipantList(eventName));
+        List<ChallongeMatch> matchList =
+            unwrapChallongeMatchWrapperArray(
+                matchRepository.getMatchList(eventName));
+
+        return createRoundRobinGrid(matchList, participantList);
     }
 }

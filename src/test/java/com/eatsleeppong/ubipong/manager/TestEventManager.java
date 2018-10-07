@@ -7,28 +7,39 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * An event is represented as a list of matches in challonge.com
  */
 public class TestEventManager {
-    private EventManager subject = new EventManager();
+    private final String eventName = "bikiniBottomOpen-RoundRobin-Group-1";
+    private final ChallongeParticipantRepository mockParticipantRepository =
+        mock(ChallongeParticipantRepository.class);
+    private final ChallongeMatchRepository mockMatchRepository =
+        mock(ChallongeMatchRepository.class);
 
-    private Integer spongebobId = 123;
-    private Integer patrickId = 234;
-    private Integer squidwardId = 345;
+    private EventManager subject = new EventManager(
+        mockParticipantRepository, mockMatchRepository
+    );
+
+    private final Integer spongebobId = 123;
+    private final Integer patrickId = 234;
+    private final Integer squidwardId = 345;
 
     private List<ChallongeMatch> getTestSample1() {
         ChallongeMatch m1 = new ChallongeMatch();
@@ -120,6 +131,18 @@ public class TestEventManager {
             .toArray(ChallongeParticipantWrapper[]::new);
     }
 
+    @Before
+    public void setupMocks() {
+        when(mockParticipantRepository.getParticipantList(eventName))
+            .thenReturn(
+                getParticipantWrapperArray1()
+            );
+        when(mockMatchRepository.getMatchList(eventName))
+            .thenReturn(
+                getMatchWrapperArray1()
+            );
+    }
+
     @Test
     public void testUnwrapChallongeMatchWrapperArray() {
         ChallongeMatch m1 = new ChallongeMatch();
@@ -208,16 +231,13 @@ public class TestEventManager {
 
     @Test
     public void testCreateRoundRobinGridOneSide() {
-        List<ChallongeMatch> matchList = getTestSample1();
-        List<ChallongeParticipant> playerList = getPlayerList1();
-
-        int size = playerList.size();
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(matchList, playerList);
+            subject.createRoundRobinGrid(eventName);
 
         // all cells must be filled, even if it is displayed as empty
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
+        for (int i = 0; i < roundRobinGrid.length; ++i) {
+            RoundRobinCell[] row = roundRobinGrid[i];
+            for (int j = 0; j < row.length; ++j) {
                 assertThat(roundRobinGrid[i][j], notNullValue());
             }
         }
@@ -329,8 +349,8 @@ public class TestEventManager {
      */
     @Test
     public void testCreateRoundRobinGridBothSides() {
-        List<ChallongeMatch> matchList = getTestSample1();
-        List<ChallongeParticipant> playerList = getPlayerList1();
+        RoundRobinCell[][] roundRobinGrid =
+            subject.createRoundRobinGrid(eventName);
 
         // this is one side of the result
         //
@@ -345,10 +365,6 @@ public class TestEventManager {
         // A spongebob                win
         // B patrick       (loss)                loss
         // C squidward               (win)
-
-        int size = playerList.size();
-        RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(matchList, playerList);
 
         // original
         RoundRobinCell spongebobVsPatrick = roundRobinGrid[1][3];
