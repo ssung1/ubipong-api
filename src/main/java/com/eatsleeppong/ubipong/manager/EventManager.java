@@ -5,6 +5,7 @@ import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +23,14 @@ public class EventManager {
     ) {
         return Arrays.stream(matchWrapperArray)
             .map(ChallongeMatchWrapper::getMatch)
+            .collect(Collectors.toList());
+    }
+
+    public List<ChallongeParticipant> unwrapChallongeParticipantWrapperArray(
+        ChallongeParticipantWrapper[] participantWrapperArray
+    ) {
+        return Arrays.stream(participantWrapperArray)
+            .map(ChallongeParticipantWrapper::getParticipant)
             .collect(Collectors.toList());
     }
 
@@ -92,30 +101,69 @@ public class EventManager {
 
         RoundRobinCell cell = new RoundRobinCell();
         if ("complete".equals(match.getState())) {
-            StringBuilder content = new StringBuilder();
             cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
-            if (isWinForPlayer1(player1, player2, winner)) {
-                content.append("W");
-            } else {
-                content.append("L");
-            }
+            cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
 
             List<Game> gameList = createGameList(match.getScoresCsv());
-            for (Game game : gameList) {
-                content.append(" ");
-                if (game.isWinForPlayer1()) {
-                    content.append(game.getPlayer2Score());
-                } else {
-                    content.append('-');
-                    content.append(game.getPlayer1Score());
-                }
-            }
-
             cell.setGameList(gameList);
-            cell.setContent(content.toString());
+
+            updateCellContent(cell);
         }
 
         return cell;
+    }
+
+    /**
+     * Given a cell of W 1 2 3, produce the inverse L -1 -2 -3
+     *
+     * @param cell
+     * @return
+     */
+    public RoundRobinCell createInverseCell(RoundRobinCell cell) {
+        // inverse is only possible for completed matches
+        if (cell.getType() != RoundRobinCell.TYPE_MATCH_COMPLETE) {
+            return cell;
+        }
+
+        RoundRobinCell result = new RoundRobinCell();
+
+        result.setWinForPlayer1(!cell.isWinForPlayer1());
+        result.setWinByDefault(cell.isWinByDefault());
+
+        result.setGameList(cell.getGameList().stream()
+            .map(g -> {
+                Game inverseGame = new Game();
+                inverseGame.setWinForPlayer1(!g.isWinForPlayer1());
+                inverseGame.setPlayer1Score(g.getPlayer2Score());
+                inverseGame.setPlayer2Score(g.getPlayer1Score());
+
+                return inverseGame;
+            })
+            .collect(Collectors.toList()));
+
+        updateCellContent(result);
+        return result;
+    }
+
+    private void updateCellContent(RoundRobinCell cell) {
+        StringBuilder content = new StringBuilder();
+        if (cell.isWinForPlayer1()) {
+            content.append("W");
+        } else {
+            content.append("L");
+        }
+
+        for(Game game : cell.getGameList()) {
+            content.append(" ");
+            if (game.isWinForPlayer1()) {
+                content.append(game.getPlayer2Score());
+            } else {
+                content.append('-');
+                content.append(game.getPlayer1Score());
+            }
+        }
+
+        cell.setContent(content.toString());
     }
 
     /**
@@ -163,7 +211,9 @@ public class EventManager {
             int row = playerMap.get(player1);
             int col = playerMap.get(player2);
 
-            innerGrid[row][col] = createRoundRobinCell(match);
+            RoundRobinCell cell = createRoundRobinCell(match);
+            innerGrid[row][col] = cell;
+            innerGrid[col][row] = createInverseCell(cell);
         }
 
         List<RoundRobinCell[]> resultAsList = new ArrayList<>();
@@ -200,5 +250,9 @@ public class EventManager {
         }
 
         return resultAsList.toArray(new RoundRobinCell[0][0]);
+    }
+
+    public RoundRobinCell[][] createRoundRobinGrid(String eventName) {
+        return null;
     }
 }

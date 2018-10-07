@@ -6,6 +6,7 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import static org.hamcrest.Matchers.notNullValue;
@@ -13,8 +14,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * An event is represented as a list of matches in challonge.com
@@ -48,6 +52,35 @@ public class TestEventManager {
         return Arrays.asList(m1, m2, m3);
     }
 
+    private ChallongeMatchWrapper[] getMatchWrapperArray1() {
+        ChallongeMatch m1 = new ChallongeMatch();
+        m1.setPlayer1Id(spongebobId);
+        m1.setPlayer2Id(patrickId);
+        m1.setState(ChallongeMatch.STATE_COMPLETE);
+        m1.setWinnerId(spongebobId);
+        m1.setScoresCsv("11-4,11-5,11-6");
+
+        ChallongeMatch m2 = new ChallongeMatch();
+        m2.setPlayer1Id(patrickId);
+        m2.setPlayer2Id(squidwardId);
+        m2.setState(ChallongeMatch.STATE_COMPLETE);
+        m2.setWinnerId(squidwardId);
+        m2.setScoresCsv("9-11,11-8,6-11,5-11");
+
+        ChallongeMatch m3 = new ChallongeMatch();
+        m3.setPlayer1Id(squidwardId);
+        m3.setPlayer2Id(spongebobId);
+        m3.setState(ChallongeMatch.STATE_OPEN);
+
+        return Stream.of(m1, m2, m3)
+            .map(m -> {
+                ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
+                mw.setMatch(m);
+                return mw;
+            })
+            .toArray(ChallongeMatchWrapper[]::new);
+    }
+
     private List<ChallongeParticipant> getPlayerList1() {
         ChallongeParticipant spongebob = new ChallongeParticipant();
         spongebob.setId(spongebobId);
@@ -62,6 +95,29 @@ public class TestEventManager {
         squidward.setDisplayName("squidward");
 
         return Arrays.asList(spongebob, patrick, squidward);
+    }
+
+    private ChallongeParticipantWrapper[] getParticipantWrapperArray1() {
+        ChallongeParticipant spongebob = new ChallongeParticipant();
+        spongebob.setId(spongebobId);
+        spongebob.setDisplayName("spongebob");
+
+        ChallongeParticipant patrick = new ChallongeParticipant();
+        patrick.setId(patrickId);
+        patrick.setDisplayName("patrick");
+
+        ChallongeParticipant squidward = new ChallongeParticipant();
+        squidward.setId(squidwardId);
+        squidward.setDisplayName("squidward");
+
+        return Stream.of(spongebob, patrick, squidward)
+            .map(p -> {
+                ChallongeParticipantWrapper pw =
+                    new ChallongeParticipantWrapper();
+                pw.setParticipant(p);
+                return pw;
+            })
+            .toArray(ChallongeParticipantWrapper[]::new);
     }
 
     @Test
@@ -108,6 +164,26 @@ public class TestEventManager {
     }
 
     @Test
+    public void testUnwrapChallongeParticipantWrapperArray() {
+        ChallongeParticipant p = new ChallongeParticipant();
+        p.setId(spongebobId);
+
+        ChallongeParticipantWrapper pw = new ChallongeParticipantWrapper();
+        pw.setParticipant(p);
+
+        ChallongeParticipantWrapper[] challongeParticipantWrapperArray = {
+            pw
+        };
+
+        List<ChallongeParticipant> challongeParticipantList =
+            subject.unwrapChallongeParticipantWrapperArray(
+                challongeParticipantWrapperArray);
+
+        assertThat(challongeParticipantList, hasSize(1));
+        assertThat(challongeParticipantList, hasItem(p));
+    }
+
+    @Test
     public void testFindByPlayer1() {
         List<ChallongeMatch> matchList = getTestSample1();
         List<ChallongeMatch> spongebobMatchList =
@@ -131,7 +207,7 @@ public class TestEventManager {
     }
 
     @Test
-    public void testCreateRoundRobinGrid() {
+    public void testCreateRoundRobinGridOneSide() {
         List<ChallongeMatch> matchList = getTestSample1();
         List<ChallongeParticipant> playerList = getPlayerList1();
 
@@ -185,6 +261,7 @@ public class TestEventManager {
         RoundRobinCell spongebobVsPatrick = roundRobinGrid[1][3];
         assertThat(spongebobVsPatrick.getType(),
             is(RoundRobinCell.TYPE_MATCH_COMPLETE));
+        assertThat(spongebobVsPatrick.isWinForPlayer1(), is(true));
         assertThat(spongebobVsPatrick.getContent(),
             is("W 4 5 6"));
 
@@ -197,6 +274,7 @@ public class TestEventManager {
         assertThat(firstGame.isWinForPlayer1(), is(true));
 
         RoundRobinCell patrickVsSquidward = roundRobinGrid[2][4];
+        assertThat(patrickVsSquidward.isWinForPlayer1(), is(false));
         assertThat(patrickVsSquidward.getContent(),
             is("L -9 8 -6 -5"));
         // scores are 9-11, 11-8, 6-11, 5-11
@@ -205,5 +283,80 @@ public class TestEventManager {
         assertThat(thirdGame.isWinForPlayer1(), is(false));
         assertThat(thirdGame.getPlayer1Score(), is(6));
         assertThat(thirdGame.getPlayer2Score(), is(11));
+    }
+
+    @Test
+    public void testCreateInverseCell() {
+        RoundRobinCell cell = new RoundRobinCell();
+        // W 1 -2 3
+        cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
+        cell.setWinForPlayer1(true);
+
+        Game game1 = new Game();
+        game1.setWinForPlayer1(true);
+        game1.setPlayer1Score(11);
+        game1.setPlayer2Score(1);
+
+        Game game2 = new Game();
+        game2.setWinForPlayer1(false);
+        game2.setPlayer1Score(2);
+        game2.setPlayer2Score(11);
+
+        Game game3 = new Game();
+        game3.setWinForPlayer1(true);
+        game3.setPlayer1Score(11);
+        game3.setPlayer2Score(3);
+
+        cell.setGameList(Arrays.asList(game1, game2, game3));
+
+        RoundRobinCell inverseCell = subject.createInverseCell(cell);
+
+        List<Game> gameList = inverseCell.getGameList();
+        // inverse of game1
+        assertThat(gameList.get(0).getPlayer1Score(), is(1));
+        assertThat(gameList.get(0).getPlayer2Score(), is(11));
+        assertThat(gameList.get(0).isWinForPlayer1(), is(false));
+
+        assertThat(gameList.get(1).getPlayer1Score(), is(11));
+        assertThat(gameList.get(1).getPlayer2Score(), is(2));
+        assertThat(gameList.get(1).isWinForPlayer1(), is(true));
+
+        assertThat(inverseCell.getContent(), is("L -1 2 -3"));
+    }
+
+    /**
+     * @see #testCreateRoundRobinGridOneSide
+     */
+    @Test
+    public void testCreateRoundRobinGridBothSides() {
+        List<ChallongeMatch> matchList = getTestSample1();
+        List<ChallongeParticipant> playerList = getPlayerList1();
+
+        // this is one side of the result
+        //
+        //                  A          B           C       Place
+        // A spongebob                win
+        // B patrick                             loss
+        // C squidward
+
+        // we want to make sure we have the other side too
+        // (in parentheses)
+        //                  A          B           C       Place
+        // A spongebob                win
+        // B patrick       (loss)                loss
+        // C squidward               (win)
+
+        int size = playerList.size();
+        RoundRobinCell[][] roundRobinGrid =
+            subject.createRoundRobinGrid(matchList, playerList);
+
+        // original
+        RoundRobinCell spongebobVsPatrick = roundRobinGrid[1][3];
+        assertThat(spongebobVsPatrick.isWinForPlayer1(), is(true));
+
+        // inverse
+        RoundRobinCell patrickVsSpongebob = roundRobinGrid[2][2];
+        assertThat(patrickVsSpongebob.isWinForPlayer1(), is(false));
+        assertThat(patrickVsSpongebob.getContent(), is("L -4 -5 -6"));
     }
 }

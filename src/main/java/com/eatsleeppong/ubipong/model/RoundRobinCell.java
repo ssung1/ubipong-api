@@ -15,5 +15,7 @@ public class RoundRobinCell {
 
     private int type = TYPE_EMPTY;
     private String content = "";
+    private boolean winForPlayer1;
+    private boolean winByDefault;
     private List<Game> gameList = Collections.emptyList();
 }
