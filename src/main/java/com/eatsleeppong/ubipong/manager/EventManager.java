@@ -167,14 +167,16 @@ public class EventManager {
         }
 
         List<RoundRobinCell[]> resultAsList = new ArrayList<>();
-        RoundRobinCell[] rowHeader = new RoundRobinCell[size + 1];
+        RoundRobinCell[] rowHeader = new RoundRobinCell[size + 2];
         rowHeader[0] = new RoundRobinCell();
         rowHeader[0].setType(RoundRobinCell.TYPE_EMPTY);
-        for (int j = 1; j < size + 1; ++j) {
+        rowHeader[1] = new RoundRobinCell();
+        rowHeader[1].setType(RoundRobinCell.TYPE_EMPTY);
+        for (int j = 0; j < size; ++j) {
             RoundRobinCell cell = new RoundRobinCell();
             cell.setType(RoundRobinCell.TYPE_TEXT);
-            cell.setContent(numberToLetter(j - 1));
-            rowHeader[j] = cell;
+            cell.setContent(numberToLetter(j));
+            rowHeader[j + 2] = cell;
         }
         resultAsList.add(rowHeader);
 

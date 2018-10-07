@@ -165,8 +165,15 @@ public class TestEventManager {
         // A spongebob                win
         // B patrick                             loss
         // C squidward
-//        assertThat(roundRobinGrid[0][0].getType(),
-//            is(RoundRobinCell.TYPE_EMPTY));
+
+        // row header
+        assertThat(roundRobinGrid[0][0].getType(),
+            is(RoundRobinCell.TYPE_EMPTY));
+        assertThat(roundRobinGrid[0][1].getType(),
+            is(RoundRobinCell.TYPE_EMPTY));
+        assertThat(roundRobinGrid[0][2].getType(),
+            is(RoundRobinCell.TYPE_TEXT));
+        assertThat(roundRobinGrid[0][2].getContent(), is("A"));
 
         // column header
         assertThat(roundRobinGrid[1][0].getType(),
