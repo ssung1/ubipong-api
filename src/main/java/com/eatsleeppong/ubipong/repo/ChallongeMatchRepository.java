@@ -39,7 +39,7 @@ public class ChallongeMatchRepository {
             ChallongeMatchWrapper[].class);
     }
 
-    public ChallongeMatchWrapper[] getMatchList( String tournament,
+    public ChallongeMatchWrapper[] getMatchList(String tournament,
         Integer participantId) {
         RestTemplate rs = new RestTemplate();
 

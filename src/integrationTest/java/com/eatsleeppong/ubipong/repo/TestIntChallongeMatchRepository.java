@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.repo;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import org.junit.Test;
@@ -39,5 +40,6 @@ public class TestIntChallongeMatchRepository {
         ChallongeMatchWrapper[] matchList =
             fixture.getMatchList(tournament);
         assertThat(matchList, arrayWithSize(6));
+        assertThat(matchList[0].getMatch(), notNullValue());
     }
 }

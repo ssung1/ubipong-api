@@ -13,6 +13,10 @@ import java.util.Date;
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ChallongeMatch {
+    public static final String STATE_COMPLETE = "complete";
+    // match has no result (yet)
+    public static final String STATE_OPEN = "open";
+
     private Integer id;
     private Integer tournamentId;
     private String state;
