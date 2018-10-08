@@ -1,20 +1,19 @@
 ---
 challonge:
+  host: api.challonge.com
   api-key: this-is-the-api-key-from-challonge
 
 ---
 spring:
   profiles: test
 challonge:
-  host: api.challonge.com
   api-key: this-is-a-test-api-key
 
 ---
 spring:
   profiles: integration-test
 challonge:
-  host: api.challonge.com
-  api-key: this-is-a-test-api-key
+  api-key: this-is-an-integration-test-api-key
 
 ---
 spring:
