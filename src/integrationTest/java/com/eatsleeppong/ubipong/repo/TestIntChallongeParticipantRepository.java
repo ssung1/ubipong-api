@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public class TestIntChallongeParticipantRepository {
-    private String tournament = "ecs_2018_rr_pg_1";
+    private String tournament = "integration_test_rr";
 
     @Autowired
     private ChallongeParticipantRepository fixture;

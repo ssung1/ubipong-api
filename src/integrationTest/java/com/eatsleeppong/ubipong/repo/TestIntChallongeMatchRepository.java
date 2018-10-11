@@ -23,7 +23,7 @@ import java.util.Map;
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public class TestIntChallongeMatchRepository {
-    private String tournament = "ecs_2018_rr_pg_1";
+    private String tournament = "integration_test_rr";
 
     @Autowired
     private ChallongeMatchRepository fixture;
@@ -31,7 +31,7 @@ public class TestIntChallongeMatchRepository {
     @Test
     public void testGetMatchListWithParticipantId() {
         ChallongeMatchWrapper[] matchList =
-            fixture.getMatchList(tournament, 82304119);
+            fixture.getMatchList(tournament, 83173696);
         assertThat(matchList, arrayWithSize(3));
     }
 
