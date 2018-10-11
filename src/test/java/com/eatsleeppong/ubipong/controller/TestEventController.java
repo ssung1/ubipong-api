@@ -1,9 +1,6 @@
 package com.eatsleeppong.ubipong.controller;
 
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import org.junit.Before;
@@ -34,6 +31,7 @@ import static org.hamcrest.Matchers.*;
 @ActiveProfiles("test")
 public class TestEventController {
     final String eventId = "bikiniBottomOpen-RoundRobin-Group-3";
+    final String eventName = "Round Robin Group 3";
     final Integer player1Id = 1;
     final Integer player2Id = 2;
 
@@ -78,6 +76,9 @@ public class TestEventController {
                 pw.setParticipant(p);
                 return pw; })
                 .toArray(ChallongeParticipantWrapper[]::new));
+
+        ChallongeTournament t1 = new ChallongeTournament();
+        t1.setName(eventName);
     }
 
     @Test

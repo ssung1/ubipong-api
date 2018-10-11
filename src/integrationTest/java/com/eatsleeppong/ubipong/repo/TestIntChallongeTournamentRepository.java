@@ -1,5 +1,7 @@
 package com.eatsleeppong.ubipong.repo;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,25 +14,29 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public class TestIntChallongeTournamentRepository {
+    private final String tournament = "integration_test_rr";
+    private final String tournamentName =
+            "round robin tournament for integration test";
+
+    @Autowired
+    private ChallongeTournamentRepository subject;
+
     @Test
-    public void testGetTournamentList() {
-        RestTemplate rs = new RestTemplate();
+    public void testGetTournament() {
+        ChallongeTournamentWrapper tournamentWrapper =
+                subject.getTournament(tournament);
 
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-            .scheme("https").host("api.challonge.com")
-            .path("/v1")
-            .path("/tournaments.json")
-            .queryParam("api_key", "")
-            .build();
+        System.out.println(tournamentWrapper);
 
-        String response = rs.getForObject(uriComponents.toUri(),
-            String.class);
-
-        System.out.println(response);
+        ChallongeTournament tournamentInfo =
+                tournamentWrapper.getTournament();
+        assertThat(tournamentInfo.getName(), is(tournamentName));
     }
 }

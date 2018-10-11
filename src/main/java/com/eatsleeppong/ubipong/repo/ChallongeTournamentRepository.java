@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.repo;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +20,7 @@ public class ChallongeTournamentRepository {
     @Value("${challonge.api-key}")
     private String apiKey;
 
-    public ChallongeParticipantWrapper[] getTournamentList(
+    public ChallongeTournamentWrapper getTournament(
         String tournament) {
         RestTemplate rs = new RestTemplate();
 
@@ -30,12 +31,11 @@ public class ChallongeTournamentRepository {
             .scheme("https").host(host)
             .path("/v1")
             .path("/tournaments")
-            .path("/{tournament}")
-            .path("/participants.json")
+            .path("/{tournament}.json")
             .queryParam("api_key", apiKey)
             .build();
 
             return rs.getForObject(uriComponents.expand(uriMap).toUri(),
-            ChallongeParticipantWrapper[].class);
+            ChallongeTournamentWrapper.class);
     }
 }
