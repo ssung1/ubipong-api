@@ -83,7 +83,7 @@ public class TestEventController {
     @Test
     public void testGetRoundRobinGrid() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/roundRobinGrid/" + eventId)
+            get("/rest/v0/event/" + eventId + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 content().contentTypeCompatibleWith(

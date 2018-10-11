@@ -16,7 +16,7 @@ public class EventController {
         this.eventManager = eventManager;
     }
 
-    @GetMapping(value = "/roundRobinGrid/{eventId}",
+    @GetMapping(value = "/{eventId}/roundRobinGrid",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public RoundRobinCell[][] roundRobinGrid(
         @PathVariable("eventId") String eventId
