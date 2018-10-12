@@ -293,9 +293,9 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
-    public Event findEvent(String eventId) {
+    public Event findEvent(String eventUrl) {
         ChallongeTournament challongeTournament = tournamentRepository
-            .getTournament(eventId)
+            .getTournament(eventUrl)
             .getTournament();
 
         Event result = new Event();
