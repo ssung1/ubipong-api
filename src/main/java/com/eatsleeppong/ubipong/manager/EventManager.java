@@ -50,7 +50,7 @@ public class EventManager {
     }
 
     /**
-     * given a list of intergers, form a map so that
+     * given a list of integers, form a map so that
      *
      * first integer maps to 0
      * second integer maps to 1
