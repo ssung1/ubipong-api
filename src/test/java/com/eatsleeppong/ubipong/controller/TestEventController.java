@@ -1,11 +1,9 @@
 package com.eatsleeppong.ubipong.controller;
 
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
@@ -33,7 +30,8 @@ import static org.hamcrest.Matchers.*;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class TestEventController {
-    final String eventId = "bikiniBottomOpen-RoundRobin-Group-3";
+    final String eventUrl = "bikiniBottomOpen-RoundRobin-Group-3";
+    final String eventName = "Round Robin Group 3";
     final Integer player1Id = 1;
     final Integer player2Id = 2;
 
@@ -45,6 +43,21 @@ public class TestEventController {
 
     @MockBean
     ChallongeParticipantRepository mockParticipantRepository;
+
+    @MockBean
+    ChallongeTournamentRepository mockTournamentRepository;
+
+    private ChallongeTournamentWrapper getTournamentWrapper1() {
+        ChallongeTournament t1 = new ChallongeTournament();
+        t1.setName(eventName);
+        t1.setDescription("an event is called a tournament on challonge.com");
+        t1.setUrl(eventUrl);
+
+        ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
+        tw1.setTournament(t1);
+
+        return tw1;
+    }
 
     @Before
     public void setupMocks() {
@@ -61,7 +74,7 @@ public class TestEventController {
         ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
         mw.setMatch(m);
 
-        when(mockMatchRepository.getMatchList(eventId)).thenReturn(
+        when(mockMatchRepository.getMatchList(eventUrl)).thenReturn(
             new ChallongeMatchWrapper[] { mw } );
 
         ChallongeParticipant p1 = new ChallongeParticipant();
@@ -71,19 +84,25 @@ public class TestEventController {
         p2.setId(player2Id);
         p2.setDisplayName("player2");
 
-        when(mockParticipantRepository.getParticipantList(eventId))
+        when(mockParticipantRepository.getParticipantList(eventUrl))
             .thenReturn(Stream.of(p1, p2).map(p -> {
                 ChallongeParticipantWrapper pw =
                     new ChallongeParticipantWrapper();
                 pw.setParticipant(p);
                 return pw; })
                 .toArray(ChallongeParticipantWrapper[]::new));
+
+        ChallongeTournament t1 = new ChallongeTournament();
+        t1.setName(eventName);
+
+        when(mockTournamentRepository.getTournament(eventUrl))
+            .thenReturn(getTournamentWrapper1());
     }
 
     @Test
     public void testGetRoundRobinGrid() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/" + eventId + "/roundRobinGrid")
+            get("/rest/v0/event/" + eventUrl + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 content().contentTypeCompatibleWith(
@@ -97,5 +116,14 @@ public class TestEventController {
                 jsonPath("[0][2].content").value(is("A")))
             .andExpect(
                 jsonPath("[1][3].gameList[0].player1Score").value(is(11)));
+    }
+
+    @Test
+    public void testGetEvent() throws Exception {
+        mockMvc.perform(
+            get("/rest/v0/event/" + eventUrl)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(
+                jsonPath("name").value(is(eventName)));
     }
 }

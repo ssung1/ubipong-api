@@ -1,13 +1,12 @@
 package com.eatsleeppong.ubipong.manager;
 
+import com.eatsleeppong.ubipong.model.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,13 +14,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class EventManager {
+    private ChallongeTournamentRepository tournamentRepository;
     private ChallongeParticipantRepository participantRepository;
     private ChallongeMatchRepository matchRepository;
 
     public EventManager(
+        ChallongeTournamentRepository tournamentRepository,
         ChallongeParticipantRepository participantRepository,
         ChallongeMatchRepository matchRepository
     ) {
+        this.tournamentRepository = tournamentRepository;
         this.participantRepository = participantRepository;
         this.matchRepository = matchRepository;
     }
@@ -289,5 +291,19 @@ public class EventManager {
                 matchRepository.getMatchList(eventName));
 
         return createRoundRobinGrid(matchList, participantList);
+    }
+
+    public Event findEvent(String eventUrl) {
+        ChallongeTournament challongeTournament = tournamentRepository
+            .getTournament(eventUrl)
+            .getTournament();
+
+        Event result = new Event();
+        result.setId(challongeTournament.getId());
+        result.setUrl(challongeTournament.getUrl());
+        result.setName(challongeTournament.getName());
+        result.setDescription(challongeTournament.getDescription());
+
+        return result;
     }
 }

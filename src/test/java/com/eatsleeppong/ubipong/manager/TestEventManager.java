@@ -1,14 +1,13 @@
 package com.eatsleeppong.ubipong.manager;
 
+import com.eatsleeppong.ubipong.model.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
+import com.eatsleeppong.ubipong.model.challonge.*;
 
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
+import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,21 +26,26 @@ import java.util.stream.Stream;
  * An event is represented as a list of matches in challonge.com
  */
 public class TestEventManager {
-    private final String eventName = "bikiniBottomOpen-RoundRobin-Group-1";
+    private final String eventUrl = "bikiniBottomOpen-RoundRobin-Group-1";
+    private final String eventName = "Round Robin Group 1";
+
+    private final ChallongeTournamentRepository mockTournamentRepository =
+        mock(ChallongeTournamentRepository.class);
     private final ChallongeParticipantRepository mockParticipantRepository =
         mock(ChallongeParticipantRepository.class);
     private final ChallongeMatchRepository mockMatchRepository =
         mock(ChallongeMatchRepository.class);
 
     private EventManager subject = new EventManager(
-        mockParticipantRepository, mockMatchRepository
+        mockTournamentRepository, mockParticipantRepository,
+        mockMatchRepository
     );
 
     private final Integer spongebobId = 123;
     private final Integer patrickId = 234;
     private final Integer squidwardId = 345;
 
-    private List<ChallongeMatch> getTestSample1() {
+    private List<ChallongeMatch> getMatchList1() {
         ChallongeMatch m1 = new ChallongeMatch();
         m1.setPlayer1Id(spongebobId);
         m1.setPlayer2Id(patrickId);
@@ -131,16 +135,26 @@ public class TestEventManager {
             .toArray(ChallongeParticipantWrapper[]::new);
     }
 
+    private ChallongeTournamentWrapper getTournamentWrapper1() {
+        ChallongeTournament t1 = new ChallongeTournament();
+        t1.setName(eventName);
+        t1.setDescription("an event is called a tournament on challonge.com");
+        t1.setUrl(eventUrl);
+
+        ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
+        tw1.setTournament(t1);
+
+        return tw1;
+    }
+
     @Before
     public void setupMocks() {
-        when(mockParticipantRepository.getParticipantList(eventName))
-            .thenReturn(
-                getParticipantWrapperArray1()
-            );
-        when(mockMatchRepository.getMatchList(eventName))
-            .thenReturn(
-                getMatchWrapperArray1()
-            );
+        when(mockParticipantRepository.getParticipantList(eventUrl))
+            .thenReturn(getParticipantWrapperArray1());
+        when(mockMatchRepository.getMatchList(eventUrl))
+            .thenReturn(getMatchWrapperArray1());
+        when(mockTournamentRepository.getTournament(eventUrl))
+            .thenReturn(getTournamentWrapper1());
     }
 
     @Test
@@ -208,7 +222,7 @@ public class TestEventManager {
 
     @Test
     public void testFindByPlayer1() {
-        List<ChallongeMatch> matchList = getTestSample1();
+        List<ChallongeMatch> matchList = getMatchList1();
         List<ChallongeMatch> spongebobMatchList =
             subject.findByPlayer1(matchList, spongebobId);
 
@@ -232,7 +246,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridOneSide() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventName);
+            subject.createRoundRobinGrid(eventUrl);
 
         // all cells must be filled, even if it is displayed as empty
         for (int i = 0; i < roundRobinGrid.length; ++i) {
@@ -350,7 +364,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridBothSides() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventName);
+            subject.createRoundRobinGrid(eventUrl);
 
         // this is one side of the result
         //
@@ -374,5 +388,12 @@ public class TestEventManager {
         RoundRobinCell patrickVsSpongebob = roundRobinGrid[2][2];
         assertThat(patrickVsSpongebob.isWinForPlayer1(), is(false));
         assertThat(patrickVsSpongebob.getContent(), is("L -4 -5 -6"));
+    }
+
+    @Test
+    public void testFindEvent() {
+        Event event = subject.findEvent(eventUrl);
+
+        assertThat(event.getName(), is(eventName));
     }
 }
