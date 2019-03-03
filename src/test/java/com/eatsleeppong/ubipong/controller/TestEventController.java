@@ -30,8 +30,8 @@ import static org.hamcrest.Matchers.*;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class TestEventController {
-    final String eventUrl = "bikiniBottomOpen-RoundRobin-Group-3";
-    final String eventName = "Round Robin Group 3";
+    final String eventName = "bikiniBottomOpen-RoundRobin-Group-3";
+    final String eventTitle = "Round Robin Group 3";
     final Integer player1Id = 1;
     final Integer player2Id = 2;
 
@@ -49,9 +49,9 @@ public class TestEventController {
 
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
+        t1.setName(eventTitle);
         t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(eventUrl);
+        t1.setUrl(eventName);
 
         ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
         tw1.setTournament(t1);
@@ -74,7 +74,7 @@ public class TestEventController {
         ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
         mw.setMatch(m);
 
-        when(mockMatchRepository.getMatchList(eventUrl)).thenReturn(
+        when(mockMatchRepository.getMatchList(eventName)).thenReturn(
             new ChallongeMatchWrapper[] { mw } );
 
         ChallongeParticipant p1 = new ChallongeParticipant();
@@ -84,7 +84,7 @@ public class TestEventController {
         p2.setId(player2Id);
         p2.setDisplayName("player2");
 
-        when(mockParticipantRepository.getParticipantList(eventUrl))
+        when(mockParticipantRepository.getParticipantList(eventName))
             .thenReturn(Stream.of(p1, p2).map(p -> {
                 ChallongeParticipantWrapper pw =
                     new ChallongeParticipantWrapper();
@@ -93,16 +93,16 @@ public class TestEventController {
                 .toArray(ChallongeParticipantWrapper[]::new));
 
         ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
+        t1.setName(eventTitle);
 
-        when(mockTournamentRepository.getTournament(eventUrl))
+        when(mockTournamentRepository.getTournament(eventName))
             .thenReturn(getTournamentWrapper1());
     }
 
     @Test
     public void testGetRoundRobinGrid() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/" + eventUrl + "/roundRobinGrid")
+            get("/rest/v0/event/" + eventName + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 content().contentTypeCompatibleWith(
@@ -121,9 +121,9 @@ public class TestEventController {
     @Test
     public void testGetEvent() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/" + eventUrl)
+            get("/rest/v0/event/" + eventName)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("name").value(is(eventName)));
+                jsonPath("title").value(is(eventTitle)));
     }
 }
