@@ -67,6 +67,15 @@ public class TestEventManager {
         return Arrays.asList(m1, m2, m3);
     }
 
+    /**
+     * <pre>
+     *                   A           B           C                 Place
+     *  A spongebob                  W 4 5 6
+     *  B patrick        L -4 -5 -6              L -9 8 -6 -5
+     *  C squidward                  W 9 -8 6 5
+     *
+     * </pre>
+     */
     private ChallongeMatchWrapper[] getMatchWrapperArray1() {
         ChallongeMatch m1 = new ChallongeMatch();
         m1.setPlayer1Id(spongebobId);
