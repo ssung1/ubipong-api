@@ -444,4 +444,14 @@ public class TestEventManager {
         assertThat(allResultStrings, hasItem("4 5 6"));
         assertThat(allResultStrings, hasItem("-9 8 -6 -5"));
     }
+
+    @Test
+    public void testCreateTournamentResultListShouldIncludeEventTitle() {
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(eventName);
+
+        assertThat(tournamentResultList, arrayWithSize(2));
+
+        // event name in the tournament result list is really the event title
+        assertThat(tournamentResultList[0].getEventTitle(), is(eventTitle));
+    }
 }

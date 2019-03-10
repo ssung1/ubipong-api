@@ -332,6 +332,7 @@ public class EventManager {
     //public TournamentResultRequest createTournamentResultRequest(
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String eventName) {
+        final Event event = findEvent(eventName);
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
                 participantRepository.getParticipantList(eventName));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(matchRepository.getMatchList(eventName));
@@ -349,6 +350,7 @@ public class EventManager {
 
                     final TournamentResultRequestLineItem tournamentResultRequestLineItem =
                             new TournamentResultRequestLineItem();
+                    tournamentResultRequestLineItem.setEventTitle(event.getTitle());
                     if (isWinForPlayer1(player1, player2, winner)) {
                         tournamentResultRequestLineItem.setWinner(player1Name);
                         tournamentResultRequestLineItem.setLoser(player2Name);
