@@ -11,5 +11,6 @@ public class TournamentResultRequestLineItem {
     private String winner;
     private String loser;
 
+    private String eventName;
     private String resultString;
 }
