@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public class ChallongeParticipant {
     private Integer id;
     private Integer tournamentId;
+    /**
+     * if user does NOT have a challonge account, this field would be valid
+     */
     private String name;
     private Integer seed;
     private Boolean active;
@@ -27,6 +30,9 @@ public class ChallongeParticipant {
     private Integer groupId;
     private Date checkedInAt;
     private Integer rankedMemberId;
+    /**
+     * if user has a challonge account, this field would be valid
+     */
     private String challongeUsername;
     private String challongeEmailAddressVerified;
     private Boolean removable;
@@ -35,7 +41,14 @@ public class ChallongeParticipant {
     private Boolean invitationPending;
     private String displayNameWithInvitationEmailAddress;
     private String emailHash;
+    /**
+     * for all practical purposes, this is the same as challongeUsername
+     */
     private String username;
+    /**
+     * this is probably the most reliable field to get some kind of name; this is either the same as "name"
+     * or "username", whichever is valid
+     */
     private String displayName;
     private String attachedParticipatablePortraitUrl;
     private Boolean canCheckIn;

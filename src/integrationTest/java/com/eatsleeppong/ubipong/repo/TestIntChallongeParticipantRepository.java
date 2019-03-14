@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.repo;
 
+import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -33,5 +34,12 @@ public class TestIntChallongeParticipantRepository {
         assertThat(nameList, hasItem("patrick"));
         assertThat(nameList, hasItem("squidward"));
         assertThat(nameList, hasItem("plankton"));
+    }
+
+    @Test
+    public void testGetParticipantListFull() {
+        final ChallongeParticipantWrapper[] challongeParticipantWrapperArray = subject.getParticipantList(tournament);
+
+        assertThat(challongeParticipantWrapperArray.length, is(4));
     }
 }

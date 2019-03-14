@@ -33,8 +33,6 @@ public class TestIntChallongeTournamentRepository {
         ChallongeTournamentWrapper tournamentWrapper =
                 subject.getTournament(tournament);
 
-        System.out.println(tournamentWrapper);
-
         ChallongeTournament tournamentInfo =
                 tournamentWrapper.getTournament();
         assertThat(tournamentInfo.getName(), is(tournamentName));

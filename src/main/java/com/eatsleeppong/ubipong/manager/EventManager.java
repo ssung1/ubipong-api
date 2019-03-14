@@ -4,6 +4,7 @@ import com.eatsleeppong.ubipong.model.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.challonge.*;
+import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
@@ -72,6 +73,17 @@ public class EventManager {
     }
 
     /**
+     * Create a map of player ID to player name
+     */
+    public Map<Integer, String> createPlayerNameMap(List<ChallongeParticipant> playerList) {
+        return new HashMap<Integer, String>() { {
+            playerList.forEach(p -> {
+                put(p.getId(), p.getDisplayName());
+            });
+        } };
+    }
+
+    /**
      * win or loss -- if player 1 wins, it is a "win"
      * if player 1 loses, it is a "loss"
      */
@@ -111,13 +123,17 @@ public class EventManager {
         return result;
     }
 
+    private boolean isMatchResultValid(ChallongeMatch match) {
+        return "complete".equals(match.getState());
+    }
+
     private RoundRobinCell createRoundRobinCell(ChallongeMatch match) {
         Integer player1 = match.getPlayer1Id();
         Integer player2 = match.getPlayer2Id();
         Integer winner = match.getWinnerId();
 
         RoundRobinCell cell = new RoundRobinCell();
-        if ("complete".equals(match.getState())) {
+        if (isMatchResultValid(match)) {
             cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
             cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
 
@@ -162,6 +178,19 @@ public class EventManager {
         return result;
     }
 
+    private String convertToGameSummary(List<Game> gameList) {
+        return gameList.stream()
+                .map(g -> {
+                    if (g.isWinForPlayer1()) {
+                        return g.getPlayer2Score();
+                    } else {
+                        return -g.getPlayer1Score();
+                    }
+                })
+                .map(String::valueOf)
+                .collect(Collectors.joining(" "));
+    }
+
     private void updateCellContent(RoundRobinCell cell) {
         StringBuilder content = new StringBuilder();
         if (cell.isWinForPlayer1()) {
@@ -170,15 +199,8 @@ public class EventManager {
             content.append("L");
         }
 
-        for(Game game : cell.getGameList()) {
-            content.append(" ");
-            if (game.isWinForPlayer1()) {
-                content.append(game.getPlayer2Score());
-            } else {
-                content.append('-');
-                content.append(game.getPlayer1Score());
-            }
-        }
+        content.append(" ");
+        content.append(convertToGameSummary(cell.getGameList()));
 
         cell.setContent(content.toString());
     }
@@ -293,17 +315,54 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
-    public Event findEvent(String eventUrl) {
+    public Event findEvent(String eventName) {
         ChallongeTournament challongeTournament = tournamentRepository
-            .getTournament(eventUrl)
+            .getTournament(eventName)
             .getTournament();
 
         Event result = new Event();
         result.setId(challongeTournament.getId());
-        result.setUrl(challongeTournament.getUrl());
-        result.setName(challongeTournament.getName());
+        result.setName(challongeTournament.getUrl());
+        result.setTitle(challongeTournament.getName());
         result.setDescription(challongeTournament.getDescription());
 
         return result;
+    }
+
+    //public TournamentResultRequest createTournamentResultRequest(
+
+    public TournamentResultRequestLineItem[] createTournamentResultList(final String eventName) {
+        final Event event = findEvent(eventName);
+        final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
+                participantRepository.getParticipantList(eventName));
+        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(matchRepository.getMatchList(eventName));
+
+        final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
+
+        return matchList.parallelStream()
+                .filter(this::isMatchResultValid)
+                .map(m -> {
+                    final Integer player1 = m.getPlayer1Id();
+                    final Integer player2 = m.getPlayer2Id();
+                    final Integer winner = m.getWinnerId();
+                    final String player1Name = playerNameMap.get(player1);
+                    final String player2Name = playerNameMap.get(player2);
+
+                    final TournamentResultRequestLineItem tournamentResultRequestLineItem =
+                            new TournamentResultRequestLineItem();
+                    tournamentResultRequestLineItem.setEventTitle(event.getTitle());
+                    if (isWinForPlayer1(player1, player2, winner)) {
+                        tournamentResultRequestLineItem.setWinner(player1Name);
+                        tournamentResultRequestLineItem.setLoser(player2Name);
+                    } else {
+                        tournamentResultRequestLineItem.setWinner(player2Name);
+                        tournamentResultRequestLineItem.setLoser(player1Name);
+                    }
+
+                    final RoundRobinCell roundRobinCell = createRoundRobinCell(m);
+                    tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
+                    return tournamentResultRequestLineItem;
+                })
+                .toArray(TournamentResultRequestLineItem[]::new);
     }
 }

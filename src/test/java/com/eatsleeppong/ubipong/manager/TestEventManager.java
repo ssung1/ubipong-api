@@ -5,6 +5,8 @@ import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
+import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
+import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
@@ -20,14 +22,15 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * An event is represented as a list of matches in challonge.com
  */
 public class TestEventManager {
-    private final String eventUrl = "bikiniBottomOpen-RoundRobin-Group-1";
-    private final String eventName = "Round Robin Group 1";
+    private final String eventName = "bikiniBottomOpen-RoundRobin-Group-1";
+    private final String eventTitle = "Round Robin Group 1";
 
     private final ChallongeTournamentRepository mockTournamentRepository =
         mock(ChallongeTournamentRepository.class);
@@ -67,6 +70,15 @@ public class TestEventManager {
         return Arrays.asList(m1, m2, m3);
     }
 
+    /**
+     * <pre>
+     *                   A           B           C                 Place
+     *  A spongebob                  W 4 5 6
+     *  B patrick        L -4 -5 -6              L -9 8 -6 -5
+     *  C squidward                  W 9 -8 6 5
+     *
+     * </pre>
+     */
     private ChallongeMatchWrapper[] getMatchWrapperArray1() {
         ChallongeMatch m1 = new ChallongeMatch();
         m1.setPlayer1Id(spongebobId);
@@ -137,9 +149,9 @@ public class TestEventManager {
 
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
+        t1.setName(eventTitle);
         t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(eventUrl);
+        t1.setUrl(eventName);
 
         ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
         tw1.setTournament(t1);
@@ -149,11 +161,11 @@ public class TestEventManager {
 
     @Before
     public void setupMocks() {
-        when(mockParticipantRepository.getParticipantList(eventUrl))
+        when(mockParticipantRepository.getParticipantList(eventName))
             .thenReturn(getParticipantWrapperArray1());
-        when(mockMatchRepository.getMatchList(eventUrl))
+        when(mockMatchRepository.getMatchList(eventName))
             .thenReturn(getMatchWrapperArray1());
-        when(mockTournamentRepository.getTournament(eventUrl))
+        when(mockTournamentRepository.getTournament(eventName))
             .thenReturn(getTournamentWrapper1());
     }
 
@@ -246,7 +258,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridOneSide() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventUrl);
+            subject.createRoundRobinGrid(eventName);
 
         // all cells must be filled, even if it is displayed as empty
         for (int i = 0; i < roundRobinGrid.length; ++i) {
@@ -364,7 +376,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridBothSides() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventUrl);
+            subject.createRoundRobinGrid(eventName);
 
         // this is one side of the result
         //
@@ -392,8 +404,54 @@ public class TestEventManager {
 
     @Test
     public void testFindEvent() {
-        Event event = subject.findEvent(eventUrl);
+        Event event = subject.findEvent(eventName);
 
-        assertThat(event.getName(), is(eventName));
+        assertThat(event.getTitle(), is(eventTitle));
+    }
+
+    @Test
+    public void testCreateTournamentResultList() {
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(eventName);
+
+        assertThat(tournamentResultList, arrayWithSize(2));
+
+        final List<String> allWinners = Arrays.stream(tournamentResultList)
+                .map(TournamentResultRequestLineItem::getWinner)
+                .collect(Collectors.toList());
+
+        final List<String> allLosers = Arrays.stream(tournamentResultList)
+                .map(TournamentResultRequestLineItem::getLoser)
+                .collect(Collectors.toList());
+
+        /**
+         * <pre>
+         *                   A           B           C                 Place
+         *  A spongebob                  W 4 5 6
+         *  B patrick        L -4 -5 -6              L -9 8 -6 -5
+         *  C squidward                  W 9 -8 6 5
+         *
+         * </pre>
+         */
+
+        assertThat(allWinners, hasItem("spongebob"));
+        assertThat(allWinners, hasItem("squidward"));
+        // I'm sorry, Patrick
+        assertThat(allLosers, hasItem("patrick"));
+
+        final List<String> allResultStrings = Arrays.stream(tournamentResultList)
+                .map(TournamentResultRequestLineItem::getResultString)
+                .collect(Collectors.toList());
+        assertThat(allResultStrings, hasItem("4 5 6"));
+        assertThat(allResultStrings, hasItem("-9 8 -6 -5"));
+    }
+
+    @Test
+    public void testCreateTournamentResultListShouldIncludeEventTitle() {
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(eventName);
+
+        assertThat(tournamentResultList, arrayWithSize(2));
+
+        // event name in the tournament result list is really the event title
+        assertThat(tournamentResultList[0].getEventTitle(), is(eventTitle));
     }
 }
