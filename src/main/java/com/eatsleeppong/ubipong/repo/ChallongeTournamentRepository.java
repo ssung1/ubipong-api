@@ -36,6 +36,6 @@ public class ChallongeTournamentRepository {
             .build();
 
             return rs.getForObject(uriComponents.expand(uriMap).toUri(),
-            ChallongeTournamentWrapper.class);
+                    ChallongeTournamentWrapper.class);
     }
 }
