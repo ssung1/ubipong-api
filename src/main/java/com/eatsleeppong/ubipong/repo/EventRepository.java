@@ -2,6 +2,10 @@ package com.eatsleeppong.ubipong.repo;
 
 import com.eatsleeppong.ubipong.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
-public interface EventRepository extends JpaRepository<Event, Integer>{
+import java.util.List;
+
+public interface EventRepository extends JpaRepository<Event, Integer> {
+    List<Event> findByTournamentId(@Param("tournamentId") Integer tournamentId);
 }
