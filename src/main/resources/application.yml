@@ -1,4 +1,9 @@
 ---
+spring:
+  data:
+    rest:
+      base-path: crud
+
 challonge:
   host: api.challonge.com
   api-key: this-is-the-api-key-from-challonge

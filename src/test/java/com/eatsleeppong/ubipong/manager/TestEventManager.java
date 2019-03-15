@@ -1,11 +1,10 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.model.Event;
+import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
