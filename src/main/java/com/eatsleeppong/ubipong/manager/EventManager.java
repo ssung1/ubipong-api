@@ -351,16 +351,21 @@ public class EventManager {
                     final TournamentResultRequestLineItem tournamentResultRequestLineItem =
                             new TournamentResultRequestLineItem();
                     tournamentResultRequestLineItem.setEventTitle(event.getTitle());
-                    if (isWinForPlayer1(player1, player2, winner)) {
-                        tournamentResultRequestLineItem.setWinner(player1Name);
-                        tournamentResultRequestLineItem.setLoser(player2Name);
-                    } else {
-                        tournamentResultRequestLineItem.setWinner(player2Name);
-                        tournamentResultRequestLineItem.setLoser(player1Name);
-                    }
 
                     final RoundRobinCell roundRobinCell = createRoundRobinCell(m);
                     tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
+
+                    if (isWinForPlayer1(player1, player2, winner)) {
+                        tournamentResultRequestLineItem.setWinner(player1Name);
+                        tournamentResultRequestLineItem.setLoser(player2Name);
+                        tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
+                    } else {
+                        final RoundRobinCell inverseCell = createInverseCell(roundRobinCell);
+                        tournamentResultRequestLineItem.setWinner(player2Name);
+                        tournamentResultRequestLineItem.setLoser(player1Name);
+                        tournamentResultRequestLineItem.setResultString(convertToGameSummary(inverseCell.getGameList()));
+                    }
+
                     return tournamentResultRequestLineItem;
                 })
                 .toArray(TournamentResultRequestLineItem[]::new);

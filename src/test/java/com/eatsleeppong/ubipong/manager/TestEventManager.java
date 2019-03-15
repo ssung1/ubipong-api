@@ -441,7 +441,7 @@ public class TestEventManager {
                 .map(TournamentResultRequestLineItem::getResultString)
                 .collect(Collectors.toList());
         assertThat(allResultStrings, hasItem("4 5 6"));
-        assertThat(allResultStrings, hasItem("-9 8 -6 -5"));
+        assertThat(allResultStrings, hasItem("9 -8 6 5"));
     }
 
     @Test
