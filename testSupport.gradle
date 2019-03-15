@@ -58,6 +58,7 @@ dependencies {
 task embeddedTest(type: Test) {
     testClassesDir = sourceSets.embeddedTest.output.classesDir
     classpath = sourceSets.embeddedTest.runtimeClasspath
+    systemProperties System.getProperties()
     outputs.upToDateWhen { false }
 }
 
