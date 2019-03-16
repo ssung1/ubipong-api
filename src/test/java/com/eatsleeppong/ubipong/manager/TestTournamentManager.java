@@ -1,9 +1,11 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.Tournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.EventRepository;
+import com.eatsleeppong.ubipong.repo.TournamentRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,11 +38,13 @@ public class TestTournamentManager {
 
     private final EventRepository mockEventRepository = mock(EventRepository.class);
     private final EventManager mockEventManager = mock(EventManager.class);
+    private final TournamentRepository mockTournamentRepository = mock(TournamentRepository.class);
 
-    private final TournamentManager tournamentManager = new TournamentManager(mockEventManager, mockEventRepository);
+    private final TournamentManager tournamentManager = new TournamentManager(mockEventManager, mockEventRepository,
+            mockTournamentRepository);
 
     @Before
-    public void setupMocks() {
+    public void setupMocks() throws Exception {
         // because Lombok creates the equals method, each TournamentResultRequestLineItem needs to have different
         // content in order to be considered different (cannot use referential equality)
         event1Game1.setEventTitle(event1Title);
@@ -65,6 +69,12 @@ public class TestTournamentManager {
                 new TournamentResultRequestLineItem[] { event1Game1, event1Game2 });
         when(mockEventManager.createTournamentResultList(event2Name)).thenReturn(
                 new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
+
+        final Tournament tournament = new Tournament();
+        tournament.setName(tournamentName);
+        tournament.setTournamentDate(df.parse(tournamentDate));
+
+        when(mockTournamentRepository.getOne(tournamentId)).thenReturn(tournament);
     }
 
     @Test
@@ -73,7 +83,7 @@ public class TestTournamentManager {
                 tournamentManager.createTournamentResultRequest(tournamentId);
         assertThat(tournamentResultRequest.getTournamentName(), is(tournamentName));
         assertThat(tournamentResultRequest.getTournamentDate(), is(df.parse(tournamentDate)));
-        assertThat(tournamentResultRequest.getTournamentResultList(), arrayWithSize(12));
+        assertThat(tournamentResultRequest.getTournamentResultList(), arrayWithSize(4));
         
         final TournamentResultRequestLineItem[] tournamentResultRequestLineItem = 
                 tournamentResultRequest.getTournamentResultList();
@@ -82,20 +92,5 @@ public class TestTournamentManager {
         assertThat(tournamentResultRequestLineItem, hasItemInArray(event1Game2));
         assertThat(tournamentResultRequestLineItem, hasItemInArray(event2Game1));
         assertThat(tournamentResultRequestLineItem, hasItemInArray(event2Game2));
-        // if the above works, we don't need the stuff below
-//
-//        final List<String> eventTitleList = Arrays.stream(tournamentResultRequestLineItem)
-//                .map(TournamentResultRequestLineItem::getEventTitle)
-//                .collect(Collectors.toList());
-//
-//        assertThat(eventTitleList, hasItem(event1Title));
-//        assertThat(eventTitleList, hasItem(event2Title));
-//
-//        final List<String> resultStringList = Arrays.stream(tournamentResultRequestLineItem)
-//                .map(TournamentResultRequestLineItem::getResultString)
-//                .collect(Collectors.toList());
-//
-//        assertThat(resultStringList, hasItem(event1Title));
-//        assertThat(resultStringList, hasItem(event2Title));
     }
 }
