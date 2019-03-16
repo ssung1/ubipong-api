@@ -4,15 +4,12 @@ import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.EventRepository;
-import lombok.Data;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -27,10 +24,10 @@ public class TestTournamentManager {
     private final Integer tournamentId = 1234987;
     private final String tournamentName = "Eat Sleep Pong Open 2019";
     private final String tournamentDate = "2019-03-15T00:00:00-0500";
-    private final String eventName1 = "pr_gr_1";
-    private final String eventName2 = "ca";
-    private final String eventTitle1 = "Preliminary Group 1";
-    private final String eventTitle2 = "Class A";
+    private final String event1Name = "pr_gr_1";
+    private final String event2Name = "ca";
+    private final String event1Title = "Preliminary Group 1";
+    private final String event2Title = "Class A";
 
     private final TournamentResultRequestLineItem event1Game1 = new TournamentResultRequestLineItem();
     private final TournamentResultRequestLineItem event1Game2 = new TournamentResultRequestLineItem();
@@ -38,30 +35,36 @@ public class TestTournamentManager {
     private final TournamentResultRequestLineItem event2Game2 = new TournamentResultRequestLineItem();
 
     private final EventRepository mockEventRepository = mock(EventRepository.class);
+    private final EventManager mockEventManager = mock(EventManager.class);
 
-    private final TournamentManager tournamentManager = new TournamentManager();
+    private final TournamentManager tournamentManager = new TournamentManager(mockEventManager, mockEventRepository);
 
     @Before
     public void setupMocks() {
         // because Lombok creates the equals method, each TournamentResultRequestLineItem needs to have different
         // content in order to be considered different (cannot use referential equality)
-        event1Game1.setEventTitle(eventTitle1);
+        event1Game1.setEventTitle(event1Title);
         event1Game1.setResultString("event1game1result");
-        event1Game2.setEventTitle(eventTitle1);
+        event1Game2.setEventTitle(event1Title);
         event1Game2.setResultString("event1game2result");
-        event2Game1.setEventTitle(eventTitle2);
+        event2Game1.setEventTitle(event2Title);
         event2Game1.setResultString("event2game1result");
-        event2Game2.setEventTitle(eventTitle2);
+        event2Game2.setEventTitle(event2Title);
         event2Game2.setResultString("event2game2result");
 
         final Event event1 = new Event();
-        event1.setTitle(eventTitle1);
-        event1.setName(eventName1);
+        event1.setTitle(event1Title);
+        event1.setName(event1Name);
 
         final Event event2 = new Event();
-        event2.setTitle(eventTitle2);
-        event2.setName(eventName2);
+        event2.setTitle(event2Title);
+        event2.setName(event2Name);
         when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(Arrays.asList(event1, event2));
+
+        when(mockEventManager.createTournamentResultList(event1Name)).thenReturn(
+                new TournamentResultRequestLineItem[] { event1Game1, event1Game2 });
+        when(mockEventManager.createTournamentResultList(event2Name)).thenReturn(
+                new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
     }
 
     @Test
@@ -85,14 +88,14 @@ public class TestTournamentManager {
 //                .map(TournamentResultRequestLineItem::getEventTitle)
 //                .collect(Collectors.toList());
 //
-//        assertThat(eventTitleList, hasItem(eventTitle1));
-//        assertThat(eventTitleList, hasItem(eventTitle2));
+//        assertThat(eventTitleList, hasItem(event1Title));
+//        assertThat(eventTitleList, hasItem(event2Title));
 //
 //        final List<String> resultStringList = Arrays.stream(tournamentResultRequestLineItem)
 //                .map(TournamentResultRequestLineItem::getResultString)
 //                .collect(Collectors.toList());
 //
-//        assertThat(resultStringList, hasItem(eventTitle1));
-//        assertThat(resultStringList, hasItem(eventTitle2));
+//        assertThat(resultStringList, hasItem(event1Title));
+//        assertThat(resultStringList, hasItem(event2Title));
     }
 }
