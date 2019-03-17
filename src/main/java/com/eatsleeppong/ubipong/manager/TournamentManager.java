@@ -36,7 +36,7 @@ public class TournamentManager {
                 .flatMap(Arrays::stream)
                 .toArray(TournamentResultRequestLineItem[]::new);
 
-        TournamentResultRequest tournamentResultRequest = new TournamentResultRequest();
+        final TournamentResultRequest tournamentResultRequest = new TournamentResultRequest();
 
         final Tournament tournament = tournamentRepository.getOne(tournamentId);
         tournamentResultRequest.setTournamentName(tournament.getName());
@@ -45,4 +45,6 @@ public class TournamentManager {
 
         return tournamentResultRequest;
     }
+
+    //public Tournament
 }

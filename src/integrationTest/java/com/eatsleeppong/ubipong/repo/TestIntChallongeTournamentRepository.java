@@ -60,6 +60,7 @@ public class TestIntChallongeTournamentRepository {
             assertThat(result.getName(), is("new round robin tournament"));
         } catch (HttpClientErrorException ex) {
             System.out.println(ex);
+            throw ex;
         }
     }
 }

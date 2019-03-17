@@ -57,11 +57,9 @@ public class TestTournamentManager {
         event2Game2.setResultString("event2game2result");
 
         final Event event1 = new Event();
-        event1.setTitle(event1Title);
         event1.setName(event1Name);
 
         final Event event2 = new Event();
-        event2.setTitle(event2Title);
         event2.setName(event2Name);
         when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(Arrays.asList(event1, event2));
 

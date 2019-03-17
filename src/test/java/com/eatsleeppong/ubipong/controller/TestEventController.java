@@ -124,6 +124,6 @@ public class TestEventController {
             get("/rest/v0/event/" + eventName)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("title").value(is(eventTitle)));
+                jsonPath("challongeTournament.name").value(is(eventTitle)));
     }
 }

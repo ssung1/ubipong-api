@@ -321,15 +321,12 @@ public class EventManager {
             .getTournament();
 
         Event result = new Event();
+        result.setChallongeTournament(challongeTournament);
         result.setId(challongeTournament.getId());
         result.setName(challongeTournament.getUrl());
-        result.setTitle(challongeTournament.getName());
-        result.setDescription(challongeTournament.getDescription());
 
         return result;
     }
-
-    //public TournamentResultRequest createTournamentResultRequest(
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String eventName) {
         final Event event = findEvent(eventName);
@@ -350,7 +347,7 @@ public class EventManager {
 
                     final TournamentResultRequestLineItem tournamentResultRequestLineItem =
                             new TournamentResultRequestLineItem();
-                    tournamentResultRequestLineItem.setEventTitle(event.getTitle());
+                    tournamentResultRequestLineItem.setEventTitle(event.getChallongeTournament().getName());
 
                     final RoundRobinCell roundRobinCell = createRoundRobinCell(m);
                     tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));

@@ -405,7 +405,7 @@ public class TestEventManager {
     public void testFindEvent() {
         Event event = subject.findEvent(eventName);
 
-        assertThat(event.getTitle(), is(eventTitle));
+        assertThat(event.getChallongeTournament().getName(), is(eventTitle));
     }
 
     @Test
