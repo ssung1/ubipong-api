@@ -17,10 +17,6 @@ public class TournamentController {
         this.tournamentManager = tournamentManager;
     }
 
-    public void createTournamentResultRequest() {
-        tournamentManager.createTournamentResultRequest();
-    }
-
     @GetMapping(value = "/result")
     public TournamentResultRequest getResult(@PathVariable("tournamentId") final Integer tournamentId) {
         return tournamentManager.createTournamentResultRequest(tournamentId);

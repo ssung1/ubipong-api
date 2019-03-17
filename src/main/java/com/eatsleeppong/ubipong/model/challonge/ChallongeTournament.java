@@ -16,4 +16,20 @@ public class ChallongeTournament {
     private String name;
     private String url;
     private String description;
+    /**
+     * If creating a tournament in an organization, include subdomain
+     *
+     * To retrieve it later, use api.challonge.com/v1/tournaments/subdomain-url.json.  This is necessary because
+     * when using the browser, we can just do subdomain.challonge.com/url, but for APIs, we have to use
+     * api.challonge.com
+     */
+    private String subdomain;
+    /**
+     * "single elimination", "round robin"
+     */
+    private String tournamentType;
+    /**
+     * "Table Tennis"
+     */
+    private String gameName;
 }
