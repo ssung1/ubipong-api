@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.manager;
 import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
+import com.eatsleeppong.ubipong.model.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
@@ -242,7 +243,7 @@ public class EventManager {
             }
         }
 
-        Map<Integer, Integer> playerMap = createPlayerIndexMap(playerList);
+        final Map<Integer, Integer> playerMap = createPlayerIndexMap(playerList);
 
         for (ChallongeMatch match : matchList) {
             Integer player1 = match.getPlayer1Id();
@@ -322,7 +323,7 @@ public class EventManager {
 
         Event result = new Event();
         result.setChallongeTournament(challongeTournament);
-        result.setId(challongeTournament.getId());
+        result.setEventId(challongeTournament.getId());
         result.setName(challongeTournament.getUrl());
 
         return result;
@@ -366,5 +367,31 @@ public class EventManager {
                     return tournamentResultRequestLineItem;
                 })
                 .toArray(TournamentResultRequestLineItem[]::new);
+    }
+
+    public List<RoundRobinMatch> createRoundRobinMatchList(final String eventName) {
+        final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
+                participantRepository.getParticipantList(eventName));
+        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(matchRepository.getMatchList(eventName));
+
+        final Map<Integer, Integer> playerIndexMap = createPlayerIndexMap(participantList);
+        final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
+
+        return matchList.stream().map(m -> {
+            final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();
+            final Integer player1Id = m.getPlayer1Id();
+            final Integer player2Id = m.getPlayer2Id();
+
+            roundRobinMatch.setPlayer1Id(player1Id);
+            roundRobinMatch.setPlayer2Id(player2Id);
+
+            roundRobinMatch.setPlayer1Name(playerNameMap.get(player1Id));
+            roundRobinMatch.setPlayer2Name(playerNameMap.get(player2Id));
+
+            roundRobinMatch.setPlayer1Seed(numberToLetter(playerIndexMap.get(player1Id)));
+            roundRobinMatch.setPlayer2Seed(numberToLetter(playerIndexMap.get(player2Id)));
+
+            return roundRobinMatch;
+        }).collect(Collectors.toList());
     }
 }

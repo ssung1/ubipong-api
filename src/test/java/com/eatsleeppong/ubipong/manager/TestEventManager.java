@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.manager;
 import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.model.Game;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
+import com.eatsleeppong.ubipong.model.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
@@ -47,6 +48,10 @@ public class TestEventManager {
     private final Integer patrickId = 234;
     private final Integer squidwardId = 345;
 
+    private final String spongebobName = "spongebob";
+    private final String patrickName = "patrick";
+    private final String squidwardName = "squidward";
+
     private List<ChallongeMatch> getMatchList1() {
         ChallongeMatch m1 = new ChallongeMatch();
         m1.setPlayer1Id(spongebobId);
@@ -63,8 +68,8 @@ public class TestEventManager {
         m2.setScoresCsv("9-11,11-8,6-11,5-11");
 
         ChallongeMatch m3 = new ChallongeMatch();
-        m3.setPlayer1Id(squidwardId);
-        m3.setPlayer2Id(spongebobId);
+        m3.setPlayer1Id(spongebobId);
+        m3.setPlayer2Id(squidwardId);
 
         return Arrays.asList(m1, m2, m3);
     }
@@ -94,8 +99,8 @@ public class TestEventManager {
         m2.setScoresCsv("9-11,11-8,6-11,5-11");
 
         ChallongeMatch m3 = new ChallongeMatch();
-        m3.setPlayer1Id(squidwardId);
-        m3.setPlayer2Id(spongebobId);
+        m3.setPlayer1Id(spongebobId);
+        m3.setPlayer2Id(squidwardId);
         m3.setState(ChallongeMatch.STATE_OPEN);
 
         return Stream.of(m1, m2, m3)
@@ -110,15 +115,15 @@ public class TestEventManager {
     private List<ChallongeParticipant> getPlayerList1() {
         ChallongeParticipant spongebob = new ChallongeParticipant();
         spongebob.setId(spongebobId);
-        spongebob.setDisplayName("spongebob");
+        spongebob.setDisplayName(spongebobName);
 
         ChallongeParticipant patrick = new ChallongeParticipant();
         patrick.setId(patrickId);
-        patrick.setDisplayName("patrick");
+        patrick.setDisplayName(patrickName);
 
         ChallongeParticipant squidward = new ChallongeParticipant();
         squidward.setId(squidwardId);
-        squidward.setDisplayName("squidward");
+        squidward.setDisplayName(squidwardName);
 
         return Arrays.asList(spongebob, patrick, squidward);
     }
@@ -126,15 +131,15 @@ public class TestEventManager {
     private ChallongeParticipantWrapper[] getParticipantWrapperArray1() {
         ChallongeParticipant spongebob = new ChallongeParticipant();
         spongebob.setId(spongebobId);
-        spongebob.setDisplayName("spongebob");
+        spongebob.setDisplayName(spongebobName);
 
         ChallongeParticipant patrick = new ChallongeParticipant();
         patrick.setId(patrickId);
-        patrick.setDisplayName("patrick");
+        patrick.setDisplayName(patrickName);
 
         ChallongeParticipant squidward = new ChallongeParticipant();
         squidward.setId(squidwardId);
-        squidward.setDisplayName("squidward");
+        squidward.setDisplayName(squidwardName);
 
         return Stream.of(spongebob, patrick, squidward)
             .map(p -> {
@@ -265,13 +270,6 @@ public class TestEventManager {
             for (int j = 0; j < row.length; ++j) {
                 assertThat(roundRobinGrid[i][j], notNullValue());
             }
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            System.out.println(mapper.writeValueAsString(roundRobinGrid));
-        } catch(Exception ex){
-            throw new RuntimeException(ex);
         }
 
         // the three matches are
@@ -432,10 +430,10 @@ public class TestEventManager {
          * </pre>
          */
 
-        assertThat(allWinners, hasItem("spongebob"));
-        assertThat(allWinners, hasItem("squidward"));
+        assertThat(allWinners, hasItem(spongebobName));
+        assertThat(allWinners, hasItem(squidwardName));
         // I'm sorry, Patrick
-        assertThat(allLosers, hasItem("patrick"));
+        assertThat(allLosers, hasItem(patrickName));
 
         final List<String> allResultStrings = Arrays.stream(tournamentResultList)
                 .map(TournamentResultRequestLineItem::getResultString)
@@ -452,5 +450,27 @@ public class TestEventManager {
 
         // event name in the tournament result list is really the event title
         assertThat(tournamentResultList[0].getEventTitle(), is(eventTitle));
+    }
+
+    @Test
+    public void testCreateRoundRobinMatch() {
+        final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(eventName);
+
+        assertThat(roundRobinMatchList, hasSize(3));
+
+        assertThat(roundRobinMatchList.get(0).getPlayer1Seed(), is("A"));
+        assertThat(roundRobinMatchList.get(0).getPlayer1Name(), is(spongebobName));
+        assertThat(roundRobinMatchList.get(0).getPlayer2Seed(), is("B"));
+        assertThat(roundRobinMatchList.get(0).getPlayer2Name(), is(patrickName));
+
+        assertThat(roundRobinMatchList.get(1).getPlayer1Seed(), is("B"));
+        assertThat(roundRobinMatchList.get(1).getPlayer1Name(), is(patrickName));
+        assertThat(roundRobinMatchList.get(1).getPlayer2Seed(), is("C"));
+        assertThat(roundRobinMatchList.get(1).getPlayer2Name(), is(squidwardName));
+
+        assertThat(roundRobinMatchList.get(2).getPlayer1Seed(), is("A"));
+        assertThat(roundRobinMatchList.get(2).getPlayer1Name(), is(spongebobName));
+        assertThat(roundRobinMatchList.get(2).getPlayer2Seed(), is("C"));
+        assertThat(roundRobinMatchList.get(2).getPlayer2Name(), is(squidwardName));
     }
 }

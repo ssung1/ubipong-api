@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
-    private Integer id;
+    private Integer eventId;
     /**
      * for now, this is the "url" of the tournament on challonge.com
      *
