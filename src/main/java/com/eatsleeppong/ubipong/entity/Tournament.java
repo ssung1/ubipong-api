@@ -18,7 +18,7 @@ public class Tournament {
     @Column(nullable = false)
     private String name;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date tournamentDate;
 }

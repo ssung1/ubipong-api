@@ -16,12 +16,22 @@ import javax.persistence.*;
     @Index(name = "tournament_id_name_idx", columnList = "tournamentId, name", unique = true)
 })
 public class Event {
+    /**
+     * Overall round robin event, which contains all the players in the event
+     */
+    public static final String EVENT_TYPE_ROUND_ROBIN = "round robin";
+    /**
+     * Often there are too many players entered in the round robin event.  To limit the number of matches, we need
+     * to group players into smaller round robin events.
+     */
+    public static final String EVENT_TYPE_ROUND_ROBIN_GROUP = "round robin group";
+    public static final String EVENT_TYPE_SINGLE_ELIMINATION = "single elimination";
+    public static final String EVENT_TYPE_DOUBLE_ELIMINATION = "double elimination";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
     private Integer eventId;
     /**
-     * for now, this is the "url" of the tournament on challonge.com
-     *
      * naming scheme:  ecs_{yyyyMM}_{type}_{event}_{groupNumber}
      *
      * where type is
@@ -39,10 +49,12 @@ public class Event {
      *     cc: class c
      *     cd: class d
      */
+    private String challongeUrl;
+
     private String name;
 
     /**
-     * References Tournament, not ChallongeTournament (which is equavalent to Event in this application)
+     * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
      */
     private Integer tournamentId;
 

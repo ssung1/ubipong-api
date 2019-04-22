@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventManager {
-    private ChallongeTournamentRepository tournamentRepository;
-    private ChallongeParticipantRepository participantRepository;
-    private ChallongeMatchRepository matchRepository;
+    private ChallongeTournamentRepository challongeTournamentRepository;
+    private ChallongeParticipantRepository challongeParticipantRepository;
+    private ChallongeMatchRepository challongeMatchRepository;
 
     public EventManager(
-        ChallongeTournamentRepository tournamentRepository,
-        ChallongeParticipantRepository participantRepository,
-        ChallongeMatchRepository matchRepository
+        ChallongeTournamentRepository challongeTournamentRepository,
+        ChallongeParticipantRepository challongeParticipantRepository,
+        ChallongeMatchRepository challongeMatchRepository
     ) {
-        this.tournamentRepository = tournamentRepository;
-        this.participantRepository = participantRepository;
-        this.matchRepository = matchRepository;
+        this.challongeTournamentRepository = challongeTournamentRepository;
+        this.challongeParticipantRepository = challongeParticipantRepository;
+        this.challongeMatchRepository = challongeMatchRepository;
     }
 
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
@@ -308,16 +308,16 @@ public class EventManager {
     public RoundRobinCell[][] createRoundRobinGrid(String eventName) {
         List<ChallongeParticipant> participantList =
             unwrapChallongeParticipantWrapperArray(
-                participantRepository.getParticipantList(eventName));
+                challongeParticipantRepository.getParticipantList(eventName));
         List<ChallongeMatch> matchList =
             unwrapChallongeMatchWrapperArray(
-                matchRepository.getMatchList(eventName));
+                challongeMatchRepository.getMatchList(eventName));
 
         return createRoundRobinGrid(matchList, participantList);
     }
 
     public Event findEvent(String eventName) {
-        ChallongeTournament challongeTournament = tournamentRepository
+        ChallongeTournament challongeTournament = challongeTournamentRepository
             .getTournament(eventName)
             .getTournament();
 
@@ -332,8 +332,8 @@ public class EventManager {
     public TournamentResultRequestLineItem[] createTournamentResultList(final String eventName) {
         final Event event = findEvent(eventName);
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
-                participantRepository.getParticipantList(eventName));
-        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(matchRepository.getMatchList(eventName));
+                challongeParticipantRepository.getParticipantList(eventName));
+        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(eventName));
 
         final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
 
@@ -371,8 +371,8 @@ public class EventManager {
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String eventName) {
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
-                participantRepository.getParticipantList(eventName));
-        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(matchRepository.getMatchList(eventName));
+                challongeParticipantRepository.getParticipantList(eventName));
+        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(eventName));
 
         final Map<Integer, Integer> playerIndexMap = createPlayerIndexMap(participantList);
         final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
