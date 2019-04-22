@@ -32,12 +32,12 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
     private Integer eventId;
     /**
-     * naming scheme:  ecs_{yyyyMM}_{type}_{event}_{groupNumber}
+     * naming scheme:  ecs_{yyyyMM}_{event}_{type}_{groupNumber}
      *
      * where type is
      *
      *     rr: round robin
-     *     sl: single elimination
+     *     se: single elimination
      *
      * where event is
      *
@@ -48,6 +48,13 @@ public class Event {
      *     cb: class b
      *     cc: class c
      *     cd: class d
+     *
+     * where type is
+     *
+     *     rr: round robin
+     *     se: single elimination
+     *
+     * where group is a number, only applicable in round robin
      */
     private String challongeUrl;
 

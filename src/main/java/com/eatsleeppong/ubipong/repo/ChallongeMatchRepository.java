@@ -20,6 +20,10 @@ public class ChallongeMatchRepository {
     @Value("${challonge.api-key}")
     private String apiKey;
 
+    /**
+     * Get list of matches; only returns non-empty if the tournament has been started.
+     * This is a challonge.com issue.
+     */
     public ChallongeMatchWrapper[] getMatchList(String tournament) {
         RestTemplate rs = new RestTemplate();
 
