@@ -3,19 +3,110 @@
 ## Tournament Organization
 
 - Tournament (eg. Atlanta Giant Round Robin)
-- Event (eg. Prelim Group 1)
 
-  *An event is mapped to a "tournament" on challonge.com*
+  - Event (eg. Prelim Group 1)
 
-  *An event is represented by `List<MatchWrapper>`*
+    *An event is mapped to a "tournament" on challonge.com*
 
-- Round (eg. Round of 16)
+    *An event is represented by `List<MatchWrapper>`*
 
-  For single elimination, each round is defined by the number of
-  players in that round.
+    - Round (eg. Round of 16)
 
-  For round robin, the nth round is roughly the nth match of a single
-  player, but it is not as important to divide round robin into
-  rounds.
+      For single elimination, each round is defined by the number of
+      players in that round.
 
-- Match
+    - Round Robin Group
+
+      For round robin, the players are divided into groups.  Challonge.com
+      does not have support for this, so we need to simulate each group
+      as one "tournament" on challonge.com.
+
+      - Match
+
+## How to Set up a Tournament
+
+## How to Set up an Event
+
+Log on to challonge.com and create a tournament.
+
+- For tournament name, enter the name of the round robin group, such as
+  "Preliminary Group 1"
+
+- For URL, enter the name that is easily typed, we recommend using a format
+  such as {org}\_{yyyyMM}\_{event}\_{type}\_{groupNumber}
+
+  where org is the organization hosting the tournament
+
+  where yyyyMM is the year and month of the tournament
+
+  where event is
+
+  - pg: preliminary group
+  - ch: championship
+  - ca: class a
+  - cb: class b
+  - cc: class c
+  - cd: class d
+  - u1500: under 1500
+  - u17yo: under 17 year old
+
+  where type is
+
+  - rr: round robin
+  - se: single elimination
+
+  where group is a number, only applicable in round robin
+
+Once the "tournament" is created on challonge, run this application
+and try these URLs:
+
+    https://{host}/rest/v0/event/{eventUrl}
+
+shows the event details.
+
+    https://{host}/rest/v0/event/{eventUrl}/roundRobinGrid
+
+returns the contents that can be used to display a round robin grid.
+
+<!-- and the UI.  Then go to the URL
+
+    https://{host}/#/rr-grid?eventList=%5B%22{event}%22%5D
+
+to view the round robin grid. -->
+
+## How to Set up a Round Robin Event
+
+Remember, a round robin event is made of multiple groups.  Each group is one
+"tournament" on challonge.com.
+
+Log on to challonge.com and create a tournament.
+
+- For tournament name, enter the name of the round robin group, such as
+  "Preliminary Group 1"
+
+- For URL, enter the name that is easily typed, we recommend using a format
+  such as {org}\_{yyyyMM}\_{event}\_{type}\_{groupNumber}
+
+  where org is the organization hosting the tournament
+
+  where yyyyMM is the year and month of the tournament
+
+  where event is
+
+  - pg: preliminary group
+  - ch: championship
+  - ca: class a
+  - cb: class b
+  - cc: class c
+  - cd: class d
+  - u1500: under 1500
+  - u17yo: under 17 year old
+
+  where type is
+
+  - rr: round robin
+  - se: single elimination
+
+  where group is a number, only applicable in round robin
+
+Once the "tournament" is created on challonge, 
