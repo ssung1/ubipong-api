@@ -79,34 +79,6 @@ to view the round robin grid. -->
 Remember, a round robin event is made of multiple groups.  Each group is one
 "tournament" on challonge.com.
 
-Log on to challonge.com and create a tournament.
-
-- For tournament name, enter the name of the round robin group, such as
-  "Preliminary Group 1"
-
-- For URL, enter the name that is easily typed, we recommend using a format
-  such as {org}\_{yyyyMM}\_{event}\_{type}\_{groupNumber}
-
-  where org is the organization hosting the tournament
-
-  where yyyyMM is the year and month of the tournament
-
-  where event is
-
-  - pg: preliminary group
-  - ch: championship
-  - ca: class a
-  - cb: class b
-  - cc: class c
-  - cd: class d
-  - u1500: under 1500
-  - u17yo: under 17 year old
-
-  where type is
-
-  - rr: round robin
-  - se: single elimination
-
-  where group is a number, only applicable in round robin
-
-Once the "tournament" is created on challonge, 
+Go to the UI and enter all the names.  Choose the number of players per group.
+Select "Create Group".  After that, copy the names of each group and paste them
+onto challonge.com particpant bulk add.
