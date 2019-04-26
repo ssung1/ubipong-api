@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/v0/event/{eventName}")
+@RequestMapping("/rest/v0/events/{eventName}")
 public class EventController {
 
     private EventManager eventManager;

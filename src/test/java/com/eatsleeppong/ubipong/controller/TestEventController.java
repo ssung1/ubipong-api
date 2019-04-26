@@ -104,7 +104,7 @@ public class TestEventController {
     @Test
     public void testGetRoundRobinGrid() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/" + eventName + "/roundRobinGrid")
+            get("/rest/v0/events/" + eventName + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 content().contentTypeCompatibleWith(
@@ -123,7 +123,7 @@ public class TestEventController {
     @Test
     public void testGetEvent() throws Exception {
         mockMvc.perform(
-            get("/rest/v0/event/" + eventName)
+            get("/rest/v0/events/" + eventName)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 jsonPath("challongeTournament.name").value(is(eventTitle)));
