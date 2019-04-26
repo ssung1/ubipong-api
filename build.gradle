@@ -31,6 +31,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -42,6 +43,9 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile('io.springfox:springfox-swagger2:2.9.0')
+    compile('io.springfox:springfox-swagger-ui:2.9.0')
 
     runtime('org.springframework.boot:spring-boot-devtools')
 

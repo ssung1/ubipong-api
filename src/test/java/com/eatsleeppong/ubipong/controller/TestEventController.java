@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.model.challonge.*;
+import com.eatsleeppong.ubipong.UbipongApplication;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
@@ -26,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+// only need to specify classes if enabling Swagger
+@SpringBootTest(classes = UbipongApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class TestEventController {
