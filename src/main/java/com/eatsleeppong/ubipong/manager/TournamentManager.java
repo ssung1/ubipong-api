@@ -31,7 +31,7 @@ public class TournamentManager {
         final List<Event> eventList = eventRepository.findByTournamentId(tournamentId);
 
         final TournamentResultRequestLineItem[] tournamentResultRequestLineItemList = eventList.stream()
-                .map(Event::getName)
+                .map(Event::getChallongeUrl)
                 .map(eventManager::createTournamentResultList)
                 .flatMap(Arrays::stream)
                 .toArray(TournamentResultRequestLineItem[]::new);
