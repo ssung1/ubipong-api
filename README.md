@@ -60,7 +60,7 @@ Log on to challonge.com and create a tournament.
 Once the "tournament" is created on challonge, run this application
 and try these URLs:
 
-    https://{host}/rest/v0/event/{eventUrl}
+    https://{host}/rest/v0/events/{eventUrl}
 
 shows the event details.
 

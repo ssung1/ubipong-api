@@ -4,6 +4,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: org.h2.Driver
+    # url specifies a file name, appended with ".mv.db"
+    # jdbc:h2:{filename}
     url: jdbc:h2:mem:testdb
     username: sa
     password: 

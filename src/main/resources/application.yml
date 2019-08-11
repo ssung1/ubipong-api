@@ -1,36 +1,10 @@
----
 spring:
   data:
     rest:
       base-path: crud
-
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
 
 allowedOrigins: "*"
 
 challonge:
   host: api.challonge.com
   api-key: this-is-the-api-key-from-challonge
-
----
-spring:
-  profiles: integration-test
-
----
-spring:
-  profiles: pcf
-
----
-spring:
-  profiles: heroku
-  datasource:
-    # url specifies a file name, appended with ".mv.db"
-    url: (set this in heroku)
-    username: (set this in heroku)
-    password: (set this in heroku)
