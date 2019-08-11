@@ -3,8 +3,10 @@ spring:
   data:
     rest:
       base-path: crud
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -15,31 +17,6 @@ allowedOrigins: "*"
 challonge:
   host: api.challonge.com
   api-key: this-is-the-api-key-from-challonge
-
----
-spring:
-  profiles: test
-  jpa:
-    hibernate:
-      ddl-auto: create
-
----
-spring:
-  profiles: local
-    # url specifies a file name, appended with ".mv.db"
-    # jdbc:h2:{filename}
-    url:
-    username:
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: validate
-  h2:
-    console:
-      # use this to create an h2-only sql admin console within the application
-      enabled: true
-      # go to http://{host}/{path} to see the sql admin console
-      path: /h2-console
 
 ---
 spring:

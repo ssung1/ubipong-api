@@ -1,0 +1,17 @@
+spring:
+  profiles: heroku
+  
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: (set this in heroku)
+    username: (set this in heroku)
+    password: (set this in heroku)
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  
+challonge:
+  host: api.challonge.com
+  api-key: (set this in heroku)

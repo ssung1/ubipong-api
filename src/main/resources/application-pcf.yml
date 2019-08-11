@@ -1,0 +1,17 @@
+spring:
+  profiles: pcf
+  
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: (set this in pcf)
+    username: (set this in pcf)
+    password: (set this in pcf)
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  
+challonge:
+  host: api.challonge.com
+  api-key: (set this in pcf)
