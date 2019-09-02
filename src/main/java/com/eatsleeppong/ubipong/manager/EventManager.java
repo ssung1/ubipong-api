@@ -79,7 +79,7 @@ public class EventManager {
     public Map<Integer, String> createPlayerNameMap(List<ChallongeParticipant> playerList) {
         return new HashMap<Integer, String>() { {
             playerList.forEach(p -> {
-                put(p.getId(), p.getDisplayName());
+                put(p.getId(), p.getName());
             });
         } };
     }
