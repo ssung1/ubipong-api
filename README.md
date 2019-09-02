@@ -1,5 +1,11 @@
 # ubipong-api
 
+## Production Environment
+
+```
+https://ubipong-api.herokuapp.com
+```
+
 ## Tournament Organization
 
 - Tournament (eg. Atlanta Giant Round Robin)
@@ -60,11 +66,15 @@ Log on to challonge.com and create a tournament.
 Once the "tournament" is created on challonge, run this application
 and try these URLs:
 
-    https://{host}/rest/v0/events/{eventUrl}
+```
+https://{host}/rest/v0/events/{eventUrl}
+```
 
 shows the event details.
 
-    https://{host}/rest/v0/event/{eventUrl}/roundRobinGrid
+```
+https://{host}/rest/v0/event/{eventUrl}/roundRobinGrid
+```
 
 returns the contents that can be used to display a round robin grid.
 
@@ -82,3 +92,35 @@ Remember, a round robin event is made of multiple groups.  Each group is one
 Go to the UI and enter all the names.  Choose the number of players per group.
 Select "Create Group".  After that, copy the names of each group and paste them
 onto challonge.com particpant bulk add.
+
+## How to Set up an Event to Collect Results
+
+The results in challonge.com cannot be used to calculate ratings.  To allow
+results to be exported to the correct format, create a tournament, then for
+each event in the tournament, create an event:
+
+```
+POST https://{host}/crud/events
+
+{
+    "name": "Preliminary Group 1",
+    "challongeUrl": "ecs_201904_rr_pg_1",
+    "tournamentId": 1
+}
+```
+
+## How to Generate the Results File
+
+To look at the results of one event, try this
+
+```
+https://{host}/rest/v0/events/{eventName}/result
+```
+
+However, we need the results of all the events, so we can use this
+
+```
+https://{host}rest/v0/tournaments/{tournamentId}/result
+```
+
+
