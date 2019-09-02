@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/v0/events/{eventName}")
+@RequestMapping("/rest/v0/events/{challongeUrl}")
 public class EventController {
 
     private EventManager eventManager;
@@ -23,27 +23,27 @@ public class EventController {
     @GetMapping(value = "/roundRobinGrid",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public RoundRobinCell[][] getRoundRobinGrid(
-        @PathVariable("eventName") String eventName
+        @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventManager.createRoundRobinGrid(eventName);
+        return eventManager.createRoundRobinGrid(challongeUrl);
     }
 
     @GetMapping(value = "")
     public Event getEvent(
-        @PathVariable("eventName") String eventName
+        @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventManager.findEvent(eventName);
+        return eventManager.findEvent(challongeUrl);
     }
 
     @GetMapping(value = "/result")
-    public TournamentResultRequestLineItem[] getResult(@PathVariable("eventName") String eventName) {
-        return eventManager.createTournamentResultList(eventName);
+    public TournamentResultRequestLineItem[] getResult(@PathVariable("challongeUrl") String challongeUrl) {
+        return eventManager.createTournamentResultList(challongeUrl);
     }
 
     @GetMapping(value = "/roundRobinMatchList")
     public List<RoundRobinMatch> getRoundRobinMatchList(
-            @PathVariable("eventName") String eventName
+            @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventManager.createRoundRobinMatchList(eventName);
+        return eventManager.createRoundRobinMatchList(challongeUrl);
     }
 }

@@ -29,8 +29,8 @@ import java.util.stream.Stream;
  * An event is represented as a list of matches in challonge.com
  */
 public class TestEventManager {
-    private final String eventName = "bikiniBottomOpen-RoundRobin-Group-1";
-    private final String eventTitle = "Round Robin Group 1";
+    private final String challongeUrl = "bikiniBottomOpen-RoundRobin-Group-1";
+    private final String eventName = "Round Robin Group 1";
 
     private final ChallongeTournamentRepository mockTournamentRepository =
         mock(ChallongeTournamentRepository.class);
@@ -153,9 +153,9 @@ public class TestEventManager {
 
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventTitle);
+        t1.setName(eventName);
         t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(eventName);
+        t1.setUrl(challongeUrl);
 
         ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
         tw1.setTournament(t1);
@@ -165,11 +165,11 @@ public class TestEventManager {
 
     @Before
     public void setupMocks() {
-        when(mockParticipantRepository.getParticipantList(eventName))
+        when(mockParticipantRepository.getParticipantList(challongeUrl))
             .thenReturn(getParticipantWrapperArray1());
-        when(mockMatchRepository.getMatchList(eventName))
+        when(mockMatchRepository.getMatchList(challongeUrl))
             .thenReturn(getMatchWrapperArray1());
-        when(mockTournamentRepository.getTournament(eventName))
+        when(mockTournamentRepository.getTournament(challongeUrl))
             .thenReturn(getTournamentWrapper1());
     }
 
@@ -262,7 +262,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridOneSide() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventName);
+            subject.createRoundRobinGrid(challongeUrl);
 
         // all cells must be filled, even if it is displayed as empty
         for (int i = 0; i < roundRobinGrid.length; ++i) {
@@ -373,7 +373,7 @@ public class TestEventManager {
     @Test
     public void testCreateRoundRobinGridBothSides() {
         RoundRobinCell[][] roundRobinGrid =
-            subject.createRoundRobinGrid(eventName);
+            subject.createRoundRobinGrid(challongeUrl);
 
         // this is one side of the result
         //
@@ -401,14 +401,14 @@ public class TestEventManager {
 
     @Test
     public void testFindEvent() {
-        Event event = subject.findEvent(eventName);
+        Event event = subject.findEvent(challongeUrl);
 
-        assertThat(event.getChallongeTournament().getName(), is(eventTitle));
+        assertThat(event.getChallongeTournament().getName(), is(eventName));
     }
 
     @Test
     public void testCreateTournamentResultList() {
-        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(eventName);
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 
         assertThat(tournamentResultList, arrayWithSize(2));
 
@@ -444,17 +444,17 @@ public class TestEventManager {
 
     @Test
     public void testCreateTournamentResultListShouldIncludeEventTitle() {
-        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(eventName);
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 
         assertThat(tournamentResultList, arrayWithSize(2));
 
         // event name in the tournament result list is really the event title
-        assertThat(tournamentResultList[0].getEventTitle(), is(eventTitle));
+        assertThat(tournamentResultList[0].getEventName(), is(eventName));
     }
 
     @Test
     public void testCreateRoundRobinMatch() {
-        final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(eventName);
+        final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(challongeUrl);
 
         assertThat(roundRobinMatchList, hasSize(3));
 

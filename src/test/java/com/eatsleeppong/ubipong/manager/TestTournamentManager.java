@@ -26,10 +26,10 @@ public class TestTournamentManager {
     private final Integer tournamentId = 1234987;
     private final String tournamentName = "Eat Sleep Pong Open 2019";
     private final String tournamentDate = "2019-03-15T00:00:00-0500";
-    private final String event1Name = "pr_gr_1";
-    private final String event2Name = "ca";
-    private final String event1Title = "Preliminary Group 1";
-    private final String event2Title = "Class A";
+    private final String event1ChallongeUrl = "pr_gr_1";
+    private final String event2ChallongeUrl = "ca";
+    private final String event1Name = "Preliminary Group 1";
+    private final String event2Name = "Class A";
 
     private final TournamentResultRequestLineItem event1Game1 = new TournamentResultRequestLineItem();
     private final TournamentResultRequestLineItem event1Game2 = new TournamentResultRequestLineItem();
@@ -47,25 +47,25 @@ public class TestTournamentManager {
     public void setupMocks() throws Exception {
         // because Lombok creates the equals method, each TournamentResultRequestLineItem needs to have different
         // content in order to be considered different (cannot use referential equality)
-        event1Game1.setEventTitle(event1Title);
+        event1Game1.setEventName(event1Name);
         event1Game1.setResultString("event1game1result");
-        event1Game2.setEventTitle(event1Title);
+        event1Game2.setEventName(event1Name);
         event1Game2.setResultString("event1game2result");
-        event2Game1.setEventTitle(event2Title);
+        event2Game1.setEventName(event2Name);
         event2Game1.setResultString("event2game1result");
-        event2Game2.setEventTitle(event2Title);
+        event2Game2.setEventName(event2Name);
         event2Game2.setResultString("event2game2result");
 
         final Event event1 = new Event();
-        event1.setName(event1Name);
+        event1.setChallongeUrl(event1ChallongeUrl);
 
         final Event event2 = new Event();
-        event2.setName(event2Name);
+        event2.setChallongeUrl(event2ChallongeUrl);
         when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(Arrays.asList(event1, event2));
 
-        when(mockEventManager.createTournamentResultList(event1Name)).thenReturn(
+        when(mockEventManager.createTournamentResultList(event1ChallongeUrl)).thenReturn(
                 new TournamentResultRequestLineItem[] { event1Game1, event1Game2 });
-        when(mockEventManager.createTournamentResultList(event2Name)).thenReturn(
+        when(mockEventManager.createTournamentResultList(event2ChallongeUrl)).thenReturn(
                 new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
 
         final Tournament tournament = new Tournament();

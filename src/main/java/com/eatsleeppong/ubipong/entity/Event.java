@@ -31,6 +31,7 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
     private Integer eventId;
+
     /**
      * naming scheme:  ecs_{yyyyMM}_{event}_{type}_{groupNumber}
      *
@@ -58,6 +59,9 @@ public class Event {
      */
     private String challongeUrl;
 
+    /**
+     * Name of the event, which needs not be unique
+     */
     private String name;
 
     /**
