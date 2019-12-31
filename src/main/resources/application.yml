@@ -4,7 +4,3 @@ spring:
       base-path: crud
 
 allowedOrigins: "*"
-
-challonge:
-  host: api.challonge.com
-  api-key: this-is-the-api-key-from-challonge
