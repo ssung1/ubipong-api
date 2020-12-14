@@ -23,7 +23,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-apply from: 'testSupport.gradle'
+// apply from: 'testSupport.gradle'
 
 group = 'com.eatsleeppong'
 version = '0.0.1-SNAPSHOT'
