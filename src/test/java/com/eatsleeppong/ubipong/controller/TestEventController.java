@@ -5,9 +5,9 @@ import com.eatsleeppong.ubipong.UbipongApplication;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
 
-@RunWith(SpringRunner.class)
+@SpringBootTest
 // only need to specify classes if enabling Swagger
-@SpringBootTest(classes = UbipongApplication.class)
+// @SpringBootTest(classes = UbipongApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class TestEventController {
@@ -61,7 +61,7 @@ public class TestEventController {
         return tw1;
     }
 
-    @Before
+    @BeforeEach
     public void setupMocks() {
         //                A     B
         // A  player1          11-9

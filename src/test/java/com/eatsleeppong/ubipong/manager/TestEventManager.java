@@ -11,11 +11,13 @@ import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -163,7 +165,7 @@ public class TestEventManager {
         return tw1;
     }
 
-    @Before
+    @BeforeEach
     public void setupMocks() {
         when(mockParticipantRepository.getParticipantList(challongeUrl))
             .thenReturn(getParticipantWrapperArray1());

@@ -2,12 +2,13 @@ package com.eatsleeppong.ubipong.model.challonge;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 import java.util.List;
 

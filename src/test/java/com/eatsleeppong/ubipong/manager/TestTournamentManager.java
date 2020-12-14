@@ -6,8 +6,9 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.EventRepository;
 import com.eatsleeppong.ubipong.repo.TournamentRepository;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,9 +16,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.Mockito.when;
 
 public class TestTournamentManager {
@@ -43,7 +42,7 @@ public class TestTournamentManager {
     private final TournamentManager tournamentManager = new TournamentManager(mockEventManager, mockEventRepository,
             mockTournamentRepository);
 
-    @Before
+    @BeforeEach
     public void setupMocks() throws Exception {
         // because Lombok creates the equals method, each TournamentResultRequestLineItem needs to have different
         // content in order to be considered different (cannot use referential equality)
