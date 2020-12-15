@@ -123,4 +123,8 @@ However, we need the results of all the events, so we can use this
 https://{host}rest/v0/tournaments/{tournamentId}/result
 ```
 
+## Swagger UI
 
+```
+https://{host}/swagger-ui/index.html
+```
