@@ -1,5 +1,8 @@
 package com.eatsleeppong.ubipong;
 
+import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.Tournament;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +27,12 @@ public class RestServiceConfiguration {
 	public RepositoryRestConfigurer repositoryRestConfigurer() {
 		return new RepositoryRestConfigurer() {
 			@Override
-			public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-				config.getCorsRegistry().addMapping("/**").allowedOrigins(allowedOrigins);
+			public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry corsRegistry) {
+				corsRegistry.addMapping("/**").allowedOrigins(allowedOrigins);
+				config.exposeIdsFor(
+					Tournament.class,
+					Event.class
+				);
 			}
 		};
 	}

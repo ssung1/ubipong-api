@@ -33,7 +33,7 @@ public class Event {
     private Integer eventId;
 
     /**
-     * naming scheme:  ecs_{yyyyMM}_{event}_{type}_{groupNumber}
+     * naming scheme:  {orgName}_{yyyyMM}_{event}_{type}_{groupNumber}
      *
      * where type is
      *

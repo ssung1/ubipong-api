@@ -8,12 +8,12 @@ import lombok.EqualsAndHashCode;
 public class RoundRobinMatch extends Match {
     /**
      * an integer indicating the ranking of the player within a round robin.  the higher ranked player has a lower
-     * seed.  in our case, we are seeding our players using integers starting with A.
+     * seed.  in our case, we are seeding our players using integers starting with player A = 1.
      */
     private String player1Seed;
     /**
      * an integer indicating the ranking of the player within a round robin.  the higher ranked player has a lower
-     * seed.  in our case, we are seeding our players using integers starting with A.
+     * seed.  in our case, we are seeding our players using integers starting with player A = 1.
      */
     private String player2Seed;
 
