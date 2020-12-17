@@ -9,6 +9,8 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.repo.EventRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,15 +21,18 @@ public class EventManager {
     private ChallongeTournamentRepository challongeTournamentRepository;
     private ChallongeParticipantRepository challongeParticipantRepository;
     private ChallongeMatchRepository challongeMatchRepository;
+    private EventRepository eventRepository;
 
     public EventManager(
         ChallongeTournamentRepository challongeTournamentRepository,
         ChallongeParticipantRepository challongeParticipantRepository,
-        ChallongeMatchRepository challongeMatchRepository
+        ChallongeMatchRepository challongeMatchRepository,
+        EventRepository eventRepository
     ) {
         this.challongeTournamentRepository = challongeTournamentRepository;
         this.challongeParticipantRepository = challongeParticipantRepository;
         this.challongeMatchRepository = challongeMatchRepository;
+        this.eventRepository = eventRepository;
     }
 
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
@@ -327,6 +332,23 @@ public class EventManager {
         result.setName(challongeTournament.getUrl());
 
         return result;
+    }
+
+    public Event addEvent(Event event) {
+        Event addedEvent = eventRepository.save(event);
+
+        ChallongeTournament challongeTournament = new ChallongeTournament();
+        challongeTournament.setName(event.getName());
+        challongeTournament.setUrl(event.getChallongeUrl());
+        challongeTournament.setDescription(event.getName());
+        challongeTournament.setTournamentType(Event.EVENT_TYPE_ROUND_ROBIN);
+        challongeTournament.setGameName("table tennis");
+
+        ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
+        challongeTournamentWrapper.setTournament(challongeTournament);
+        challongeTournamentRepository.createTournament(challongeTournamentWrapper);
+
+        return addedEvent;
     }
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {

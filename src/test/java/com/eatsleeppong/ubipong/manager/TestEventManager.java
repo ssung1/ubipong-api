@@ -10,26 +10,39 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.repo.EventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * An event is represented as a list of matches in challonge.com
  */
+@SpringBootTest
+@ActiveProfiles("test")
 public class TestEventManager {
     private final String challongeUrl = "bikiniBottomOpen-RoundRobin-Group-1";
     private final String eventName = "Round Robin Group 1";
@@ -40,11 +53,10 @@ public class TestEventManager {
         mock(ChallongeParticipantRepository.class);
     private final ChallongeMatchRepository mockMatchRepository =
         mock(ChallongeMatchRepository.class);
+    @Autowired
+    private EventRepository eventRepository;
 
-    private EventManager subject = new EventManager(
-        mockTournamentRepository, mockParticipantRepository,
-        mockMatchRepository
-    );
+    private EventManager subject;
 
     private final Integer spongebobId = 123;
     private final Integer patrickId = 234;
@@ -173,6 +185,11 @@ public class TestEventManager {
             .thenReturn(getMatchWrapperArray1());
         when(mockTournamentRepository.getTournament(challongeUrl))
             .thenReturn(getTournamentWrapper1());
+
+        subject = new EventManager(
+            mockTournamentRepository, mockParticipantRepository,
+            mockMatchRepository, eventRepository
+        );
     }
 
     @Test
@@ -474,5 +491,23 @@ public class TestEventManager {
         assertThat(roundRobinMatchList.get(2).getPlayer1Name(), is(spongebobName));
         assertThat(roundRobinMatchList.get(2).getPlayer2Seed(), is("C"));
         assertThat(roundRobinMatchList.get(2).getPlayer2Name(), is(squidwardName));
+    }
+
+    @Test
+    @DisplayName("add an event in our own database and a tournament on challonge.com")
+    public void testAddEventLinkedToChallonge() {
+        Event event = new Event();
+        event.setName("Preliminary Group 1");
+        event.setChallongeUrl("esp_201203_pr_rr_1");
+        event.setTournamentId(1);
+
+        ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
+        Event addedEvent = subject.addEvent(event);
+        verify(mockTournamentRepository).createTournament(argument.capture());
+
+        assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
+
+        Optional<Event> retrievedEvent = eventRepository.findById(addedEvent.getEventId());
+        assertTrue(retrievedEvent.isPresent());
     }
 }

@@ -2,9 +2,11 @@ package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.UbipongApplication;
+import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,20 +18,22 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 // only need to specify classes if enabling Swagger
 // @SpringBootTest(classes = UbipongApplication.class)
 @AutoConfigureMockMvc
+@Transactional
 @ActiveProfiles("test")
 public class TestEventController {
     final String eventName = "bikiniBottomOpen-RoundRobin-Group-3";
@@ -127,5 +131,23 @@ public class TestEventController {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(
                 jsonPath("challongeTournament.name").value(is(eventTitle)));
+    }
+
+    @Test
+    public void testAddEvent() throws Exception {
+        final Event event = new Event();
+        event.setChallongeUrl("challongeUrl");
+        event.setName("preliminary group 1");
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        mockMvc.perform(
+            post("/rest/v0/events")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(event)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("eventId").value(is(1)))
+            .andExpect(jsonPath("name").value(is("preliminary group 1")));
     }
 }
