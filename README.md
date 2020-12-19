@@ -6,14 +6,19 @@
 https://ubipong-api.herokuapp.com
 ```
 
+## Swagger UI
+
+```
+https://{host}/swagger-ui/index.html
+```
+
 ## Tournament Organization
 
 - Tournament (eg. Atlanta Giant Round Robin)
 
   In challonge, this is called an "event" (exactly the opposite of how we name
   things).  However, challonge.com does not have API to manage "events", so we
-  are not using challonge.com for this.  However, feel free to create an 
-  "event" if working through challonge.com UI.
+  are not using challonge.com for this.
 
 - Event
 
@@ -66,9 +71,9 @@ details:
 
 ```json
 {
+  "tournamentId": 1,
   "name": "Eat Sleep Pong Open 2019",
   "tournamentDate": "2019-03-15T00:00:00-0500"
-  "tournamentId": 1
 }
 ```
 
@@ -94,9 +99,9 @@ ID for the newly created event:
 ```json
 {
   "eventId": 101,
-  "tournamentId": 1,
-  "name": "Preliminary Group 1",
   "challongeUrl": "esp_201903_pg_rr_1"
+  "name": "Preliminary Group 1",
+  "tournamentId": 1
 }
 ```
 
@@ -136,25 +141,17 @@ where
 Events can now be retrieved through
 
 ```
-GET https://{host}/crud/events
+GET https://{host}/crud/events/{eventId}
 ```
 
 ```json
 {
-  "_embedded": {
-    "events": [
-      {
-        "eventId": 1,
-        "challongeUrl": "esp_201903_pg_rr_1",
-        "name": "Preliminary Group 1",
-        "tournamentId": 1,
-        "challongeTournament": null,
-        "_links": { ... }
-      }
-    ]
-  },
-  "_links": { ... },
-  "page": { ... }
+  "eventId": 1,
+  "challongeUrl": "esp_201903_pg_rr_1",
+  "name": "Preliminary Group 1",
+  "tournamentId": 1,
+  "challongeTournament": null,
+  "_links": { ... }
 }
 ```
 
@@ -162,7 +159,7 @@ This shows the information in the database.  To see challonge.com details,
 use
 
 ```
-https://{host}/rest/v0/events/{challongeUrl}
+GET https://{host}/rest/v0/events/{challongeUrl}
 ```
 
 shows the event details.
@@ -185,13 +182,130 @@ shows the event details.
 }
 ```
 
-# TODO TODO TODO TODO TODO TODO TODO Below
+To see all the events within a tournament, use
 
 ```
-https://{host}/rest/v0/event/{eventUrl}/roundRobinGrid
+GET https://{host}/crud/events/search/findByTournamentId?tournamentId={tournamentId}
 ```
 
-returns the contents that can be used to display a round robin grid.
+```json
+{
+  "_embedded": {
+    "events": [
+      {
+        "eventId": 1,
+        "challongeUrl": "esp_201903_pg_rr_1",
+        "name": "Preliminary Group 1",
+        "tournamentId": 1,
+        "challongeTournament": null,
+        "_links": { ... }
+      }
+    ]
+  },
+  "_links": { ... }
+}
+```
+
+## Print Match Sheets
+
+Players will require matches sheets to record their scores.  To print the match
+sheet for each event, make sure players are added to the "tournament" from
+challonge.com, and start the "tournament".
+
+Then make this call:
+
+```
+GET https://{host}/rest/v0/events/{challongeUrl}/roundRobinMatchList
+```
+
+```json
+[
+  {
+    "matchId": null,
+    "eventId": null,
+    "status": null,
+    "player1Id": 83173696,
+    "player2Id": 83173698,
+    "winnerId": null,
+    "resultCode": null,
+    "player1Seed": "B",
+    "player2Seed": "C",
+    "player1Name": "patrick",
+    "player2Name": "squidward"
+  }
+]
+```
+
+Each of these can now be use to generate a match sheet (probably best to use
+the UI for this).  For example:
+
+| Seed | Player | Game 1 | Game 2 | Game 3 | Game 4 | Game 5 |
+| ---  | ---    | ---    | ---    | ---    | ---    | ---    |
+| B    | patrick |       |        |        |        |        |
+| C    | squidward |     |        |        |        |        |
+
+Keep in mind that for elimination events, we need to complete a few matches
+before we know the subsequent matches.
+
+## Enter Scores
+
+As players complete each match, enter the scores in challonge.com.
+
+To view the current status of each event, use this API:
+
+```
+https://{host}/rest/v0/events/{challongeUrl}/roundRobinGrid
+```
+
+We would get a table of cells that contains the 
+
+```json
+[
+  [
+    {
+      "type": 11,
+      "content": "",
+      "winForPlayer1": false,
+      "winByDefault": false,
+      "gameList": []
+    },
+    {
+      "type": 11,
+      "content": "",
+      "winForPlayer1": false,
+      "winByDefault": false,
+      "gameList": []
+    },
+    {
+      "type": 14,
+      "content": "A",
+      "winForPlayer1": false,
+      "winByDefault": false,
+      "gameList": []
+    },
+    ...
+  ],
+  ...
+],
+```
+
+The output is for display only since if we just care about the statuses of the matches,
+we can get them from challonge.com.  We can display the output using the UI.
+
+### Generate the Results File
+
+To look at the results of one event, try this
+
+```
+https://{host}/rest/v0/events/{challongeUrl}/result
+```
+
+To get results of all the events of one tournament, so we can use this
+
+```
+https://{host}rest/v0/tournaments/{tournamentId}/result
+```
+
 
 <!-- and the UI.  Then go to the URL
 
@@ -199,6 +313,8 @@ returns the contents that can be used to display a round robin grid.
 
 to view the round robin grid. -->
 
+<!--
+(this is available only in the UI)
 ## How to Set up a Round Robin Event
 
 Remember, a round robin event is made of multiple groups.  Each group is one
@@ -207,39 +323,5 @@ Remember, a round robin event is made of multiple groups.  Each group is one
 Go to the UI and enter all the names.  Choose the number of players per group.
 Select "Create Group".  After that, copy the names of each group and paste them
 onto challonge.com particpant bulk add.
+-->
 
-## How to Set up an Event to Collect Results
-
-The results in challonge.com cannot be used to calculate ratings.  To allow
-results to be exported to the correct format, create a tournament, then for
-each event in the tournament, create an event:
-
-```
-POST https://{host}/crud/events
-
-{
-    "name": "Preliminary Group 1",
-    "challongeUrl": "ecs_201904_rr_pg_1",
-    "tournamentId": 1
-}
-```
-
-## How to Generate the Results File
-
-To look at the results of one event, try this
-
-```
-https://{host}/rest/v0/events/{eventName}/result
-```
-
-However, we need the results of all the events, so we can use this
-
-```
-https://{host}rest/v0/tournaments/{tournamentId}/result
-```
-
-## Swagger UI
-
-```
-https://{host}/swagger-ui/index.html
-```
