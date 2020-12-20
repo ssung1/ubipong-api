@@ -65,8 +65,7 @@ POST https://{host}/crud/tournaments
 }
 ```
 
-The response status should be 201.  Get the location header of the response
-and call the URL in the header.  We should get the complete tournament 
+The response should have a status of 201 and should contain complete tournament 
 details:
 
 ```json
@@ -134,7 +133,7 @@ where
     - rr: round robin
     - se: single elimination
 
-  - group is a number, only applicable in round robin
+  - group is a number, mostly used by round robin when breaking event into smaller groups
 
 ## Get Event Details
 
