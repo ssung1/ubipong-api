@@ -297,15 +297,52 @@ we can get them from challonge.com.  We can display the output using the UI.
 To look at the results of one event, try this
 
 ```
-https://{host}/rest/v0/events/{challongeUrl}/result
+GET https://{host}/rest/v0/events/{challongeUrl}/result
+```
+
+```json
+[
+  {
+    "winner": "squidward",
+    "loser": "patrick",
+    "eventName": "Preliminary Group 1",
+    "resultString": "7 7 9"
+  },
+  {
+    "winner": "spongebob",
+    "loser": "patrick",
+    "eventName": "Preliminary Group 1",
+    "resultString": "3 5 5"
+  }
+]
 ```
 
 To get results of all the events of one tournament, so we can use this
 
 ```
-https://{host}rest/v0/tournaments/{tournamentId}/result
+GET https://{host}rest/v0/tournaments/{tournamentId}/result
 ```
 
+```json
+{
+  "tournamentName": "Eat Sleep Pong Open 2019",
+  "tournamentDate": "2019-03-15T05:00:00.000+00:00",
+  "tournamentResultList": [
+    {
+      "winner": "squidward",
+      "loser": "patrick",
+      "eventName": "Preliminary Group 1",
+      "resultString": "7 7 9"
+    },
+    {
+      "winner": "spongebob",
+      "loser": "patrick",
+      "eventName": "Preliminary Group 1",
+      "resultString": "3 5 5"
+    }
+  ]
+}
+```
 
 <!-- and the UI.  Then go to the URL
 
