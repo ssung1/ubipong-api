@@ -13,7 +13,8 @@ public class Match {
     public static final Integer RESULT_CODE_TIE_BY_PLAYING = 13;
 
     private Integer matchId;
-    private Integer eventId;
+    // not used for now
+    // private Integer eventId;
     private Integer status;
     private Integer player1Id;
     private Integer player2Id;

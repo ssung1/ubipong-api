@@ -40,6 +40,7 @@ public class ChallongeMatch {
     private Integer attachmentCount;
     private Date scheduledTime;
     private String location;
+    // if non-null, then the match is currently in progress
     private Date underwayAt;
     private Boolean optional;
     private Integer rushbId;

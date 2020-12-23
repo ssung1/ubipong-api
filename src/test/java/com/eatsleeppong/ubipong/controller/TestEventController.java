@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.controller;
 
+import com.eatsleeppong.ubipong.model.Match;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.entity.Event;
@@ -191,5 +192,30 @@ public class TestEventController {
             .andExpect(status().isCreated())
             .andExpect(jsonPath("eventId").value(is(1)))
             .andExpect(jsonPath("name").value(is("preliminary group 1")));
+    }
+
+    @Test
+    public void testRoundRobinMatchList() throws Exception {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
+            .build();
+        Map<String, String> uriMap = Stream.of(new String[][] {
+            { "challongeUrl", challongeUrl },
+        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+        mockMvc.perform(
+            get(uriComponents.expand(uriMap).toUri())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].player1Id").value(is(player1Id)))
+            .andExpect(jsonPath("$[0].player1Name").value(is(player1Name)))
+            .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
+            .andExpect(jsonPath("$[0].player2Id").value(is(player2Id)))
+            .andExpect(jsonPath("$[0].player2Name").value(is(player2Name)))
+            .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
+            .andExpect(jsonPath("$[0].matchId").value(is(matchId)))
+            .andExpect(jsonPath("$[0].status").value(is(Match.STATUS_COMPLETE)))
+            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)));
     }
 }

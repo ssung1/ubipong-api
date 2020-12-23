@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.model.Game;
+import com.eatsleeppong.ubipong.model.Match;
 import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
@@ -81,12 +82,14 @@ public class EventManager {
     /**
      * Create a map of player ID to player name
      */
-    public Map<Integer, String> createPlayerNameMap(List<ChallongeParticipant> playerList) {
-        return new HashMap<Integer, String>() { {
-            playerList.forEach(p -> {
-                put(p.getId(), p.getName());
-            });
-        } };
+    public Map<Integer, String> createPlayerNameMap(
+        List<ChallongeParticipant> playerList) {
+
+        return playerList.stream()
+            .collect(Collectors.collectingAndThen(
+                Collectors.toMap(ChallongeParticipant::getId,
+                    ChallongeParticipant::getDisplayName),
+                Collections::<Integer, String> unmodifiableMap));
     }
 
     /**
@@ -403,6 +406,16 @@ public class EventManager {
             final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();
             final Integer player1Id = m.getPlayer1Id();
             final Integer player2Id = m.getPlayer2Id();
+
+            roundRobinMatch.setMatchId(m.getId());
+
+            if (ChallongeMatch.STATE_COMPLETE.equals(m.getState())) {
+                roundRobinMatch.setStatus(Match.STATUS_COMPLETE);
+                // currently there is no way to record default
+                roundRobinMatch.setResultCode(Match.RESULT_CODE_WIN_BY_PLAYING);
+            } else {
+                roundRobinMatch.setStatus(Match.STATUS_INCOMPLETE);
+            }
 
             roundRobinMatch.setPlayer1Id(player1Id);
             roundRobinMatch.setPlayer2Id(player2Id);

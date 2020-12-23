@@ -220,9 +220,8 @@ GET https://{host}/rest/v0/events/{challongeUrl}/roundRobinMatchList
 ```json
 [
   {
-    "matchId": null,
-    "eventId": null,
-    "status": null,
+    "matchId": 222695811,
+    "status": 11,
     "player1Id": 83173696,
     "player2Id": 83173698,
     "winnerId": null,
