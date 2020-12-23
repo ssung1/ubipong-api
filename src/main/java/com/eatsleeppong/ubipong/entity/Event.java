@@ -60,7 +60,7 @@ public class Event {
     private String challongeUrl;
 
     /**
-     * Name of the event, which needs not be unique
+     * Name of the event, which needs to be unique within a tournament
      */
     private String name;
 
