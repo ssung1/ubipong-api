@@ -6,6 +6,20 @@
 https://ubipong-api.herokuapp.com
 ```
 
+## Deploying to Heroku
+
+If Java plugin has not been installed:
+
+    heroku plugins:install java
+
+If application does not yet exist on Heroku:
+
+    heroku create --no-remote ubipong-api
+
+Deploy:
+
+    heroku deploy:jar target/my-app.jar --app ubipong-api
+
 ## Swagger UI
 
 ```
