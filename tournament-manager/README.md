@@ -112,7 +112,7 @@ ID for the newly created event:
 ```json
 {
   "eventId": 101,
-  "challongeUrl": "esp_201903_pg_rr_1"
+  "challongeUrl": "esp_201903_pg_rr_1",
   "name": "Preliminary Group 1",
   "tournamentId": 1
 }
