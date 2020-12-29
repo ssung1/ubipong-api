@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':tournament-manager-dto')
+
     // spring stuff
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
