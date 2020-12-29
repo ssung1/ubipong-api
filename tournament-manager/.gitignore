@@ -1,4 +1,5 @@
 .gradle
+/build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
@@ -23,3 +24,9 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### VSCode ###
+bin
+
+### Lombok ###
+lombok.config
