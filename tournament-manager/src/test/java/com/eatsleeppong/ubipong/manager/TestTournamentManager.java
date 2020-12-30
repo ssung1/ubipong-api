@@ -67,9 +67,13 @@ public class TestTournamentManager {
         when(mockEventManager.createTournamentResultList(event2ChallongeUrl)).thenReturn(
                 new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
 
-        final Tournament tournament = new Tournament();
-        tournament.setName(tournamentName);
-        tournament.setTournamentDate(df.parse(tournamentDate));
+//        final Tournament tournament = new Tournament();
+//        tournament.setName(tournamentName);
+//        tournament.setTournamentDate(df.parse(tournamentDate));
+        final Tournament tournament = Tournament.builder()
+            .name(tournamentName)
+            .tournamentDate(df.parse(tournamentDate))
+            .build();
 
         when(mockTournamentRepository.getOne(tournamentId)).thenReturn(tournament);
     }
