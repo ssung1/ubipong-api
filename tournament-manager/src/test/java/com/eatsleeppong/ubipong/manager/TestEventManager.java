@@ -1,8 +1,6 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.Event;
-import com.eatsleeppong.ubipong.model.Game;
-import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
@@ -11,8 +9,9 @@ import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import com.eatsleeppong.ubipong.repo.EventRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.eatsleeppong.ubipong.tournamentmanager.response.Game;
+import com.eatsleeppong.ubipong.tournamentmanager.response.RoundRobinCell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,6 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

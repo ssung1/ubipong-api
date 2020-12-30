@@ -2,10 +2,10 @@ package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.entity.Event;
-import com.eatsleeppong.ubipong.model.RoundRobinCell;
 import com.eatsleeppong.ubipong.model.RoundRobinMatch;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 
+import com.eatsleeppong.ubipong.tournamentmanager.response.RoundRobinCell;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
