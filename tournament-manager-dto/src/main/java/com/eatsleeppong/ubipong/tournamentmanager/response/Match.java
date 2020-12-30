@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.model;
+package com.eatsleeppong.ubipong.tournamentmanager.response;
 
 import lombok.Data;
 

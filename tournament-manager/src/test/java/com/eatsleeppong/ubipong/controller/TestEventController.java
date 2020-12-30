@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.controller;
 
-import com.eatsleeppong.ubipong.model.Match;
+import com.eatsleeppong.ubipong.tournamentmanager.response.Match;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
