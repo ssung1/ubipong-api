@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/v0/tournaments/{tournamentId}")
+@RequestMapping("/rest/v0/tournaments")
 public class TournamentController {
     private final TournamentManager tournamentManager;
 
@@ -17,7 +17,7 @@ public class TournamentController {
         this.tournamentManager = tournamentManager;
     }
 
-    @GetMapping(value = "/result")
+    @GetMapping(value = "/{tournamentId}/result")
     public TournamentResultRequest getResult(@PathVariable("tournamentId") final Integer tournamentId) {
         return tournamentManager.createTournamentResultRequest(tournamentId);
     }

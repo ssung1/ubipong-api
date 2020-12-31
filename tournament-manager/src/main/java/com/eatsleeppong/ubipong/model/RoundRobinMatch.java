@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.model;
 
-import com.eatsleeppong.ubipong.tournamentmanager.response.Match;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

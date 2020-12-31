@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.response;
+package com.eatsleeppong.ubipong.tournamentmanager.dto.response;
 
 import lombok.Data;
 

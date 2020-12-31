@@ -10,8 +10,8 @@ import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import com.eatsleeppong.ubipong.repo.EventRepository;
 
-import com.eatsleeppong.ubipong.tournamentmanager.response.Game;
-import com.eatsleeppong.ubipong.tournamentmanager.response.RoundRobinCell;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
