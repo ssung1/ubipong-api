@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
