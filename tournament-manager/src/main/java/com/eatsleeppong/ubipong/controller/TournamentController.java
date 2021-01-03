@@ -5,6 +5,7 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ public class TournamentController {
         this.tournamentManager = tournamentManager;
     }
 
+    @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
+        "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
     @GetMapping(value = "/{tournamentId}/result")
     public TournamentResultRequest getResult(@PathVariable("tournamentId") final Integer tournamentId) {
         return tournamentManager.createTournamentResultRequest(tournamentId);

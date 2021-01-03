@@ -302,7 +302,14 @@ We would get a table of cells that contains the
 ```
 
 The output is for display only since if we just care about the statuses of the matches,
-we can get them from challonge.com.  We can display the output using the UI.
+we can get them from challonge.com.  We can display the output using the UI.  The output
+would look like this:
+
+|     |           | A  | B         | C   |
+| --- | ---       | ---| ---       | --- |
+| A   | SpongeBob | -- | W 9 8 9   |     |
+| B   | Patrick   |    | --        |     |
+| C   | Squidward |    |           | --  |
 
 ### Generate the Results File
 
