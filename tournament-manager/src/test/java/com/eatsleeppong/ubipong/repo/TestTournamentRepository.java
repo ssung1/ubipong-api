@@ -29,10 +29,9 @@ class TestTournamentRepository {
     @Test
     public void testUpdateTournament() throws Exception {
         final String newTournamentName = "new name";
-        final Tournament tournament = Tournament.builder()
-            .name(tournamentName)
-            .tournamentDate(Date.from(OffsetDateTime.parse(tournamentDate).toInstant()))
-            .build();
+        final Tournament tournament = new Tournament();
+        tournament.setName(tournamentName);
+        tournament.setTournamentDate(Date.from(OffsetDateTime.parse(tournamentDate).toInstant()));
 
         final Tournament savedTournament = tournamentRepository.save(tournament);
 

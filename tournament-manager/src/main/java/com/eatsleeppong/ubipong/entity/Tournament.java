@@ -1,9 +1,6 @@
 package com.eatsleeppong.ubipong.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import lombok.With;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,9 +8,10 @@ import java.util.Date;
 /**
  * The main purpose of this is to contain a set of events, since Challonge does not have the feature
  */
-@Value
-@Builder
+@Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @With
 public class Tournament {
     @Id
