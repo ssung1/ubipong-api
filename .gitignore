@@ -23,3 +23,10 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+## VS Code ##
+/bin
+.vscode/settings.json
+
+## Lombok ##
+lombok.config

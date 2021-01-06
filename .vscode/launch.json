@@ -2,10 +2,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - UbipongApplication",
+            "name": "Launch UbipongApplication",
             "request": "launch",
             "mainClass": "com.eatsleeppong.ubipong.UbipongApplication",
-            "projectName": "ubipong-api",
+            "projectName": "tournament-manager",
             "vmArgs": "-Dspring.profiles.active=local"
         }
     ]
