@@ -6,6 +6,8 @@ import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +41,8 @@ public class TestTournamentController {
     MockMvc mockMvc;
 
     @Test
+    @DisplayName("Create a tournament")
+    @Disabled("This is part of using logic unit -- we are not sure if it is worth the effort")
     public void testAddTournament() throws Exception {
         mockMvc.perform(
             post("/rest/v0/tournaments")
