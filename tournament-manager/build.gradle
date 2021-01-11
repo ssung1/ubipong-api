@@ -15,6 +15,7 @@ repositories {
     jcenter()
 }
 
+// exposes test data to combined report
 configurations {
     binaryTestResultsElements {
         canBeResolved = false
