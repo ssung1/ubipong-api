@@ -12,6 +12,7 @@ configurations {
 
 dependencies {
     testReportData project(':tournament-manager')
+    testReportData project(':tournament-manager-dto')
 }
 
 tasks.register('testReport', TestReport) {
