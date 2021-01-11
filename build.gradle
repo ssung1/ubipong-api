@@ -1,0 +1,21 @@
+// A resolvable configuration to collect test reports data
+configurations {
+    testReportData {
+        canBeResolved = true
+        canBeConsumed = false
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+            attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+        }
+    }
+}
+
+dependencies {
+    testReportData project(':tournament-manager')
+}
+
+tasks.register('testReport', TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Use test results from testReportData configuration
+    testResultDirs.from(configurations.testReportData)
+}

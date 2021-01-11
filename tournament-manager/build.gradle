@@ -15,6 +15,18 @@ repositories {
     jcenter()
 }
 
+configurations {
+    binaryTestResultsElements {
+        canBeResolved = false
+        canBeConsumed = true
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+            attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+        }
+        outgoing.artifact(test.binaryResultsDirectory)
+    }
+}
+
 dependencies {
     implementation project(':tournament-manager-dto')
 
@@ -24,8 +36,8 @@ dependencies {
     // database stuff
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    runtime 'com.h2database:h2'
-    runtime 'mysql:mysql-connector-java:8.0.9-rc'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.9-rc'
 
     // web stuff
 	implementation 'org.springframework.boot:spring-boot-starter-web'
