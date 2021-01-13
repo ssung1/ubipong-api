@@ -32,17 +32,17 @@ dependencies {
     implementation project(':tournament-manager-dto')
 
     // spring stuff
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // database stuff
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java:8.0.9-rc'
 
     // web stuff
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 
     // swagger API documentation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
