@@ -418,8 +418,7 @@ public class TestEventManager {
 
     @Test
     public void testFindEvent() {
-        Event event = subject.findEvent(challongeUrl);
-
+        Event event = subject.findEvent(1);
         assertThat(event.getChallongeTournament().getName(), is(eventName));
     }
 

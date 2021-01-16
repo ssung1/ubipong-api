@@ -10,6 +10,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +33,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -110,6 +114,23 @@ public class TestEventController {
             .thenReturn(getTournamentWrapper1());
     }
 
+    public Event addEvent(Event event) throws Exception {
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        final MvcResult mvcResult = mockMvc.perform(
+            post("/rest/v0/events")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(event)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("eventId").value(is(1)))
+            .andExpect(jsonPath("name").value(is(event.getName())))
+            .andReturn();
+
+        final String responseContent = mvcResult.getResponse().getContentAsString();
+        return objectMapper.readValue(responseContent, Event.class);
+    }
+
     @Test
     public void testGetRoundRobinGrid() throws Exception {
         mockMvc.perform(
@@ -168,30 +189,33 @@ public class TestEventController {
     }
 
     @Test
+    @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
+        final Event event = new Event();
+        event.setChallongeUrl(challongeUrl);
+        event.setName(eventName);
+
+        final Event addedEvent = addEvent(event);
+
         mockMvc.perform(
-            get("/rest/v0/events/" + challongeUrl)
+            get("/rest/v0/events/" + addedEvent.getEventId())
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(
-                jsonPath("challongeTournament.name").value(is(eventName)));
+            .andExpect(jsonPath("eventId").value(is(addedEvent.getEventId())))
+            .andExpect(jsonPath("name").value(is(eventName)))
+            .andExpect(jsonPath("challongeUrl").value(is(challongeUrl)));
     }
 
     @Test
+    @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
         final Event event = new Event();
-        event.setChallongeUrl("challongeUrl");
-        event.setName("preliminary group 1");
+        event.setChallongeUrl(challongeUrl);
+        event.setName(eventName);
 
-        final ObjectMapper objectMapper = new ObjectMapper();
-
-        mockMvc.perform(
-            post("/rest/v0/events")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(event)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("eventId").value(is(1)))
-            .andExpect(jsonPath("name").value(is("preliminary group 1")));
+        final Event addedEvent = addEvent(event);
+        assertThat(addedEvent.getEventId(), is(1));
+        assertThat(addedEvent.getName(), is(eventName));
+        assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
     }
 
     @Test

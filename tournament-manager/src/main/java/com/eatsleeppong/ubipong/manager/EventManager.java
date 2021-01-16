@@ -324,6 +324,14 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
+    // new findEvent
+    public Event findEvent(Integer id) {
+        final Optional<Event> event = eventRepository.findById(id);
+        return event.orElseThrow();
+    }
+
+    // old findEvent by challongeUrl
+    @Deprecated
     public Event findEvent(String challongeUrl) {
         ChallongeTournament challongeTournament = challongeTournamentRepository
             .getTournament(challongeUrl)

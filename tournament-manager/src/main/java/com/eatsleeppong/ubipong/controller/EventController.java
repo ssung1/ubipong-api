@@ -43,11 +43,11 @@ public class EventController {
 
     @ApiOperation(value = "Event", notes = "This is mainly used to get details that are only on challonge.com, " +
         "such as the event name.  For database-only event, use /crud/events")
-    @GetMapping(value = "/{challongeUrl}")
+    @GetMapping(value = "/{id}")
     public Event getEvent(
-        @PathVariable("challongeUrl") String challongeUrl
+        @PathVariable("id") Integer id
     ) {
-        return eventManager.findEvent(challongeUrl);
+        return eventManager.findEvent(id);
     }
 
     @ApiOperation(value = "Event Result", notes = "This generates the results of an event.  It is like " +
