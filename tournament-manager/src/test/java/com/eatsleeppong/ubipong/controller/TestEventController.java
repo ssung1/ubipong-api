@@ -6,6 +6,7 @@ import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.repo.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,6 +63,9 @@ public class TestEventController {
     @MockBean
     ChallongeTournamentRepository mockTournamentRepository;
 
+    @Autowired
+    EventRepository eventRepository;
+
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
         t1.setName(eventName);
@@ -71,6 +76,14 @@ public class TestEventController {
         tw1.setTournament(t1);
 
         return tw1;
+    }
+
+    private Event createEvent() {
+        final Event event = new Event();
+        event.setName(eventName);
+        event.setChallongeUrl(challongeUrl);
+            
+        return event;
     }
 
     @BeforeEach
@@ -123,7 +136,7 @@ public class TestEventController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(event)))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("eventId").value(is(1)))
+            .andExpect(jsonPath("eventId").value(not(is(0))))
             .andExpect(jsonPath("name").value(is(event.getName())))
             .andReturn();
 
@@ -191,10 +204,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
-        final Event event = new Event();
-        event.setChallongeUrl(challongeUrl);
-        event.setName(eventName);
-
+        final Event event = createEvent();
         final Event addedEvent = addEvent(event);
 
         mockMvc.perform(
@@ -208,12 +218,10 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
-        final Event event = new Event();
-        event.setChallongeUrl(challongeUrl);
-        event.setName(eventName);
+        final Event event = createEvent();
 
         final Event addedEvent = addEvent(event);
-        assertThat(addedEvent.getEventId(), is(1));
+        assertThat(addedEvent.getEventId(), not(is(0)));
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
     }

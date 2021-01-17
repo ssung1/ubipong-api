@@ -19,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,6 +42,7 @@ import java.util.stream.Stream;
  */
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class TestEventManager {
     private final String challongeUrl = "bikiniBottomOpen-RoundRobin-Group-1";
     private final String eventName = "Round Robin Group 1";
@@ -173,6 +175,14 @@ public class TestEventManager {
         tw1.setTournament(t1);
 
         return tw1;
+    }
+
+    private Event createEvent() {
+        Event event = new Event();
+        event.setName(eventName);
+        event.setChallongeUrl(challongeUrl);
+        event.setTournamentId(1);
+        return event;
     }
 
     @BeforeEach
@@ -418,8 +428,12 @@ public class TestEventManager {
 
     @Test
     public void testFindEvent() {
-        Event event = subject.findEvent(1);
-        assertThat(event.getChallongeTournament().getName(), is(eventName));
+        Event event = createEvent();
+        Event savedEvent = subject.addEvent(event);
+
+        Event loadedEvent = subject.findEvent(savedEvent.getEventId());
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
     }
 
     @Test
@@ -493,10 +507,7 @@ public class TestEventManager {
     @Test
     @DisplayName("add an event in our own database and a tournament on challonge.com")
     public void testAddEventLinkedToChallonge() {
-        Event event = new Event();
-        event.setName("Preliminary Group 1");
-        event.setChallongeUrl("esp_201203_pr_rr_1");
-        event.setTournamentId(1);
+        Event event = createEvent();
 
         ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
         Event addedEvent = subject.addEvent(event);
