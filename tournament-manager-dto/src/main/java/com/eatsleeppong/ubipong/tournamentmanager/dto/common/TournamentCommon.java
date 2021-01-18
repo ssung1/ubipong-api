@@ -2,7 +2,6 @@ package com.eatsleeppong.ubipong.tournamentmanager.dto.common;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.SuperBuilder;
 
 /**

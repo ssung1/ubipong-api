@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -208,9 +207,9 @@ public class TestEventController {
         final Event addedEvent = addEvent(event);
 
         mockMvc.perform(
-            get("/rest/v0/events/" + addedEvent.getEventId())
+            get("/rest/v0/events/" + addedEvent.getId())
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("eventId").value(is(addedEvent.getEventId())))
+            .andExpect(jsonPath("eventId").value(is(addedEvent.getId())))
             .andExpect(jsonPath("name").value(is(eventName)))
             .andExpect(jsonPath("challongeUrl").value(is(challongeUrl)));
     }
@@ -221,7 +220,7 @@ public class TestEventController {
         final Event event = createEvent();
 
         final Event addedEvent = addEvent(event);
-        assertThat(addedEvent.getEventId(), not(is(0)));
+        assertThat(addedEvent.getId(), not(is(0)));
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
     }

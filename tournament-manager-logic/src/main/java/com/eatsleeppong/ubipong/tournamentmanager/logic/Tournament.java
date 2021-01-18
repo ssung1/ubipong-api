@@ -1,8 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.logic;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Tournament {
 //    private final EventManager eventManager;
 //    private final EventRepository eventRepository;

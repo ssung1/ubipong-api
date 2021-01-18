@@ -431,7 +431,7 @@ public class TestEventManager {
         Event event = createEvent();
         Event savedEvent = subject.addEvent(event);
 
-        Event loadedEvent = subject.findEvent(savedEvent.getEventId());
+        Event loadedEvent = subject.findEvent(savedEvent.getId());
         assertThat(loadedEvent.getName(), is(event.getName()));
         assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
     }
@@ -515,7 +515,7 @@ public class TestEventManager {
 
         assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
 
-        Optional<Event> retrievedEvent = eventRepository.findById(addedEvent.getEventId());
+        Optional<Event> retrievedEvent = eventRepository.findById(addedEvent.getId());
         assertTrue(retrievedEvent.isPresent());
     }
 }

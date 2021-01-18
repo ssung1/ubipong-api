@@ -30,7 +30,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
-    private Integer eventId;
+    private Integer id;
 
     /**
      * naming scheme:  {orgName}_{yyyyMM}_{event}_{type}_{groupNumber}

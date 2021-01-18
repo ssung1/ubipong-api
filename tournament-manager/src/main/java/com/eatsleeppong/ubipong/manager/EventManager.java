@@ -339,7 +339,7 @@ public class EventManager {
 
         Event result = new Event();
         result.setChallongeTournament(challongeTournament);
-        result.setEventId(challongeTournament.getId());
+        result.setId(challongeTournament.getId());
         result.setName(challongeTournament.getUrl());
 
         return result;
