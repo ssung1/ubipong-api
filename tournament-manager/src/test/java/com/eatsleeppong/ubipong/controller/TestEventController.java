@@ -135,7 +135,7 @@ public class TestEventController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(event)))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("eventId").value(not(is(0))))
+            .andExpect(jsonPath("id").value(not(is(0))))
             .andExpect(jsonPath("name").value(is(event.getName())))
             .andReturn();
 
@@ -209,7 +209,7 @@ public class TestEventController {
         mockMvc.perform(
             get("/rest/v0/events/" + addedEvent.getId())
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("eventId").value(is(addedEvent.getId())))
+            .andExpect(jsonPath("id").value(is(addedEvent.getId())))
             .andExpect(jsonPath("name").value(is(eventName)))
             .andExpect(jsonPath("challongeUrl").value(is(challongeUrl)));
     }
