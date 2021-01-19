@@ -27,8 +27,8 @@ public class TournamentManager {
         this.tournamentRepository = tournamentRepository;
     }
 
-    public TournamentResultRequest createTournamentResultRequest(final Integer tournamentId) {
-        final List<Event> eventList = eventRepository.findByTournamentId(tournamentId);
+    public TournamentResultRequest createTournamentResultRequest(final Integer id) {
+        final List<Event> eventList = eventRepository.findByTournamentId(id);
 
         final TournamentResultRequestLineItem[] tournamentResultRequestLineItemList = eventList.stream()
                 .map(Event::getChallongeUrl)
@@ -38,13 +38,11 @@ public class TournamentManager {
 
         final TournamentResultRequest tournamentResultRequest = new TournamentResultRequest();
 
-        final Tournament tournament = tournamentRepository.getOne(tournamentId);
+        final Tournament tournament = tournamentRepository.getOne(id);
         tournamentResultRequest.setTournamentName(tournament.getName());
         tournamentResultRequest.setTournamentDate(tournament.getTournamentDate());
         tournamentResultRequest.setTournamentResultList(tournamentResultRequestLineItemList);
 
         return tournamentResultRequest;
     }
-
-    //public Tournament
 }

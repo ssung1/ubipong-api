@@ -51,7 +51,7 @@ public class EventController {
     }
 
     @ApiOperation(value = "Event Result", notes = "This generates the results of an event.  It is like " +
-        "/rest/v0/tournaments/{tournamentId}/result, but it contains only the results of an event.  It is " +
+        "/rest/v0/tournaments/{id}/result, but it contains only the results of an event.  It is " +
         "unsuitable for submission to the rating authority because rating must be calculated from all the" +
         "results in a tournament, together, in a single batch.")
     @GetMapping(value = "/{challongeUrl}/result")

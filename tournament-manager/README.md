@@ -84,7 +84,7 @@ details:
 
 ```json
 {
-  "tournamentId": 1,
+  "id": 1,
   "name": "Eat Sleep Pong Open 2019",
   "tournamentDate": "2019-03-15T00:00:00-0500"
 }
@@ -111,7 +111,7 @@ ID for the newly created event:
 
 ```json
 {
-  "eventId": 101,
+  "id": 101,
   "challongeUrl": "esp_201903_pg_rr_1",
   "name": "Preliminary Group 1",
   "tournamentId": 1
@@ -159,7 +159,7 @@ GET https://{host}/crud/events/{eventId}
 
 ```json
 {
-  "eventId": 1,
+  "id": 1,
   "challongeUrl": "esp_201903_pg_rr_1",
   "name": "Preliminary Group 1",
   "tournamentId": 1,
@@ -172,14 +172,14 @@ This shows the information in the database.  To see challonge.com details,
 use
 
 ```
-GET https://{host}/rest/v0/events/{challongeUrl}
+GET https://{host}/rest/v0/events/{id}
 ```
 
 shows the event details.
 
 ```json
 {
-  "eventId": 9234850,
+  "id": 9234850,
   "challongeUrl": null,
   "name": "esp_201903_pg_rr_1",
   "tournamentId": null,
@@ -206,7 +206,7 @@ GET https://{host}/crud/events/search/findByTournamentId?tournamentId={tournamen
   "_embedded": {
     "events": [
       {
-        "eventId": 1,
+        "id": 1,
         "challongeUrl": "esp_201903_pg_rr_1",
         "name": "Preliminary Group 1",
         "tournamentId": 1,
@@ -339,7 +339,7 @@ GET https://{host}/rest/v0/events/{challongeUrl}/result
 To get results of all the events of one tournament, so we can use this
 
 ```
-GET https://{host}rest/v0/tournaments/{tournamentId}/result
+GET https://{host}rest/v0/tournaments/{id}/result
 ```
 
 ```json
@@ -362,22 +362,3 @@ GET https://{host}rest/v0/tournaments/{tournamentId}/result
   ]
 }
 ```
-
-<!-- and the UI.  Then go to the URL
-
-    https://{host}/#/rr-grid?eventList=%5B%22{event}%22%5D
-
-to view the round robin grid. -->
-
-<!--
-(this is available only in the UI)
-## How to Set up a Round Robin Event
-
-Remember, a round robin event is made of multiple groups.  Each group is one
-"tournament" on challonge.com.
-
-Go to the UI and enter all the names.  Choose the number of players per group.
-Select "Create Group".  After that, copy the names of each group and paste them
-onto challonge.com particpant bulk add.
--->
-

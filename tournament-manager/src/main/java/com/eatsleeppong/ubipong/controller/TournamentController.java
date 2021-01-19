@@ -20,9 +20,9 @@ public class TournamentController {
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
-    @GetMapping(value = "/{tournamentId}/result")
-    public TournamentResultRequest getResult(@PathVariable("tournamentId") final Integer tournamentId) {
-        return tournamentManager.createTournamentResultRequest(tournamentId);
+    @GetMapping(value = "/{id}/result")
+    public TournamentResultRequest getResult(@PathVariable("id") final Integer id) {
+        return tournamentManager.createTournamentResultRequest(id);
     }
 
     @PostMapping()

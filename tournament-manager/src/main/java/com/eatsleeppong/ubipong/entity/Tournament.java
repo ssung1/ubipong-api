@@ -16,7 +16,7 @@ import java.util.Date;
 public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tournament_seq")
-    private Integer tournamentId;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;

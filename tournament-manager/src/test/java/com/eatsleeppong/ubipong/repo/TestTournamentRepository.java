@@ -36,9 +36,9 @@ class TestTournamentRepository {
         final Tournament savedTournament = tournamentRepository.save(tournament);
 
         assertNotNull(savedTournament);
-        assertNotNull(savedTournament.getTournamentId());
+        assertNotNull(savedTournament.getId());
 
-        final Integer tournamentId = savedTournament.getTournamentId();
+        final Integer tournamentId = savedTournament.getId();
         assertThat(savedTournament.getName(), is(tournamentName));
 
         final Tournament updatedTournament = savedTournament.withName(newTournamentName);
@@ -46,7 +46,7 @@ class TestTournamentRepository {
 
         final Tournament savedUpdatedTournament = tournamentRepository.getOne(tournamentId);
 
-        assertThat(savedUpdatedTournament.getTournamentId(), is(tournamentId));
+        assertThat(savedUpdatedTournament.getId(), is(tournamentId));
         assertThat(savedUpdatedTournament.getName(), is(newTournamentName));
     }
 }
