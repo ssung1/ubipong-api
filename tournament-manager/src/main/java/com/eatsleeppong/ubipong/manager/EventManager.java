@@ -2,7 +2,7 @@ package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
-import com.eatsleeppong.ubipong.model.RoundRobinMatch;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
