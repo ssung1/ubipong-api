@@ -1,16 +1,14 @@
 plugins {
     // need Spring plugin because we want to use the dependency management
-    id 'org.springframework.boot' version '2.4.1'
+    id 'org.springframework.boot' version "${springBootVersion}"
     // we want to use dependency management so we don't need to know the versions of dependencies
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java-library'
+    id 'io.spring.dependency-management' version "${springDependencyVersion}"
+    id 'java-library'
     // automatically creates getters, setters, and other boilerplate
-    id 'io.freefair.lombok' version '5.3.0'
+    id 'io.freefair.lombok' version "${lombokVersion}"
 }
 
-group = 'com.eatsleeppong'
-version = "${version}"
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 // need to specify this so Spring does not try to look for a main class
 bootJar {
@@ -43,10 +41,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     // test stuff using spring to manage dependencies
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
-	useJUnitPlatform()
+    // disable html report because we want to view the combined report instead
+    reports.html.enabled = false
+    // for junit report, we simply save them to a shared path
+    testResultsDirName = "${rootProject.buildDir}/test-results/${project.name}"
+    useJUnitPlatform()
 }
 
