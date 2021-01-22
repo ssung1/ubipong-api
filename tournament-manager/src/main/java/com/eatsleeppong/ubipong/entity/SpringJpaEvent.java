@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(indexes = {
     @Index(name = "tournament_id_name_idx", columnList = "tournamentId, name", unique = true)
 })
-public class Event {
+public class SpringJpaEvent {
     /**
      * Overall round robin event, which contains all the players in the event
      */

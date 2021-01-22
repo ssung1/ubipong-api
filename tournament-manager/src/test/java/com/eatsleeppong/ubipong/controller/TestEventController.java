@@ -2,7 +2,7 @@ package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.model.challonge.*;
-import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
@@ -76,8 +76,8 @@ public class TestEventController {
         return tw1;
     }
 
-    private Event createEvent() {
-        final Event event = new Event();
+    private SpringJpaEvent createEvent() {
+        final SpringJpaEvent event = new SpringJpaEvent();
         event.setName(eventName);
         event.setChallongeUrl(challongeUrl);
             
@@ -125,7 +125,7 @@ public class TestEventController {
             .thenReturn(getTournamentWrapper1());
     }
 
-    public Event addEvent(Event event) throws Exception {
+    public SpringJpaEvent addEvent(SpringJpaEvent event) throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         final MvcResult mvcResult = mockMvc.perform(
@@ -139,7 +139,7 @@ public class TestEventController {
             .andReturn();
 
         final String responseContent = mvcResult.getResponse().getContentAsString();
-        return objectMapper.readValue(responseContent, Event.class);
+        return objectMapper.readValue(responseContent, SpringJpaEvent.class);
     }
 
     @Test
@@ -202,8 +202,8 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
-        final Event event = createEvent();
-        final Event addedEvent = addEvent(event);
+        final SpringJpaEvent event = createEvent();
+        final SpringJpaEvent addedEvent = addEvent(event);
 
         mockMvc.perform(
             get("/rest/v0/events/" + addedEvent.getId())
@@ -216,9 +216,9 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
-        final Event event = createEvent();
+        final SpringJpaEvent event = createEvent();
 
-        final Event addedEvent = addEvent(event);
+        final SpringJpaEvent addedEvent = addEvent(event);
         assertThat(addedEvent.getId(), not(is(0)));
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));

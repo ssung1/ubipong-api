@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.repo;
 
-import com.eatsleeppong.ubipong.entity.Tournament;
+import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +28,11 @@ class TestSpringJpaTournamentRepository {
     @Test
     public void testUpdateTournament() throws Exception {
         final String newTournamentName = "new name";
-        final Tournament tournament = new Tournament();
+        final SpringJpaTournament tournament = new SpringJpaTournament();
         tournament.setName(tournamentName);
         tournament.setTournamentDate(Date.from(OffsetDateTime.parse(tournamentDate).toInstant()));
 
-        final Tournament savedTournament = tournamentRepository.save(tournament);
+        final SpringJpaTournament savedTournament = tournamentRepository.save(tournament);
 
         assertNotNull(savedTournament);
         assertNotNull(savedTournament.getId());
@@ -40,10 +40,10 @@ class TestSpringJpaTournamentRepository {
         final Integer tournamentId = savedTournament.getId();
         assertThat(savedTournament.getName(), is(tournamentName));
 
-        final Tournament updatedTournament = savedTournament.withName(newTournamentName);
+        final SpringJpaTournament updatedTournament = savedTournament.withName(newTournamentName);
         tournamentRepository.save(updatedTournament);
 
-        final Tournament savedUpdatedTournament = tournamentRepository.getOne(tournamentId);
+        final SpringJpaTournament savedUpdatedTournament = tournamentRepository.getOne(tournamentId);
 
         assertThat(savedUpdatedTournament.getId(), is(tournamentId));
         assertThat(savedUpdatedTournament.getName(), is(newTournamentName));

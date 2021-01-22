@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.Event;
-import com.eatsleeppong.ubipong.entity.Tournament;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
@@ -28,17 +28,17 @@ public class TournamentManager {
     }
 
     public TournamentResultRequest createTournamentResultRequest(final Integer id) {
-        final List<Event> eventList = eventRepository.findByTournamentId(id);
+        final List<SpringJpaEvent> eventList = eventRepository.findByTournamentId(id);
 
         final TournamentResultRequestLineItem[] tournamentResultRequestLineItemList = eventList.stream()
-                .map(Event::getChallongeUrl)
+                .map(SpringJpaEvent::getChallongeUrl)
                 .map(eventManager::createTournamentResultList)
                 .flatMap(Arrays::stream)
                 .toArray(TournamentResultRequestLineItem[]::new);
 
         final TournamentResultRequest tournamentResultRequest = new TournamentResultRequest();
 
-        final Tournament tournament = tournamentRepository.getOne(id);
+        final SpringJpaTournament tournament = tournamentRepository.getOne(id);
         tournamentResultRequest.setTournamentName(tournament.getName());
         tournamentResultRequest.setTournamentDate(tournament.getTournamentDate());
         tournamentResultRequest.setTournamentResultList(tournamentResultRequestLineItemList);

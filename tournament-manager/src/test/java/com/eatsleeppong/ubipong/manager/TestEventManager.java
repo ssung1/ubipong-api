@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
@@ -177,8 +177,8 @@ public class TestEventManager {
         return tw1;
     }
 
-    private Event createEvent() {
-        Event event = new Event();
+    private SpringJpaEvent createEvent() {
+        SpringJpaEvent event = new SpringJpaEvent();
         event.setName(eventName);
         event.setChallongeUrl(challongeUrl);
         event.setTournamentId(1);
@@ -428,10 +428,10 @@ public class TestEventManager {
 
     @Test
     public void testFindEvent() {
-        Event event = createEvent();
-        Event savedEvent = subject.addEvent(event);
+        SpringJpaEvent event = createEvent();
+        SpringJpaEvent savedEvent = subject.addEvent(event);
 
-        Event loadedEvent = subject.findEvent(savedEvent.getId());
+        SpringJpaEvent loadedEvent = subject.findEvent(savedEvent.getId());
         assertThat(loadedEvent.getName(), is(event.getName()));
         assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
     }
@@ -507,15 +507,15 @@ public class TestEventManager {
     @Test
     @DisplayName("add an event in our own database and a tournament on challonge.com")
     public void testAddEventLinkedToChallonge() {
-        Event event = createEvent();
+        SpringJpaEvent event = createEvent();
 
         ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
-        Event addedEvent = subject.addEvent(event);
+        SpringJpaEvent addedEvent = subject.addEvent(event);
         verify(mockTournamentRepository).createTournament(argument.capture());
 
         assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
 
-        Optional<Event> retrievedEvent = eventRepository.findById(addedEvent.getId());
+        Optional<SpringJpaEvent> retrievedEvent = eventRepository.findById(addedEvent.getId());
         assertTrue(retrievedEvent.isPresent());
     }
 }

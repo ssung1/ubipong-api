@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.manager.EventManager;
-import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 
@@ -43,7 +43,7 @@ public class EventController {
     @ApiOperation(value = "Event", notes = "This is mainly used to get details that are only on challonge.com, " +
         "such as the event name.  For database-only event, use /crud/events")
     @GetMapping(value = "/{id}")
-    public Event getEvent(
+    public SpringJpaEvent getEvent(
         @PathVariable("id") Integer id
     ) {
         return eventManager.findEvent(id);
@@ -71,7 +71,7 @@ public class EventController {
         "This endpoint should be used instead of /crud/events.")
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Event addEvent(@RequestBody Event event) {
+    public SpringJpaEvent addEvent(@RequestBody SpringJpaEvent event) {
         return eventManager.addEvent(event);
     }
 }

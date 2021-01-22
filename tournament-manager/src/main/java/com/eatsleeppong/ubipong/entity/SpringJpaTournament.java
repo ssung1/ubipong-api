@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-public class Tournament {
+public class SpringJpaTournament {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tournament_seq")
     private Integer id;

@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.Event;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
@@ -325,19 +325,19 @@ public class EventManager {
     }
 
     // new findEvent
-    public Event findEvent(Integer id) {
-        final Optional<Event> event = eventRepository.findById(id);
+    public SpringJpaEvent findEvent(Integer id) {
+        final Optional<SpringJpaEvent> event = eventRepository.findById(id);
         return event.orElseThrow();
     }
 
     // old findEvent by challongeUrl
     @Deprecated
-    public Event findEvent(String challongeUrl) {
+    public SpringJpaEvent findEvent(String challongeUrl) {
         ChallongeTournament challongeTournament = challongeTournamentRepository
             .getTournament(challongeUrl)
             .getTournament();
 
-        Event result = new Event();
+        SpringJpaEvent result = new SpringJpaEvent();
         result.setChallongeTournament(challongeTournament);
         result.setId(challongeTournament.getId());
         result.setName(challongeTournament.getUrl());
@@ -345,14 +345,14 @@ public class EventManager {
         return result;
     }
 
-    public Event addEvent(Event event) {
-        Event addedEvent = eventRepository.save(event);
+    public SpringJpaEvent addEvent(SpringJpaEvent event) {
+        SpringJpaEvent addedEvent = eventRepository.save(event);
 
         ChallongeTournament challongeTournament = new ChallongeTournament();
         challongeTournament.setName(event.getName());
         challongeTournament.setUrl(event.getChallongeUrl());
         challongeTournament.setDescription(event.getName());
-        challongeTournament.setTournamentType(Event.EVENT_TYPE_ROUND_ROBIN);
+        challongeTournament.setTournamentType(SpringJpaEvent.EVENT_TYPE_ROUND_ROBIN);
         challongeTournament.setGameName("table tennis");
 
         ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
@@ -363,7 +363,7 @@ public class EventManager {
     }
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {
-        final Event event = findEvent(challongeUrl);
+        final SpringJpaEvent event = findEvent(challongeUrl);
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
                 challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));

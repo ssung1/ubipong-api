@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.Event;
-import com.eatsleeppong.ubipong.entity.Tournament;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
@@ -55,10 +55,10 @@ public class TestTournamentManager {
         event2Game2.setEventName(event2Name);
         event2Game2.setResultString("event2game2result");
 
-        final Event event1 = new Event();
+        final SpringJpaEvent event1 = new SpringJpaEvent();
         event1.setChallongeUrl(event1ChallongeUrl);
 
-        final Event event2 = new Event();
+        final SpringJpaEvent event2 = new SpringJpaEvent();
         event2.setChallongeUrl(event2ChallongeUrl);
         when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(Arrays.asList(event1, event2));
 
@@ -67,7 +67,7 @@ public class TestTournamentManager {
         when(mockEventManager.createTournamentResultList(event2ChallongeUrl)).thenReturn(
                 new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
 
-        final Tournament tournament = new Tournament();
+        final SpringJpaTournament tournament = new SpringJpaTournament();
         tournament.setName(tournamentName);
         tournament.setTournamentDate(df.parse(tournamentDate));
 
