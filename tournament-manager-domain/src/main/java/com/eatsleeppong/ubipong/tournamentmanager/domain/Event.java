@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.logic;
+package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 public class Event {
 //    public Event findEvent(String challongeUrl) {

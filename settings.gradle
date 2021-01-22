@@ -2,4 +2,4 @@ rootProject.name = 'ubipong-api'
 
 include 'tournament-manager'
 include 'tournament-manager-dto'
-include 'tournament-manager-logic'
+include 'tournament-manager-domain'

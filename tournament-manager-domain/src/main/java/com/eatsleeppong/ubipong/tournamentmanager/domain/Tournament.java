@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.logic;
+package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 public class Tournament {
 //    private final EventManager eventManager;
