@@ -1,0 +1,52 @@
+plugins {
+    // need Spring plugin because we want to use the dependency management
+    id 'org.springframework.boot' version '2.4.1'
+    // we want to use dependency management so we don't need to know the versions of dependencies
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java-library'
+    // automatically creates getters, setters, and other boilerplate
+    id 'io.freefair.lombok' version '5.3.0'
+}
+
+group = 'com.eatsleeppong'
+version = "${version}"
+sourceCompatibility = 1.8
+
+// need to specify this so Spring does not try to look for a main class
+bootJar {
+    enabled = false
+}
+// need to specify this so Spring does not try to look for a main class
+jar {
+    enabled = true
+}
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+// exposes test data to combined report
+configurations {
+    binaryTestResultsElements {
+        canBeResolved = false
+        canBeConsumed = true
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+            attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+        }
+        outgoing.artifact(test.binaryResultsDirectory)
+    }
+}
+
+dependencies {
+    // need Jackson for the annotations such as "JsonIgnoreProperties"
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // test stuff using spring to manage dependencies
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
