@@ -9,7 +9,8 @@ import java.util.Date;
  * The main purpose of this is to contain a set of events, since Challonge does not have the feature
  */
 @Data
-@Entity
+@Entity(name = "tournament")
+@Table(name = "tournament")
 @AllArgsConstructor
 @NoArgsConstructor
 @With

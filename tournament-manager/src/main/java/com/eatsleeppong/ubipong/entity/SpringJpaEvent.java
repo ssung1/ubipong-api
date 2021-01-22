@@ -10,9 +10,9 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import javax.persistence.*;
 
 @Data
-@Entity
+@Entity(name="event")
 // the events with a tournament must have unique names
-@Table(indexes = {
+@Table(name = "event", indexes = {
     @Index(name = "tournament_id_name_idx", columnList = "tournamentId, name", unique = true)
 })
 public class SpringJpaEvent {

@@ -1,5 +1,10 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Value;
+
+@Value
+@AllArgsConstructor
 public class Tournament {
 //    private final EventManager eventManager;
 //    private final EventRepository eventRepository;
