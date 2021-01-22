@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Date;
 
@@ -18,13 +17,13 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class TestTournamentRepository {
+class TestSpringJpaTournamentRepository {
     private final Integer tournamentId = 1234987;
     private final String tournamentName = "Eat Sleep Pong Open 2019";
     private final String tournamentDate = "2019-03-15T00:00:00-05:00";
 
     @Autowired
-    TournamentRepository tournamentRepository;
+    SpringJpaTournamentRepository tournamentRepository;
 
     @Test
     public void testUpdateTournament() throws Exception {

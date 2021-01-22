@@ -4,8 +4,8 @@ import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.entity.Tournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-import com.eatsleeppong.ubipong.repo.EventRepository;
-import com.eatsleeppong.ubipong.repo.TournamentRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaTournamentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,11 +17,11 @@ import java.util.List;
 @Service
 public class TournamentManager {
     private final EventManager eventManager;
-    private final EventRepository eventRepository;
-    private final TournamentRepository tournamentRepository;
+    private final SpringJpaEventRepository eventRepository;
+    private final SpringJpaTournamentRepository tournamentRepository;
 
-    public TournamentManager(final EventManager eventManager, final EventRepository eventRepository,
-            final TournamentRepository tournamentRepository) {
+    public TournamentManager(final EventManager eventManager, final SpringJpaEventRepository eventRepository,
+            final SpringJpaTournamentRepository tournamentRepository) {
         this.eventManager = eventManager;
         this.eventRepository = eventRepository;
         this.tournamentRepository = tournamentRepository;

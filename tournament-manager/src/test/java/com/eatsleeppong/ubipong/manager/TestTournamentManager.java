@@ -4,8 +4,8 @@ import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.entity.Tournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-import com.eatsleeppong.ubipong.repo.EventRepository;
-import com.eatsleeppong.ubipong.repo.TournamentRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaTournamentRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +35,9 @@ public class TestTournamentManager {
     private final TournamentResultRequestLineItem event2Game1 = new TournamentResultRequestLineItem();
     private final TournamentResultRequestLineItem event2Game2 = new TournamentResultRequestLineItem();
 
-    private final EventRepository mockEventRepository = mock(EventRepository.class);
+    private final SpringJpaEventRepository mockEventRepository = mock(SpringJpaEventRepository.class);
     private final EventManager mockEventManager = mock(EventManager.class);
-    private final TournamentRepository mockTournamentRepository = mock(TournamentRepository.class);
+    private final SpringJpaTournamentRepository mockTournamentRepository = mock(SpringJpaTournamentRepository.class);
 
     private final TournamentManager tournamentManager = new TournamentManager(mockEventManager, mockEventRepository,
             mockTournamentRepository);

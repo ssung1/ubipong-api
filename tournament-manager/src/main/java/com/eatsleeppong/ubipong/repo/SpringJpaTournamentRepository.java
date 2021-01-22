@@ -8,6 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.Optional;
 
 @RepositoryRestResource
-public interface TournamentRepository extends JpaRepository<Tournament, Integer> {
+public interface SpringJpaTournamentRepository extends JpaRepository<Tournament, Integer> {
     Optional<Tournament> findByName(@Param("name") String name);
 }

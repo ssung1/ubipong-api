@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface EventRepository extends JpaRepository<Event, Integer> {
+public interface SpringJpaEventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByTournamentId(@Param("tournamentId") Integer tournamentId);
 }

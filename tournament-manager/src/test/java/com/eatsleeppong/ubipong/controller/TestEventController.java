@@ -6,7 +6,7 @@ import com.eatsleeppong.ubipong.entity.Event;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.EventRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -63,7 +62,7 @@ public class TestEventController {
     ChallongeTournamentRepository mockTournamentRepository;
 
     @Autowired
-    EventRepository eventRepository;
+    SpringJpaEventRepository eventRepository;
 
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();

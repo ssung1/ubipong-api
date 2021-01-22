@@ -8,7 +8,7 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.EventRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
@@ -54,7 +54,7 @@ public class TestEventManager {
     private final ChallongeMatchRepository mockMatchRepository =
         mock(ChallongeMatchRepository.class);
     @Autowired
-    private EventRepository eventRepository;
+    private SpringJpaEventRepository eventRepository;
 
     private EventManager subject;
 

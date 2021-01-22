@@ -8,7 +8,7 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.EventRepository;
+import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
@@ -22,13 +22,13 @@ public class EventManager {
     private ChallongeTournamentRepository challongeTournamentRepository;
     private ChallongeParticipantRepository challongeParticipantRepository;
     private ChallongeMatchRepository challongeMatchRepository;
-    private EventRepository eventRepository;
+    private SpringJpaEventRepository eventRepository;
 
     public EventManager(
         ChallongeTournamentRepository challongeTournamentRepository,
         ChallongeParticipantRepository challongeParticipantRepository,
         ChallongeMatchRepository challongeMatchRepository,
-        EventRepository eventRepository
+        SpringJpaEventRepository eventRepository
     ) {
         this.challongeTournamentRepository = challongeTournamentRepository;
         this.challongeParticipantRepository = challongeParticipantRepository;
