@@ -4,8 +4,8 @@ import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
-import com.eatsleeppong.ubipong.repo.SpringJpaTournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaTournamentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

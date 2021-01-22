@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.repo;
+package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;

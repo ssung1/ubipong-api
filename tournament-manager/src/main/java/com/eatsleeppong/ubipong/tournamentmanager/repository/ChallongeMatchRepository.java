@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.repo;
+package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,40 +1,32 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EventManager {
     private ChallongeTournamentRepository challongeTournamentRepository;
     private ChallongeParticipantRepository challongeParticipantRepository;
     private ChallongeMatchRepository challongeMatchRepository;
-    private SpringJpaEventRepository eventRepository;
-
-    public EventManager(
-        ChallongeTournamentRepository challongeTournamentRepository,
-        ChallongeParticipantRepository challongeParticipantRepository,
-        ChallongeMatchRepository challongeMatchRepository,
-        SpringJpaEventRepository eventRepository
-    ) {
-        this.challongeTournamentRepository = challongeTournamentRepository;
-        this.challongeParticipantRepository = challongeParticipantRepository;
-        this.challongeMatchRepository = challongeMatchRepository;
-        this.eventRepository = eventRepository;
-    }
+    private SpringJpaEventRepository springJpaEventRepository;
+    private final EventRepository eventRepository;
 
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
         Integer playerId) {
@@ -326,7 +318,7 @@ public class EventManager {
 
     // new findEvent
     public SpringJpaEvent findEvent(Integer id) {
-        final Optional<SpringJpaEvent> event = eventRepository.findById(id);
+        final Optional<SpringJpaEvent> event = springJpaEventRepository.findById(id);
         return event.orElseThrow();
     }
 
@@ -346,7 +338,7 @@ public class EventManager {
     }
 
     public SpringJpaEvent addEvent(SpringJpaEvent event) {
-        SpringJpaEvent addedEvent = eventRepository.save(event);
+        SpringJpaEvent addedEvent = springJpaEventRepository.save(event);
 
         ChallongeTournament challongeTournament = new ChallongeTournament();
         challongeTournament.setName(event.getName());

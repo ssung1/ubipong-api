@@ -3,10 +3,10 @@ package com.eatsleeppong.ubipong.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
-import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

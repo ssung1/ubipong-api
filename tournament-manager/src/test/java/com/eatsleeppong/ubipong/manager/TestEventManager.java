@@ -5,10 +5,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-import com.eatsleeppong.ubipong.repo.ChallongeMatchRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeParticipantRepository;
-import com.eatsleeppong.ubipong.repo.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.repo.SpringJpaEventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
@@ -54,7 +51,9 @@ public class TestEventManager {
     private final ChallongeMatchRepository mockMatchRepository =
         mock(ChallongeMatchRepository.class);
     @Autowired
-    private SpringJpaEventRepository eventRepository;
+    private SpringJpaEventRepository springJpaEventRepository;
+    private final EventRepositoryImpl mockEventRepositoryImpl =
+        new EventRepositoryImpl(springJpaEventRepository, mockTournamentRepository);
 
     private EventManager subject;
 
@@ -196,7 +195,7 @@ public class TestEventManager {
 
         subject = new EventManager(
             mockTournamentRepository, mockParticipantRepository,
-            mockMatchRepository, eventRepository
+            mockMatchRepository, springJpaEventRepository, mockEventRepositoryImpl
         );
     }
 
@@ -515,7 +514,7 @@ public class TestEventManager {
 
         assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
 
-        Optional<SpringJpaEvent> retrievedEvent = eventRepository.findById(addedEvent.getId());
+        Optional<SpringJpaEvent> retrievedEvent = springJpaEventRepository.findById(addedEvent.getId());
         assertTrue(retrievedEvent.isPresent());
     }
 }
