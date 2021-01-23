@@ -62,7 +62,7 @@ public class EventController {
         "event.  It is useful for generating match sheets, but the UI is responsible for all formatting.")
     @GetMapping(value = "/{challongeUrl}/roundRobinMatchList")
     public List<RoundRobinMatch> getRoundRobinMatchList(
-            @PathVariable("challongeUrl") String challongeUrl
+        @PathVariable("challongeUrl") String challongeUrl
     ) {
         return eventManager.createRoundRobinMatchList(challongeUrl);
     }

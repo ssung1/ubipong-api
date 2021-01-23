@@ -7,10 +7,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
-import org.springframework.stereotype.Service;
 
 @Component
 @Value
@@ -18,29 +16,11 @@ import org.springframework.stereotype.Service;
 public class EventRepositoryImpl implements EventRepository {
     SpringJpaEventRepository springJpaEventRepository;
     ChallongeTournamentRepository challongeTournamentRepository;
-
-    private SpringJpaEvent mapToSpringJpaEvent(Event event) {
-        SpringJpaEvent springJpaEvent = new SpringJpaEvent();
-        springJpaEvent.setName(event.getName());
-        springJpaEvent.setTournamentId(event.getTournamentId());
-        springJpaEvent.setId(event.getId());
-        springJpaEvent.setChallongeUrl(event.getChallongeUrl());
-
-        return springJpaEvent;
-    }
-
-    private Event mapToEvent(SpringJpaEvent springJpaEvent) {
-        return Event.builder()
-            .challongeUrl(springJpaEvent.getChallongeUrl())
-            .id(springJpaEvent.getId())
-            .tournamentId(springJpaEvent.getTournamentId())
-            .name(springJpaEvent.getName())
-            .build();
-    }
+    EventMapper eventMapper;
 
     @Override
     public Event addEvent(Event event) {
-        SpringJpaEvent springJpaEvent = mapToSpringJpaEvent(event);
+        SpringJpaEvent springJpaEvent = eventMapper.mapEventToSpringJpaEvent(event);
         springJpaEvent.setId(null);
 
         SpringJpaEvent savedSpringJpaEvent = springJpaEventRepository.save(springJpaEvent);
@@ -56,6 +36,6 @@ public class EventRepositoryImpl implements EventRepository {
         challongeTournamentWrapper.setTournament(challongeTournament);
         challongeTournamentRepository.createTournament(challongeTournamentWrapper);
 
-        return mapToEvent(savedSpringJpaEvent);
+        return eventMapper.mapSpringJpaEventToEvent(savedSpringJpaEvent);
     }
 }

@@ -53,7 +53,8 @@ public class TestEventManager {
     @Autowired
     private SpringJpaEventRepository springJpaEventRepository;
     private final EventRepositoryImpl mockEventRepositoryImpl =
-        new EventRepositoryImpl(springJpaEventRepository, mockTournamentRepository);
+        new EventRepositoryImpl(springJpaEventRepository, mockTournamentRepository, 
+        new EventMapper());
 
     private EventManager subject;
 
