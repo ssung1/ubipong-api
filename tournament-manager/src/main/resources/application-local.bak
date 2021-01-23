@@ -1,0 +1,33 @@
+spring:
+  profiles: local
+  
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.h2.Driver
+    # url specifies a file name, appended with ".mv.db"
+    # jdbc:h2:{filename}
+
+    url: jdbc:h2:mem:testdb
+    # url: "jdbc:mysql://us-cdbr-iron-east-02.cleardb.net/heroku_b5dfdcf470ebc3c?"
+
+    username: sa
+    # username: bc35a072788c59
+
+    password:
+    # password: 0fd29610
+  
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  
+  h2:
+    console:
+      # use this to create an h2-only sql admin console within the application
+      enabled: true
+      # go to http://{host}/{path} to see the sql admin console
+      path: /h2-console
+
+challonge:
+  host: api.challonge.com
+  api-key: hAr1yQp6FjHcQ67c7C6nYV6IB3noaRTy1g6EUiGx

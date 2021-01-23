@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
@@ -9,6 +10,7 @@ import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
@@ -22,11 +24,12 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EventManager {
-    private ChallongeTournamentRepository challongeTournamentRepository;
-    private ChallongeParticipantRepository challongeParticipantRepository;
-    private ChallongeMatchRepository challongeMatchRepository;
-    private SpringJpaEventRepository springJpaEventRepository;
+    private final ChallongeTournamentRepository challongeTournamentRepository;
+    private final ChallongeParticipantRepository challongeParticipantRepository;
+    private final ChallongeMatchRepository challongeMatchRepository;
+    private final SpringJpaEventRepository springJpaEventRepository;
     private final EventRepository eventRepository;
+    private final EventMapper eventMapper;
 
     public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
         Integer playerId) {
@@ -337,21 +340,10 @@ public class EventManager {
         return result;
     }
 
-    public SpringJpaEvent addEvent(SpringJpaEvent event) {
-        SpringJpaEvent addedEvent = springJpaEventRepository.save(event);
-
-        ChallongeTournament challongeTournament = new ChallongeTournament();
-        challongeTournament.setName(event.getName());
-        challongeTournament.setUrl(event.getChallongeUrl());
-        challongeTournament.setDescription(event.getName());
-        challongeTournament.setTournamentType(SpringJpaEvent.EVENT_TYPE_ROUND_ROBIN);
-        challongeTournament.setGameName("table tennis");
-
-        ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
-        challongeTournamentWrapper.setTournament(challongeTournament);
-        challongeTournamentRepository.createTournament(challongeTournamentWrapper);
-
-        return addedEvent;
+    public SpringJpaEvent addEvent(SpringJpaEvent springJpaEvent) {
+        final Event eventToAdd = eventMapper.mapSpringJpaEventToEvent(springJpaEvent);
+        final Event addedEvent = eventRepository.addEvent(eventToAdd);
+        return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {

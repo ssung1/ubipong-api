@@ -4,7 +4,7 @@ import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
-
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;

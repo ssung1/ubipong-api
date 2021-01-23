@@ -19,20 +19,20 @@ public class EventRepositoryImpl implements EventRepository {
     EventMapper eventMapper;
 
     @Override
-    public Event addEvent(Event event) {
-        SpringJpaEvent springJpaEvent = eventMapper.mapEventToSpringJpaEvent(event);
+    public Event addEvent(final Event event) {
+        final SpringJpaEvent springJpaEvent = eventMapper.mapEventToSpringJpaEvent(event);
         springJpaEvent.setId(null);
 
-        SpringJpaEvent savedSpringJpaEvent = springJpaEventRepository.save(springJpaEvent);
+        final SpringJpaEvent savedSpringJpaEvent = springJpaEventRepository.save(springJpaEvent);
 
-        ChallongeTournament challongeTournament = new ChallongeTournament();
+        final ChallongeTournament challongeTournament = new ChallongeTournament();
         challongeTournament.setName(event.getName());
         challongeTournament.setUrl(event.getChallongeUrl());
         challongeTournament.setDescription(event.getName());
         challongeTournament.setTournamentType(SpringJpaEvent.EVENT_TYPE_ROUND_ROBIN);
         challongeTournament.setGameName("table tennis");
 
-        ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
+        final ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
         challongeTournamentWrapper.setTournament(challongeTournament);
         challongeTournamentRepository.createTournament(challongeTournamentWrapper);
 
