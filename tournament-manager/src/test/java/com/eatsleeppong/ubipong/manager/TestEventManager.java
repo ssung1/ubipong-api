@@ -14,7 +14,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.webservices.client.AutoConfigureWebServiceClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,18 +46,19 @@ public class TestEventManager {
     private final String challongeUrl = "bikiniBottomOpen-RoundRobin-Group-1";
     private final String eventName = "Round Robin Group 1";
 
-    private final ChallongeTournamentRepository mockTournamentRepository =
-        mock(ChallongeTournamentRepository.class);
-    private final ChallongeParticipantRepository mockParticipantRepository =
-        mock(ChallongeParticipantRepository.class);
-    private final ChallongeMatchRepository mockMatchRepository =
-        mock(ChallongeMatchRepository.class);
+    @MockBean
+    private ChallongeTournamentRepository mockTournamentRepository;
+
+    @MockBean
+    private ChallongeParticipantRepository mockParticipantRepository;
+
+    @MockBean
+    private ChallongeMatchRepository mockMatchRepository;
+
     @Autowired
     private SpringJpaEventRepository springJpaEventRepository;
-    private final EventRepositoryImpl mockEventRepositoryImpl =
-        new EventRepositoryImpl(springJpaEventRepository, mockTournamentRepository, 
-        new EventMapper());
 
+    @Autowired
     private EventManager subject;
 
     private final Integer spongebobId = 123;
@@ -193,11 +196,6 @@ public class TestEventManager {
             .thenReturn(getMatchWrapperArray1());
         when(mockTournamentRepository.getTournament(challongeUrl))
             .thenReturn(getTournamentWrapper1());
-
-        subject = new EventManager(
-            mockTournamentRepository, mockParticipantRepository,
-            mockMatchRepository, springJpaEventRepository, mockEventRepositoryImpl
-        );
     }
 
     @Test
