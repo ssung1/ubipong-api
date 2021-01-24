@@ -7,7 +7,6 @@ import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -61,9 +60,6 @@ public class TestEventController {
 
     @MockBean
     ChallongeTournamentRepository mockTournamentRepository;
-
-    @Autowired
-    SpringJpaEventRepository eventRepository;
 
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
@@ -267,7 +263,7 @@ public class TestEventController {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].winner").value(is(player1Name)))
             .andExpect(jsonPath("$[0].loser").value(is(player2Name)))
-            .andExpect(jsonPath("$[0].eventName").value(is(eventName)));
-//        [{"winner":"spongebob","loser":"patrick","eventName":"Round Robin Group 3","resultString":"9"}]
+            .andExpect(jsonPath("$[0].eventName").value(is(eventName)))
+            .andExpect(jsonPath("$[0].resultString").value(is("9"))); // 9 because player1 won 11-9 
     }
 }
