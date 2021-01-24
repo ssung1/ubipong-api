@@ -12,7 +12,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipan
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
-
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import lombok.AllArgsConstructor;
@@ -340,8 +340,8 @@ public class EventManager {
         return result;
     }
 
-    public SpringJpaEvent addEvent(SpringJpaEvent springJpaEvent) {
-        final Event eventToAdd = eventMapper.mapSpringJpaEventToEvent(springJpaEvent);
+    public SpringJpaEvent addEvent(EventDto eventDto) {
+        final Event eventToAdd = eventMapper.mapEventDtoToEvent(eventDto);
         final Event addedEvent = eventRepository.addEvent(eventToAdd);
         return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }

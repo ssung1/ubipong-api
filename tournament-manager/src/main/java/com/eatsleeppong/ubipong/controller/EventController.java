@@ -3,25 +3,27 @@ package com.eatsleeppong.ubipong.controller;
 import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/rest/v0/events")
 public class EventController {
 
-    private EventManager eventManager;
-
-    public EventController(EventManager eventManager) {
-        this.eventManager = eventManager;
-    }
+    private final EventManager eventManager;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +
@@ -71,7 +73,7 @@ public class EventController {
         "This endpoint should be used instead of /crud/events.")
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public SpringJpaEvent addEvent(@RequestBody SpringJpaEvent event) {
-        return eventManager.addEvent(event);
+    public SpringJpaEvent addEvent(@RequestBody EventDto eventDto) {
+        return eventManager.addEvent(eventDto);
     }
 }

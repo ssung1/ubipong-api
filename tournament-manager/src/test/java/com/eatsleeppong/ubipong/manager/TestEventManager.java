@@ -6,7 +6,7 @@ import com.eatsleeppong.ubipong.model.challonge.*;
 
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
-
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import org.junit.jupiter.api.BeforeEach;
@@ -180,11 +180,13 @@ public class TestEventManager {
         return tw1;
     }
 
-    private SpringJpaEvent createEvent() {
-        SpringJpaEvent event = new SpringJpaEvent();
-        event.setName(eventName);
-        event.setChallongeUrl(challongeUrl);
-        event.setTournamentId(1);
+    private EventDto createEvent() {
+        final EventDto event = new EventDto(
+            0,
+            challongeUrl,
+            eventName,
+            1
+        );
         return event;
     }
 
@@ -425,9 +427,13 @@ public class TestEventManager {
     }
 
     @Test
+    @DisplayName("should find an existing event")
     public void testFindEvent() {
-        SpringJpaEvent event = createEvent();
+        EventDto event = createEvent();
+        assertThat(event.getChallongeUrl(), is(event.getChallongeUrl()));
+
         SpringJpaEvent savedEvent = subject.addEvent(event);
+        assertThat(savedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
 
         SpringJpaEvent loadedEvent = subject.findEvent(savedEvent.getId());
         assertThat(loadedEvent.getName(), is(event.getName()));
@@ -505,7 +511,7 @@ public class TestEventManager {
     @Test
     @DisplayName("add an event in our own database and a tournament on challonge.com")
     public void testAddEventLinkedToChallonge() {
-        SpringJpaEvent event = createEvent();
+        EventDto event = createEvent();
 
         ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
         SpringJpaEvent addedEvent = subject.addEvent(event);

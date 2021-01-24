@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.controller;
 
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
@@ -76,11 +77,13 @@ public class TestEventController {
         return tw1;
     }
 
-    private SpringJpaEvent createEvent() {
-        final SpringJpaEvent event = new SpringJpaEvent();
-        event.setName(eventName);
-        event.setChallongeUrl(challongeUrl);
-            
+    private EventDto createEvent() {
+        final EventDto event = new EventDto(
+            0,
+            challongeUrl,
+            eventName,
+            1
+        );
         return event;
     }
 
@@ -125,7 +128,7 @@ public class TestEventController {
             .thenReturn(getTournamentWrapper1());
     }
 
-    public SpringJpaEvent addEvent(SpringJpaEvent event) throws Exception {
+    public SpringJpaEvent addEvent(EventDto event) throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         final MvcResult mvcResult = mockMvc.perform(
@@ -202,7 +205,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
-        final SpringJpaEvent event = createEvent();
+        final EventDto event = createEvent();
         final SpringJpaEvent addedEvent = addEvent(event);
 
         mockMvc.perform(
@@ -216,7 +219,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
-        final SpringJpaEvent event = createEvent();
+        final EventDto event = createEvent();
 
         final SpringJpaEvent addedEvent = addEvent(event);
         assertThat(addedEvent.getId(), not(is(0)));
