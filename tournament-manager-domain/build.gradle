@@ -39,7 +39,7 @@ dependencies {
 
 test {
     // disable html report because we want to view the combined report instead
-    reports.html.enabled = false
+    // reports.html.enabled = false
     // for junit report, we simply save them to a shared path
     testResultsDirName = "${rootProject.buildDir}/test-results/${project.name}"
 	useJUnitPlatform()
