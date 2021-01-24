@@ -238,8 +238,7 @@ public class TestEventController {
 
         mockMvc.perform(
             get(uriComponents.expand(uriMap).toUri())
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].player1Id").value(is(player1Id)))
             .andExpect(jsonPath("$[0].player1Name").value(is(player1Name)))
@@ -250,5 +249,25 @@ public class TestEventController {
             .andExpect(jsonPath("$[0].matchId").value(is(matchId)))
             .andExpect(jsonPath("$[0].status").value(is(Match.STATUS_COMPLETE)))
             .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)));
+    }
+
+    @Test
+    @DisplayName("should generate the event result report")
+    public void testEventResultList() throws Exception {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path("/rest/v0/events/{challongeUrl}/result")
+            .build();
+        Map<String, String> uriMap = Stream.of(new String[][] {
+            { "challongeUrl", challongeUrl },
+        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+        mockMvc.perform(
+            get(uriComponents.expand(uriMap).toUri())
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].winner").value(is(player1Name)))
+            .andExpect(jsonPath("$[0].loser").value(is(player2Name)))
+            .andExpect(jsonPath("$[0].eventName").value(is(eventName)));
+//        [{"winner":"spongebob","loser":"patrick","eventName":"Round Robin Group 3","resultString":"9"}]
     }
 }
