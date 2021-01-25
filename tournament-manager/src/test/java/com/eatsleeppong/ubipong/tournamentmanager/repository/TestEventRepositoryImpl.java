@@ -56,4 +56,17 @@ public class TestEventRepositoryImpl {
         assertThat(loadedEvent.getName(), is(addedEvent.getName()));
         assertThat(loadedEvent.getChallongeUrl(), is(addedEvent.getChallongeUrl()));
     }
+
+    @Test
+    @DisplayName("should find an existing event by challongeUrl")
+    public void testFindEventByChallongeUrl() {
+        final Event eventToAdd = createEvent();
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+
+        final Event loadedEvent = eventRepositoryImpl.getOneByChallongeUrl(addedEvent.getChallongeUrl());
+
+        assertThat(loadedEvent.getId(), is(addedEvent.getId()));
+        assertThat(loadedEvent.getName(), is(addedEvent.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(addedEvent.getChallongeUrl()));
+    }
 }

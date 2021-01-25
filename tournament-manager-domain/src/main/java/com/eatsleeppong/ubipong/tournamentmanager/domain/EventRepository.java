@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface EventRepository {
     Event save(Event event);
     Event getOne(Integer id);
+    Event getOneByChallongeUrl(String challongeUrl);
 }

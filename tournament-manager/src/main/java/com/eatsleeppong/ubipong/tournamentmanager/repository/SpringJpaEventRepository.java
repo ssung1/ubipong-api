@@ -10,4 +10,5 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "events", path = "events")
 public interface SpringJpaEventRepository extends JpaRepository<SpringJpaEvent, Integer> {
     List<SpringJpaEvent> findByTournamentId(@Param("tournamentId") Integer tournamentId);
+    List<SpringJpaEvent> findByChallongeUrl(@Param("challongeUrl") String challongeUrl);
 }
