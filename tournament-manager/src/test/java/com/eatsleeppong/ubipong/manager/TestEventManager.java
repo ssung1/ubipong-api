@@ -425,6 +425,7 @@ public class TestEventManager {
     }
 
     @Test
+    @DisplayName("should create tournament result list")
     public void testCreateTournamentResultList() {
         final EventDto event = createEvent();
         subject.addEvent(event);
@@ -461,15 +462,15 @@ public class TestEventManager {
                 .collect(Collectors.toList());
         assertThat(allResultStrings, hasItem("4 5 6"));
         assertThat(allResultStrings, hasItem("9 -8 6 5"));
-
-        assertThat(tournamentResultList[0].getEventName(), is(eventName));
     }
 
     @Test
+    @DisplayName("should includ event name in the tournament result list")
     public void testCreateTournamentResultListShouldIncludeEventTitle() {
-        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
+        final EventDto event = createEvent();
+        subject.addEvent(event);
 
-        assertThat(tournamentResultList, arrayWithSize(2));
+        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 
         // event name in the tournament result list is really the event title
         assertThat(tournamentResultList[0].getEventName(), is(eventName));

@@ -319,10 +319,6 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
-    public SpringJpaEvent findEvent(String challongeUrl) {
-        return eventMapper.mapEventToSpringJpaEvent(eventRepository.getOneByChallongeUrl(challongeUrl));
-    }
-
     public SpringJpaEvent addEvent(EventDto eventDto) {
         final Event eventToAdd = eventMapper.mapEventDtoToEvent(eventDto);
         final Event addedEvent = eventRepository.save(eventToAdd);
@@ -330,7 +326,7 @@ public class EventManager {
     }
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {
-        final SpringJpaEvent event = findEvent(challongeUrl);
+        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
                 challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));

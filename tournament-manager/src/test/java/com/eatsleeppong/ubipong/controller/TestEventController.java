@@ -214,8 +214,8 @@ public class TestEventController {
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
         final EventDto event = createEvent();
-
         final SpringJpaEvent addedEvent = addEvent(event);
+
         assertThat(addedEvent.getId(), not(is(0)));
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
@@ -248,6 +248,8 @@ public class TestEventController {
     @Test
     @DisplayName("should generate the event result report")
     public void testEventResultList() throws Exception {
+        addEvent(createEvent());
+
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/result")
             .build();
