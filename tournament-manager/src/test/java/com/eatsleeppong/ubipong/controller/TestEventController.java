@@ -74,13 +74,11 @@ public class TestEventController {
     }
 
     private EventDto createEvent() {
-        final EventDto event = new EventDto(
-            0,
-            challongeUrl,
-            eventName,
-            1
-        );
-        return event;
+        return EventDto.builder()
+            .challongeUrl(challongeUrl)
+            .name(eventName)
+            .tournamentId(1)
+            .build();
     }
 
     @BeforeEach
