@@ -19,7 +19,7 @@ public class EventRepositoryImpl implements EventRepository {
     EventMapper eventMapper;
 
     @Override
-    public Event addEvent(final Event event) {
+    public Event save(final Event event) {
         final SpringJpaEvent springJpaEvent = eventMapper.mapEventToSpringJpaEvent(event);
         springJpaEvent.setId(null);
 

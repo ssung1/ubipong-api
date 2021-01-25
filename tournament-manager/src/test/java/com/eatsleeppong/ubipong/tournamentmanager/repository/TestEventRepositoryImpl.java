@@ -36,7 +36,7 @@ public class TestEventRepositoryImpl {
     @DisplayName("should be able to add event and a corresponding tournament on challonge.com")
     public void testAddEvent() {
         final Event eventToAdd = createEvent();
-        final Event addedEvent = eventRepositoryImpl.addEvent(eventToAdd);
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
 
         assertThat(addedEvent.getId(), notNullValue());
         assertThat(addedEvent.getTournamentId(), is(eventToAdd.getTournamentId()));

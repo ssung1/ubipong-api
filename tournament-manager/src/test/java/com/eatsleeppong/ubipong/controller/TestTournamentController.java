@@ -169,7 +169,7 @@ public class TestTournamentController {
 
         final Integer tournamentId = addedSpringJpaTournament.getId();
         final Event eventToAdd = createEvent(tournamentId);
-        final Event addedEvent = eventRepositoryImpl.addEvent(eventToAdd);
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path(tournamentContext)

@@ -342,7 +342,7 @@ public class EventManager {
 
     public SpringJpaEvent addEvent(EventDto eventDto) {
         final Event eventToAdd = eventMapper.mapEventDtoToEvent(eventDto);
-        final Event addedEvent = eventRepository.addEvent(eventToAdd);
+        final Event addedEvent = eventRepository.save(eventToAdd);
         return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }
 
