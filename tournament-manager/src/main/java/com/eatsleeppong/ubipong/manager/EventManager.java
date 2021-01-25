@@ -319,12 +319,6 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
-    // new findEvent
-    public SpringJpaEvent findEvent(Integer id) {
-        final Optional<SpringJpaEvent> event = springJpaEventRepository.findById(id);
-        return event.orElseThrow();
-    }
-
     // old findEvent by challongeUrl
     @Deprecated
     public SpringJpaEvent findEvent(String challongeUrl) {

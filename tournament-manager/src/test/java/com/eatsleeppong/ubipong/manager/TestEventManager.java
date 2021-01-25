@@ -425,20 +425,6 @@ public class TestEventManager {
     }
 
     @Test
-    @DisplayName("should find an existing event")
-    public void testFindEvent() {
-        EventDto event = createEvent();
-        assertThat(event.getChallongeUrl(), is(event.getChallongeUrl()));
-
-        SpringJpaEvent savedEvent = subject.addEvent(event);
-        assertThat(savedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-
-        SpringJpaEvent loadedEvent = subject.findEvent(savedEvent.getId());
-        assertThat(loadedEvent.getName(), is(event.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-    }
-
-    @Test
     public void testCreateTournamentResultList() {
         final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 

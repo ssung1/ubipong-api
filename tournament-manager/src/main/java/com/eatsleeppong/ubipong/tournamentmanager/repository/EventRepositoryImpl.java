@@ -38,4 +38,9 @@ public class EventRepositoryImpl implements EventRepository {
 
         return eventMapper.mapSpringJpaEventToEvent(savedSpringJpaEvent);
     }
+
+    @Override
+    public Event getOne(Integer id) {
+        return eventMapper.mapSpringJpaEventToEvent(springJpaEventRepository.getOne(id));
+    }
 }

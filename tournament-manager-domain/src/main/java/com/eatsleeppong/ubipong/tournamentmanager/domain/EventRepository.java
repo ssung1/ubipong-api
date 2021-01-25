@@ -7,4 +7,5 @@ import java.util.Optional;
 // (but how to create new event???)
 public interface EventRepository {
     Event save(Event event);
+    Event getOne(Integer id);
 }

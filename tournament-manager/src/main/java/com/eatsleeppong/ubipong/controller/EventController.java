@@ -4,6 +4,7 @@ import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
@@ -24,6 +25,8 @@ import java.util.List;
 public class EventController {
 
     private final EventManager eventManager;
+    private final EventRepositoryImpl eventRepository;
+    private final EventMapper eventMapper;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +
@@ -48,7 +51,7 @@ public class EventController {
     public SpringJpaEvent getEvent(
         @PathVariable("id") Integer id
     ) {
-        return eventManager.findEvent(id);
+        return eventMapper.mapEventToSpringJpaEvent(eventRepository.getOne(id));
     }
 
     @ApiOperation(value = "Event Result", notes = "This generates the results of an event.  It is like " +
