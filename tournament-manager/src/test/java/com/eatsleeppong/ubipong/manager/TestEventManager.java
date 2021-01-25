@@ -426,6 +426,9 @@ public class TestEventManager {
 
     @Test
     public void testCreateTournamentResultList() {
+        final EventDto event = createEvent();
+        subject.addEvent(event);
+
         final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 
         assertThat(tournamentResultList, arrayWithSize(2));
@@ -458,6 +461,8 @@ public class TestEventManager {
                 .collect(Collectors.toList());
         assertThat(allResultStrings, hasItem("4 5 6"));
         assertThat(allResultStrings, hasItem("9 -8 6 5"));
+
+        assertThat(tournamentResultList[0].getEventName(), is(eventName));
     }
 
     @Test
@@ -495,15 +500,15 @@ public class TestEventManager {
     @Test
     @DisplayName("add an event in our own database and a tournament on challonge.com")
     public void testAddEventLinkedToChallonge() {
-        EventDto event = createEvent();
+        final EventDto event = createEvent();
 
-        ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
-        SpringJpaEvent addedEvent = subject.addEvent(event);
+        final ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
+        final SpringJpaEvent addedEvent = subject.addEvent(event);
         verify(mockTournamentRepository).createTournament(argument.capture());
 
         assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
 
-        Optional<SpringJpaEvent> retrievedEvent = springJpaEventRepository.findById(addedEvent.getId());
+        final Optional<SpringJpaEvent> retrievedEvent = springJpaEventRepository.findById(addedEvent.getId());
         assertTrue(retrievedEvent.isPresent());
     }
 }

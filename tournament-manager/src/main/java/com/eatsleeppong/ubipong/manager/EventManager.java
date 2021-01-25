@@ -319,19 +319,8 @@ public class EventManager {
         return createRoundRobinGrid(matchList, participantList);
     }
 
-    // old findEvent by challongeUrl
-    @Deprecated
     public SpringJpaEvent findEvent(String challongeUrl) {
-        ChallongeTournament challongeTournament = challongeTournamentRepository
-            .getTournament(challongeUrl)
-            .getTournament();
-
-        SpringJpaEvent result = new SpringJpaEvent();
-        result.setChallongeTournament(challongeTournament);
-        result.setId(challongeTournament.getId());
-        result.setName(challongeTournament.getUrl());
-
-        return result;
+        return eventMapper.mapEventToSpringJpaEvent(eventRepository.getOneByChallongeUrl(challongeUrl));
     }
 
     public SpringJpaEvent addEvent(EventDto eventDto) {
@@ -359,7 +348,7 @@ public class EventManager {
 
                     final TournamentResultRequestLineItem tournamentResultRequestLineItem =
                             new TournamentResultRequestLineItem();
-                    tournamentResultRequestLineItem.setEventName(event.getChallongeTournament().getName());
+                    tournamentResultRequestLineItem.setEventName(event.getName());
 
                     final RoundRobinCell roundRobinCell = createRoundRobinCell(m);
                     tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
