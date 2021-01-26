@@ -56,4 +56,16 @@ public class Match {
             .map(String::valueOf)
             .collect(Collectors.joining(" "));
     }
+
+    public Match transpose() {
+        return Match.builder()
+            .id(id)
+            .player1Id(player2Id)
+            .player2Id(player1Id)
+            .resultCode(resultCode)
+            .status(status)
+            .winnerId(winnerId)
+            .gameList(gameList.stream().map(Game::transpose).collect(Collectors.toUnmodifiableList()))
+            .build();
+    }
 }

@@ -31,4 +31,13 @@ public class Game {
             return player1Score > player2Score;
         }
     }
+
+    public Game transpose() {
+        return Game.builder()
+            .player1Score(player2Score)
+            .player2Score(player1Score)
+            .status(status)
+            .winnerIndex(winnerIndex)
+            .build();
+    }
 }

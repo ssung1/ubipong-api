@@ -70,6 +70,24 @@ public class TestMatch {
     }
 
     @Test
+    @DisplayName("should be able to create the transposition, which has the same reult, but with player1 and 2 reversed")
+    public void testTranspose() {
+        final Game.GameBuilder gb = Game.builder().status(Game.STATUS_COMPLETE);
+        final Match m = match.withGameList(List.of(
+            gb.player1Score(11).player2Score(9).build(),
+            gb.player1Score(4).player2Score(11).build(),
+            gb.player1Score(13).player2Score(11).build()
+        ));
+
+        final Match mt = m.transpose();
+
+        assertThat(mt.getPlayer1Id(), is(m.getPlayer2Id()));
+        assertThat(mt.getPlayer2Id(), is(m.getPlayer1Id()));
+        assertThat(mt.getWinnerId(), is(m.getWinnerId()));
+        assertThat(mt.getScoreSummary(), is("-9 4 -11"));
+    }
+
+    @Test
     @DisplayName("should flag the result as invalid if the scores are not valid")
     @Disabled("will do this later")
     public void testResultInvalidIfScoreInvalid() {
