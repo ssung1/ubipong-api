@@ -71,6 +71,9 @@ public class Event {
      */
     Integer tournamentId;
 
+    /**
+     * Create a map of player ID to player name
+     */
     public Map<Integer, String> getPlayerNameMap() {
 
         final List<Player> playerList = playerRepository.findByChallongeUrl(challongeUrl);

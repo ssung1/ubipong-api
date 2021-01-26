@@ -75,19 +75,6 @@ public class EventManager {
     }
 
     /**
-     * Create a map of player ID to player name
-     */
-    public Map<Integer, String> createPlayerNameMap(
-        List<ChallongeParticipant> playerList) {
-
-        return playerList.parallelStream()
-            .collect(Collectors.collectingAndThen(
-                Collectors.toMap(ChallongeParticipant::getId,
-                    ChallongeParticipant::getDisplayName),
-                Collections::<Integer, String> unmodifiableMap));
-    }
-
-    /**
      * win or loss -- if player 1 wins, it is a "win"
      * if player 1 loses, it is a "loss"
      */
@@ -327,8 +314,6 @@ public class EventManager {
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
-                challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
         final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
