@@ -220,61 +220,6 @@ public class TestEventManager {
     }
 
     @Test
-    public void testUnwrapChallongeMatchWrapperArray() {
-        ChallongeMatch m1 = new ChallongeMatch();
-        m1.setPlayer1Id(spongebobId);
-        m1.setPlayer2Id(patrickId);
-        m1.setWinnerId(spongebobId);
-        m1.setScoresCsv("11-4,11-5,11-6");
-
-        ChallongeMatchWrapper mw1 = new ChallongeMatchWrapper();
-        mw1.setMatch(m1);
-
-        ChallongeMatch m2 = new ChallongeMatch();
-        m2.setPlayer1Id(patrickId);
-        m2.setPlayer2Id(squidwardId);
-        m2.setWinnerId(patrickId);
-        m2.setScoresCsv("11-9,8-11,11-6,11-5");
-
-        ChallongeMatchWrapper mw2 = new ChallongeMatchWrapper();
-        mw2.setMatch(m2);
-
-        ChallongeMatch m3 = new ChallongeMatch();
-        m3.setPlayer1Id(squidwardId);
-        m3.setPlayer2Id(spongebobId);
-        m1.setWinnerId(spongebobId);
-        m3.setScoresCsv("5-11,6-11,7-11");
-
-        ChallongeMatchWrapper mw3 = new ChallongeMatchWrapper();
-        mw3.setMatch(m3);
-
-        ChallongeMatchWrapper[] challongeWrapperArray = 
-            new ChallongeMatchWrapper[] {
-                mw1, mw2, mw3
-            };
-        
-        List<ChallongeMatch> challongeMatchList =
-            subject.unwrapChallongeMatchWrapperArray(challongeWrapperArray);
-
-        assertThat(challongeMatchList, hasSize(3));
-        assertThat(challongeMatchList, hasItem(m1));
-        assertThat(challongeMatchList, hasItem(m2));
-        assertThat(challongeMatchList, hasItem(m3));
-    }
-
-    @Test
-    public void testFindByPlayer1() {
-        List<ChallongeMatch> matchList = getMatchList1();
-        List<ChallongeMatch> spongebobMatchList =
-            subject.findByPlayer1(matchList, spongebobId);
-
-        // in this match, player 1 is spongebob
-        ChallongeMatch player1IsSpongebob = matchList.get(0);
-
-        assertThat(spongebobMatchList, hasItem(player1IsSpongebob));
-    }
-
-    @Test
     @DisplayName("should create the display for a round robin grid from match result")
     public void testCreateRoundRobinGridOneSide() {
         subject.addEvent(createEvent());

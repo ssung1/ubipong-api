@@ -22,24 +22,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EventManager {
-    private final ChallongeMatchRepository challongeMatchRepository;
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
-
-    public List<ChallongeMatch> findByPlayer1(List<ChallongeMatch> matchList,
-        Integer playerId) {
-        return matchList.stream()
-            .filter((m) -> m.getPlayer1Id().equals(playerId))
-            .collect(Collectors.toList());
-    }
-
-    public List<ChallongeMatch> unwrapChallongeMatchWrapperArray(
-        ChallongeMatchWrapper[] matchWrapperArray
-    ) {
-        return Arrays.stream(matchWrapperArray)
-            .map(ChallongeMatchWrapper::getMatch)
-            .collect(Collectors.toList());
-    }
 
     /**
      * win or loss -- if player 1 wins, it is a "win"
@@ -51,38 +35,6 @@ public class EventManager {
             return true;
         }
         return false;
-    }
-
-    private List<Game> createGameList(String scoreCsv) {
-        String[] scoreArray = scoreCsv.split(",");
-        List<Game> result = new ArrayList<>();
-
-        for (String scoreRaw : scoreArray) {
-            String score = scoreRaw.trim();
-            Game game = new Game();
-            int dash = score.indexOf('-');
-            if (dash > 0) {
-                String player1Score = score.substring(0, dash);
-                game.setPlayer1Score(Integer.parseInt(player1Score));
-                String player2Score = score.substring(dash + 1);
-                game.setPlayer2Score(Integer.parseInt(player2Score));
-
-                if (game.getPlayer1Score() > game.getPlayer2Score()) {
-                    game.setWinForPlayer1(true);
-                } else {
-                    game.setWinForPlayer1(false);
-                }
-            }
-            else {
-                game.setPlayer1Score(Integer.parseInt(score));
-            }
-            result.add(game);
-        }
-        return result;
-    }
-
-    private boolean isMatchResultValid(ChallongeMatch match) {
-        return "complete".equals(match.getState());
     }
 
     private RoundRobinCell createRoundRobinCell(Match match) {
