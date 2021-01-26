@@ -35,6 +35,10 @@ public class Match {
 
     private List<Game> gameList;
 
+    public Game getGame(int index) {
+        return gameList.get(index);
+    }
+    
     public boolean isResultValid() {
         return STATUS_COMPLETE == status;
     }

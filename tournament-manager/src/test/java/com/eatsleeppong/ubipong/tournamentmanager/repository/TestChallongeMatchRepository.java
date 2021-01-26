@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -97,12 +98,40 @@ public class TestChallongeMatchRepository {
         assertThat(matchList.get(0).getPlayer2Id(), is(patrickId));
         assertThat(matchList.get(0).getWinnerId(), is(spongebobId));
         assertThat(matchList.get(0).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
+        assertThat(matchList.get(0).getGame(0).getPlayer1Score(), is(11));
+        assertThat(matchList.get(0).getGame(0).getPlayer2Score(), is(4));
+        assertThat(matchList.get(0).getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(0).getGame(0).isWinForPlayer1(), is(true));
+        assertThat(matchList.get(0).getGame(1).getPlayer1Score(), is(11));
+        assertThat(matchList.get(0).getGame(1).getPlayer2Score(), is(5));
+        assertThat(matchList.get(0).getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(0).getGame(1).isWinForPlayer1(), is(true));
+        assertThat(matchList.get(0).getGame(2).getPlayer1Score(), is(11));
+        assertThat(matchList.get(0).getGame(2).getPlayer2Score(), is(6));
+        assertThat(matchList.get(0).getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(0).getGame(2).isWinForPlayer1(), is(true));
 
         assertThat(matchList.get(1).getStatus(), is(Match.STATUS_COMPLETE));
         assertThat(matchList.get(1).getPlayer1Id(), is(patrickId));
         assertThat(matchList.get(1).getPlayer2Id(), is(squidwardId));
         assertThat(matchList.get(1).getWinnerId(), is(squidwardId));
         assertThat(matchList.get(1).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
+        assertThat(matchList.get(1).getGame(0).getPlayer1Score(), is(9));
+        assertThat(matchList.get(1).getGame(0).getPlayer2Score(), is(11));
+        assertThat(matchList.get(1).getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(1).getGame(0).isWinForPlayer1(), is(false));
+        assertThat(matchList.get(1).getGame(1).getPlayer1Score(), is(11));
+        assertThat(matchList.get(1).getGame(1).getPlayer2Score(), is(8));
+        assertThat(matchList.get(1).getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(1).getGame(1).isWinForPlayer1(), is(true));
+        assertThat(matchList.get(1).getGame(2).getPlayer1Score(), is(6));
+        assertThat(matchList.get(1).getGame(2).getPlayer2Score(), is(11));
+        assertThat(matchList.get(1).getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(1).getGame(2).isWinForPlayer1(), is(false));
+        assertThat(matchList.get(1).getGame(3).getPlayer1Score(), is(5));
+        assertThat(matchList.get(1).getGame(3).getPlayer2Score(), is(11));
+        assertThat(matchList.get(1).getGame(3).getStatus(), is(Game.STATUS_COMPLETE));
+        assertThat(matchList.get(1).getGame(3).isWinForPlayer1(), is(false));
 
         assertThat(matchList.get(2).getStatus(), is(Match.STATUS_INCOMPLETE));
         assertThat(matchList.get(2).getPlayer1Id(), is(spongebobId));
