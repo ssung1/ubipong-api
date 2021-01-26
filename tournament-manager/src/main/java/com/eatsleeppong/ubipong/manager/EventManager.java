@@ -321,7 +321,7 @@ public class EventManager {
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
+        final List<Match> matchList = event.getMatchList();
 
         final Map<Integer, Integer> playerIndexMap = event.getPlayerIndexMap();
         final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
@@ -333,9 +333,9 @@ public class EventManager {
 
             roundRobinMatch.setMatchId(m.getId());
 
-            if (ChallongeMatch.STATE_COMPLETE.equals(m.getState())) {
+            if (Match.STATUS_COMPLETE.equals(m.getStatus())) {
                 roundRobinMatch.setStatus(Match.STATUS_COMPLETE);
-                // currently there is no way to record default
+                // currently there is no way to record a defaulted match
                 roundRobinMatch.setResultCode(Match.RESULT_CODE_WIN_BY_PLAYING);
             } else {
                 roundRobinMatch.setStatus(Match.STATUS_INCOMPLETE);
