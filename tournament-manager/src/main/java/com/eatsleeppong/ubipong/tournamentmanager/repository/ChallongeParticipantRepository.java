@@ -24,19 +24,21 @@ public class ChallongeParticipantRepository implements PlayerRepository {
     private String host;
     private String apiKey;
     private PlayerMapper playerMapper;
+    private RestTemplate restTemplate;
 
     public ChallongeParticipantRepository(
         @Value("${challonge.host}") final String host,
         @Value("${challonge.api-key}") final String apiKey,
-        final PlayerMapper playerMapper) {
+        final PlayerMapper playerMapper,
+        final RestTemplate restTemplate) {
         this.host = host;
         this.apiKey = apiKey;
         this.playerMapper = playerMapper;
+        this.restTemplate = restTemplate;
     }
 
     public ChallongeParticipantWrapper[] getParticipantList(
         String tournament) {
-        RestTemplate rs = new RestTemplate();
 
         Map<String, String> uriMap = new HashMap<>();
         uriMap.put("tournament", tournament);
@@ -50,7 +52,7 @@ public class ChallongeParticipantRepository implements PlayerRepository {
             .queryParam("api_key", apiKey)
             .build();
 
-            return rs.getForObject(uriComponents.expand(uriMap).toUri(),
+            return restTemplate.getForObject(uriComponents.expand(uriMap).toUri(),
             ChallongeParticipantWrapper[].class);
     }
 

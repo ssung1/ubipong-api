@@ -508,7 +508,8 @@ public class TestEventManager {
     public void testAddEventLinkedToChallonge() {
         final EventDto event = createEvent();
 
-        final ArgumentCaptor<ChallongeTournamentWrapper> argument = ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
+        final ArgumentCaptor<ChallongeTournamentWrapper> argument = 
+           ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
         final SpringJpaEvent addedEvent = subject.addEvent(event);
         verify(mockTournamentRepository).createTournament(argument.capture());
 
