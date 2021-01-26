@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.manager;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
@@ -221,7 +222,9 @@ public class EventManager {
      */
     private RoundRobinCell[][] createRoundRobinGrid(
         List<ChallongeMatch> matchList,
-        List<ChallongeParticipant> playerList) {
+        Event event) {
+
+        List<Player> playerList = event.getPlayerList();
 
         int size = playerList.size();
         RoundRobinCell[][] innerGrid = new RoundRobinCell[size][size];
@@ -233,7 +236,7 @@ public class EventManager {
             }
         }
 
-        final Map<Integer, Integer> playerMap = createPlayerIndexMap(playerList);
+        final Map<Integer, Integer> playerMap = event.getPlayerIndexMap();
 
         for (ChallongeMatch match : matchList) {
             Integer player1 = match.getPlayer1Id();
@@ -271,7 +274,7 @@ public class EventManager {
             // second column is name
             RoundRobinCell secondColumn = new RoundRobinCell();
             secondColumn.setType(RoundRobinCell.TYPE_TEXT);
-            secondColumn.setContent(playerList.get(i).getDisplayName());
+            secondColumn.setContent(playerList.get(i).getName());
             columnList.add(secondColumn);
 
             // add remaining cells
@@ -296,6 +299,7 @@ public class EventManager {
      * @param challongeUrl
      */
     public RoundRobinCell[][] createRoundRobinGrid(String challongeUrl) {
+        Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         List<ChallongeParticipant> participantList =
             unwrapChallongeParticipantWrapperArray(
                 challongeParticipantRepository.getParticipantList(challongeUrl));
@@ -303,7 +307,7 @@ public class EventManager {
             unwrapChallongeMatchWrapperArray(
                 challongeMatchRepository.getMatchList(challongeUrl));
 
-        return createRoundRobinGrid(matchList, participantList);
+        return createRoundRobinGrid(matchList, event);
     }
 
     public SpringJpaEvent addEvent(EventDto eventDto) {

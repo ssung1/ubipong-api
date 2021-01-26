@@ -107,4 +107,8 @@ public class Event {
 
         return result;
     }
+
+    public List<Player> getPlayerList() {
+        return playerRepository.findByChallongeUrl(challongeUrl);
+    }
 }

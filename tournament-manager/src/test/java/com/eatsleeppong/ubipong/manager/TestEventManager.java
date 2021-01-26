@@ -313,7 +313,9 @@ public class TestEventManager {
     }
 
     @Test
+    @DisplayName("should create the display for a round robin grid from match result")
     public void testCreateRoundRobinGridOneSide() {
+        subject.addEvent(createEvent());
         RoundRobinCell[][] roundRobinGrid =
             subject.createRoundRobinGrid(challongeUrl);
 
@@ -424,7 +426,9 @@ public class TestEventManager {
      * @see #testCreateRoundRobinGridOneSide
      */
     @Test
+    @DisplayName("should create round robin grid from both player's point of view")
     public void testCreateRoundRobinGridBothSides() {
+        subject.addEvent(createEvent());
         RoundRobinCell[][] roundRobinGrid =
             subject.createRoundRobinGrid(challongeUrl);
 

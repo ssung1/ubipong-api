@@ -155,7 +155,9 @@ public class TestEventController {
     }
 
     @Test
+    @DisplayName("should be able to get the bracket display for a round robin event")
     public void testGetRoundRobinGrid() throws Exception {
+        addEvent(createEvent());
         mockMvc.perform(
             get("/rest/v0/events/" + challongeUrl + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
