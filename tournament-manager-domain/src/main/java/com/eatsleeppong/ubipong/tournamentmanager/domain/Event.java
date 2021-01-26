@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -82,5 +83,28 @@ public class Event {
             .collect(Collectors.collectingAndThen(
                 Collectors.toMap(Player::getId, Player::getName),
                 Collections::<Integer, String> unmodifiableMap));
+    }
+
+    /**
+     * given a list of integers, form a map so that
+     *
+     * first integer maps to 0
+     * second integer maps to 1
+     * ...
+     * and so on
+     *
+     * @param playerList
+     * @return
+     */
+    public Map<Integer, Integer> getPlayerIndexMap() {
+
+        final List<Player> playerList = playerRepository.findByChallongeUrl(challongeUrl);
+
+        Map<Integer, Integer> result = new HashMap<>();
+        for (int index = 0; index < playerList.size(); ++index) {
+            result.put(playerList.get(index).getId(), index);
+        }
+
+        return result;
     }
 }
