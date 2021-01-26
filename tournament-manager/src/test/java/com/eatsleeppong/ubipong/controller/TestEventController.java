@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.controller;
 
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Match;
 import com.eatsleeppong.ubipong.model.challonge.*;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -114,6 +116,19 @@ public class TestEventController {
                 pw.setParticipant(p);
                 return pw; })
                 .toArray(ChallongeParticipantWrapper[]::new));
+
+        final Player pp1 = Player.builder()
+            .id(player1Id)
+            .name(player1Name)
+            .build();
+
+        final Player pp2 = Player.builder()
+            .id(player2Id)
+            .name(player2Name)
+            .build();
+
+        when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(List.of(pp1, pp2));
 
         ChallongeTournament t1 = new ChallongeTournament();
         t1.setName(eventName);
@@ -222,7 +237,9 @@ public class TestEventController {
     }
 
     @Test
+    @DisplayName("should be able to return list of matches for round robin")
     public void testRoundRobinMatchList() throws Exception {
+        addEvent(createEvent());
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
             .build();

@@ -4,6 +4,7 @@ import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
@@ -32,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -147,6 +149,19 @@ public class TestTournamentController {
                 pw.setParticipant(p);
                 return pw; })
                 .toArray(ChallongeParticipantWrapper[]::new));
+
+        final Player pp1 = Player.builder()
+            .id(player1Id)
+            .name(player1Name)
+            .build();
+
+        final Player pp2 = Player.builder()
+            .id(player2Id)
+            .name(player2Name)
+            .build();
+
+        when(mockChallongeParticipantRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(List.of(pp1, pp2));
     }
 
     @Test

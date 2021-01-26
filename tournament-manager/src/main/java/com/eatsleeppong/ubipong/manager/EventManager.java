@@ -331,7 +331,6 @@ public class EventManager {
                 challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
-        // final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
         final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
 
         return matchList.parallelStream()
@@ -367,12 +366,13 @@ public class EventManager {
     }
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {
+        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         final List<ChallongeParticipant> participantList = unwrapChallongeParticipantWrapperArray(
                 challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
         final Map<Integer, Integer> playerIndexMap = createPlayerIndexMap(participantList);
-        final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
+        final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
 
         return matchList.stream().map(m -> {
             final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();

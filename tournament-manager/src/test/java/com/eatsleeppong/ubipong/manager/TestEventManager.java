@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 
@@ -173,6 +174,25 @@ public class TestEventManager {
             .toArray(ChallongeParticipantWrapper[]::new);
     }
 
+    private List<Player> createPlayerList() {
+        final Player spongebob = Player.builder()
+            .id(spongebobId)
+            .name(spongebobName)
+            .build();
+
+        final Player patrick = Player.builder()
+            .id(patrickId)
+            .name(patrickName)
+            .build();
+
+        final Player squidward = Player.builder()
+            .id(squidwardId)
+            .name(squidwardName)
+            .build();
+
+        return List.of(spongebob, patrick, squidward);
+    }
+
     private ChallongeTournamentWrapper getTournamentWrapper1() {
         ChallongeTournament t1 = new ChallongeTournament();
         t1.setName(eventName);
@@ -195,6 +215,9 @@ public class TestEventManager {
 
     @BeforeEach
     public void setupMocks() {
+        when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createPlayerList());
+
         when(mockParticipantRepository.getParticipantList(challongeUrl))
             .thenReturn(getParticipantWrapperArray1());
         when(mockMatchRepository.getMatchList(challongeUrl))
@@ -470,7 +493,7 @@ public class TestEventManager {
     }
 
     @Test
-    @DisplayName("should includ event name in the tournament result list")
+    @DisplayName("should include event name in the tournament result list")
     public void testCreateTournamentResultListShouldIncludeEventTitle() {
         final EventDto event = createEvent();
         subject.addEvent(event);
@@ -483,6 +506,7 @@ public class TestEventManager {
 
     @Test
     public void testCreateRoundRobinMatch() {
+        subject.addEvent(createEvent());
         final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(challongeUrl);
 
         assertThat(roundRobinMatchList, hasSize(3));
