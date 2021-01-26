@@ -302,17 +302,6 @@ public class TestEventManager {
     }
 
     @Test
-    public void testCreatePlayerIndexMap() {
-        List<ChallongeParticipant> playerList = getPlayerList1();
-        Map<Integer, Integer> indexMap =
-            subject.createPlayerIndexMap(playerList);
-
-        assertThat(indexMap.get(spongebobId), is(0));
-        assertThat(indexMap.get(patrickId), is(1));
-        assertThat(indexMap.get(squidwardId), is(2));
-    }
-
-    @Test
     @DisplayName("should create the display for a round robin grid from match result")
     public void testCreateRoundRobinGridOneSide() {
         subject.addEvent(createEvent());
