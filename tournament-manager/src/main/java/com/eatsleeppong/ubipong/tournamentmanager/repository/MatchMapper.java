@@ -49,8 +49,7 @@ public class MatchMapper {
             gameBuilder
                 .player1Score(player1Score)
                 .player2Score(player2Score)
-                .status(Game.STATUS_COMPLETE)
-                .winForPlayer1(player1Score > player2Score);
+                .status(Game.STATUS_COMPLETE);
         }
         else {
             gameBuilder.player1Score(Integer.parseInt(score));
