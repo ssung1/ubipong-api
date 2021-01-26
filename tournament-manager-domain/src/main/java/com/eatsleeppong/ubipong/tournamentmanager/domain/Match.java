@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.Builder;
 import lombok.Value;
@@ -38,8 +39,21 @@ public class Match {
     public Game getGame(int index) {
         return gameList.get(index);
     }
-    
+
     public boolean isResultValid() {
         return STATUS_COMPLETE == status;
+    }
+
+    public String getScoreSummary() {
+        return gameList.stream()
+            .map(g -> {
+                if (g.isWinForPlayer1()) {
+                    return g.getPlayer2Score();
+                } else {
+                    return -g.getPlayer1Score();
+                }
+            })
+            .map(String::valueOf)
+            .collect(Collectors.joining(" "));
     }
 }
