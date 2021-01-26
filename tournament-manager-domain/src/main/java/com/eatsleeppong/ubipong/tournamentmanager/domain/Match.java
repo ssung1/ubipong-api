@@ -14,7 +14,7 @@ public class Match {
     public static final Integer RESULT_CODE_BOTH_DEFAULT = 12;
     public static final Integer RESULT_CODE_TIE_BY_PLAYING = 13;
 
-    private Integer matchId;
+    private Integer id;
     // not used for now
     // private Integer eventId;
     private Integer status;

@@ -80,5 +80,16 @@ public class TestChallongeParticipantRepository {
             challongeParticipantRepository.findByChallongeUrl(challongeUrl);
 
         assertThat(argument.getValue().toString(), containsString(host));
+
+        assertThat(playerList, hasSize(3));
+
+        assertThat(playerList.get(0).getId(), is(spongebobId));
+        assertThat(playerList.get(0).getName(), is(spongebobName));
+
+        assertThat(playerList.get(1).getId(), is(patrickId));
+        assertThat(playerList.get(1).getName(), is(patrickName));
+
+        assertThat(playerList.get(2).getId(), is(squidwardId));
+        assertThat(playerList.get(2).getName(), is(squidwardName));
     }
 }

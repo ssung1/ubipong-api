@@ -135,22 +135,6 @@ public class TestEventManager {
             .toArray(ChallongeMatchWrapper[]::new);
     }
 
-    private List<ChallongeParticipant> getPlayerList1() {
-        ChallongeParticipant spongebob = new ChallongeParticipant();
-        spongebob.setId(spongebobId);
-        spongebob.setDisplayName(spongebobName);
-
-        ChallongeParticipant patrick = new ChallongeParticipant();
-        patrick.setId(patrickId);
-        patrick.setDisplayName(patrickName);
-
-        ChallongeParticipant squidward = new ChallongeParticipant();
-        squidward.setId(squidwardId);
-        squidward.setDisplayName(squidwardName);
-
-        return Arrays.asList(spongebob, patrick, squidward);
-    }
-
     private ChallongeParticipantWrapper[] getParticipantWrapperArray1() {
         ChallongeParticipant spongebob = new ChallongeParticipant();
         spongebob.setId(spongebobId);
