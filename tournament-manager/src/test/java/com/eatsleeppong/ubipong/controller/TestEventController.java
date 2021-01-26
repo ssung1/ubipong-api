@@ -102,33 +102,18 @@ public class TestEventController {
         when(mockMatchRepository.getMatchList(challongeUrl)).thenReturn(
             new ChallongeMatchWrapper[] { mw } );
 
-        ChallongeParticipant p1 = new ChallongeParticipant();
-        p1.setId(player1Id);
-        p1.setDisplayName(player1Name);
-        ChallongeParticipant p2 = new ChallongeParticipant();
-        p2.setId(player2Id);
-        p2.setDisplayName(player2Name);
-
-        when(mockParticipantRepository.getParticipantList(challongeUrl))
-            .thenReturn(Stream.of(p1, p2).map(p -> {
-                ChallongeParticipantWrapper pw =
-                    new ChallongeParticipantWrapper();
-                pw.setParticipant(p);
-                return pw; })
-                .toArray(ChallongeParticipantWrapper[]::new));
-
-        final Player pp1 = Player.builder()
+        final Player p1 = Player.builder()
             .id(player1Id)
             .name(player1Name)
             .build();
 
-        final Player pp2 = Player.builder()
+        final Player p2 = Player.builder()
             .id(player2Id)
             .name(player2Name)
             .build();
 
         when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
-            .thenReturn(List.of(pp1, pp2));
+            .thenReturn(List.of(p1, p2));
 
         ChallongeTournament t1 = new ChallongeTournament();
         t1.setName(eventName);

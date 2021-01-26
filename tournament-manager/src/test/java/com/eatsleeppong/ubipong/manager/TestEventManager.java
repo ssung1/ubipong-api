@@ -135,29 +135,6 @@ public class TestEventManager {
             .toArray(ChallongeMatchWrapper[]::new);
     }
 
-    private ChallongeParticipantWrapper[] getParticipantWrapperArray1() {
-        ChallongeParticipant spongebob = new ChallongeParticipant();
-        spongebob.setId(spongebobId);
-        spongebob.setDisplayName(spongebobName);
-
-        ChallongeParticipant patrick = new ChallongeParticipant();
-        patrick.setId(patrickId);
-        patrick.setDisplayName(patrickName);
-
-        ChallongeParticipant squidward = new ChallongeParticipant();
-        squidward.setId(squidwardId);
-        squidward.setDisplayName(squidwardName);
-
-        return Stream.of(spongebob, patrick, squidward)
-            .map(p -> {
-                ChallongeParticipantWrapper pw =
-                    new ChallongeParticipantWrapper();
-                pw.setParticipant(p);
-                return pw;
-            })
-            .toArray(ChallongeParticipantWrapper[]::new);
-    }
-
     private List<Player> createPlayerList() {
         final Player spongebob = Player.builder()
             .id(spongebobId)
@@ -202,8 +179,6 @@ public class TestEventManager {
         when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createPlayerList());
 
-        when(mockParticipantRepository.getParticipantList(challongeUrl))
-            .thenReturn(getParticipantWrapperArray1());
         when(mockMatchRepository.getMatchList(challongeUrl))
             .thenReturn(getMatchWrapperArray1());
         when(mockTournamentRepository.getTournament(challongeUrl))
