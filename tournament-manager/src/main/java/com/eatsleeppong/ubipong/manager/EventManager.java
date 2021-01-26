@@ -25,10 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EventManager {
-    private final ChallongeTournamentRepository challongeTournamentRepository;
-    private final ChallongeParticipantRepository challongeParticipantRepository;
     private final ChallongeMatchRepository challongeMatchRepository;
-    private final SpringJpaEventRepository springJpaEventRepository;
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
 
@@ -45,34 +42,6 @@ public class EventManager {
         return Arrays.stream(matchWrapperArray)
             .map(ChallongeMatchWrapper::getMatch)
             .collect(Collectors.toList());
-    }
-
-    public List<ChallongeParticipant> unwrapChallongeParticipantWrapperArray(
-        ChallongeParticipantWrapper[] participantWrapperArray
-    ) {
-        return Arrays.stream(participantWrapperArray)
-            .map(ChallongeParticipantWrapper::getParticipant)
-            .collect(Collectors.toList());
-    }
-
-    /**
-     * given a list of integers, form a map so that
-     *
-     * first integer maps to 0
-     * second integer maps to 1
-     * ...
-     * and so on
-     *
-     * @param playerList
-     * @return
-     */
-    public Map<Integer, Integer> createPlayerIndexMap(
-        List<ChallongeParticipant> playerList) {
-        Map<Integer, Integer> result = new HashMap<>();
-        for (int index = 0; index < playerList.size(); ++index) {
-            result.put(playerList.get(index).getId(), index);
-        }
-        return result;
     }
 
     /**
@@ -300,9 +269,6 @@ public class EventManager {
      */
     public RoundRobinCell[][] createRoundRobinGrid(String challongeUrl) {
         Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        List<ChallongeParticipant> participantList =
-            unwrapChallongeParticipantWrapperArray(
-                challongeParticipantRepository.getParticipantList(challongeUrl));
         List<ChallongeMatch> matchList =
             unwrapChallongeMatchWrapperArray(
                 challongeMatchRepository.getMatchList(challongeUrl));

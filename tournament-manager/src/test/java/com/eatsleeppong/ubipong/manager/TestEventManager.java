@@ -270,26 +270,6 @@ public class TestEventManager {
     }
 
     @Test
-    public void testUnwrapChallongeParticipantWrapperArray() {
-        ChallongeParticipant p = new ChallongeParticipant();
-        p.setId(spongebobId);
-
-        ChallongeParticipantWrapper pw = new ChallongeParticipantWrapper();
-        pw.setParticipant(p);
-
-        ChallongeParticipantWrapper[] challongeParticipantWrapperArray = {
-            pw
-        };
-
-        List<ChallongeParticipant> challongeParticipantList =
-            subject.unwrapChallongeParticipantWrapperArray(
-                challongeParticipantWrapperArray);
-
-        assertThat(challongeParticipantList, hasSize(1));
-        assertThat(challongeParticipantList, hasItem(p));
-    }
-
-    @Test
     public void testFindByPlayer1() {
         List<ChallongeMatch> matchList = getMatchList1();
         List<ChallongeMatch> spongebobMatchList =
