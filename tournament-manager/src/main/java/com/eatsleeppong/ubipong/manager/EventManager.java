@@ -9,10 +9,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
@@ -88,18 +85,27 @@ public class EventManager {
         return "complete".equals(match.getState());
     }
 
-    private RoundRobinCell createRoundRobinCell(ChallongeMatch match) {
+    private RoundRobinCell createRoundRobinCell(Match match) {
         Integer player1 = match.getPlayer1Id();
         Integer player2 = match.getPlayer2Id();
         Integer winner = match.getWinnerId();
 
         RoundRobinCell cell = new RoundRobinCell();
-        if (isMatchResultValid(match)) {
+        if (match.isResultValid()) {
             cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
             cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
 
-            List<Game> gameList = createGameList(match.getScoresCsv());
-            cell.setGameList(gameList);
+            cell.setGameList(match.getGameList().stream().map(g -> {
+                final Game game = new Game();
+                game.setPlayer1Score(g.getPlayer1Score());
+                game.setPlayer2Score(g.getPlayer2Score());
+                if (game.getPlayer1Score() > game.getPlayer2Score()) {
+                    game.setWinForPlayer1(true);
+                } else {
+                    game.setWinForPlayer1(false);
+                }
+                return game;
+            }).collect(Collectors.toUnmodifiableList()));
 
             updateCellContent(cell);
         }
@@ -189,10 +195,9 @@ public class EventManager {
      * @param matchList
      * @param playerList
      */
-    private RoundRobinCell[][] createRoundRobinGrid(
-        List<ChallongeMatch> matchList,
-        Event event) {
-
+    public RoundRobinCell[][] createRoundRobinGrid(final String challongeUrl) {
+        Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
+        List<Match> matchList = event.getMatchList();
         List<Player> playerList = event.getPlayerList();
 
         int size = playerList.size();
@@ -207,7 +212,7 @@ public class EventManager {
 
         final Map<Integer, Integer> playerMap = event.getPlayerIndexMap();
 
-        for (ChallongeMatch match : matchList) {
+        for(Match match : matchList) {
             Integer player1 = match.getPlayer1Id();
             Integer player2 = match.getPlayer2Id();
             int row = playerMap.get(player1);
@@ -252,28 +257,6 @@ public class EventManager {
         }
 
         return resultAsList.toArray(new RoundRobinCell[0][0]);
-    }
-
-    /**
-     * For a given match list and player list, form a grid of
-     *
-     * form a matrix of
-     *
-     *               A         B         C
-     * A player      x        W 8 8
-     * B player     L -8 -8    x
-     * C player                          x
-     * ...
-     *
-     * @param challongeUrl
-     */
-    public RoundRobinCell[][] createRoundRobinGrid(String challongeUrl) {
-        Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        List<ChallongeMatch> matchList =
-            unwrapChallongeMatchWrapperArray(
-                challongeMatchRepository.getMatchList(challongeUrl));
-
-        return createRoundRobinGrid(matchList, event);
     }
 
     public SpringJpaEvent addEvent(EventDto eventDto) {
