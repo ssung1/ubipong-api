@@ -4,6 +4,8 @@ import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
@@ -32,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +116,37 @@ public class TestTournamentController {
         return t1;
     }
 
+    private List<Player> createPlayerList() {
+        final Player p1 = Player.builder()
+            .id(player1Id)
+            .name(player1Name)
+            .build();
+
+        final Player p2 = Player.builder()
+            .id(player2Id)
+            .name(player2Name)
+            .build();
+
+        return List.of(p1, p2);
+    }
+
+    //                A     B
+    // A  player1          11-9
+    // B  player2    9-11
+    private List<Match> createMatchList() {
+        return List.of(Match.builder()
+            .id(matchId)
+            .player1Id(player1Id)
+            .player2Id(player2Id)
+            .winnerId(player1Id)
+            .status(Match.STATUS_COMPLETE)
+            .gameList(Collections.unmodifiableList(List.of(
+                Game.builder().player1Score(11).player2Score(9).status(Game.STATUS_COMPLETE).build()
+            )))
+            .build()
+        );
+    }
+
     @BeforeEach
     public void setupMocks() {
         when(mockChallongeTournamentRepository.createTournament(any())).thenReturn(createChallongeTournamentWrapper());
@@ -135,18 +169,11 @@ public class TestTournamentController {
         when(mockChallongeMatchRepository.getMatchList(challongeUrl)).thenReturn(
             new ChallongeMatchWrapper[] { mw } );
 
-        final Player p1 = Player.builder()
-            .id(player1Id)
-            .name(player1Name)
-            .build();
-
-        final Player p2 = Player.builder()
-            .id(player2Id)
-            .name(player2Name)
-            .build();
+        when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createMatchList());
 
         when(mockChallongeParticipantRepository.findByChallongeUrl(challongeUrl))
-            .thenReturn(List.of(p1, p2));
+            .thenReturn(createPlayerList());
     }
 
     @Test

@@ -284,42 +284,39 @@ public class EventManager {
 
     public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
-        // final List<Match> matchList = event.getMatchList();
+        final List<Match> matchList = event.getMatchList();
 
         final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
 
         return matchList.stream()
-                .filter(this::isMatchResultValid)
-                .map(m -> {
-                    final Integer player1 = m.getPlayer1Id();
-                    final Integer player2 = m.getPlayer2Id();
-                    final Integer winner = m.getWinnerId();
-                    final String player1Name = playerNameMap.get(player1);
-                    final String player2Name = playerNameMap.get(player2);
+            .filter(Match::isResultValid)
+            .map(m -> {
+                final Integer player1 = m.getPlayer1Id();
+                final Integer player2 = m.getPlayer2Id();
+                final Integer winner = m.getWinnerId();
+                final String player1Name = playerNameMap.get(player1);
+                final String player2Name = playerNameMap.get(player2);
 
-                    final TournamentResultRequestLineItem tournamentResultRequestLineItem =
-                            new TournamentResultRequestLineItem();
-                    tournamentResultRequestLineItem.setEventName(event.getName());
+                final TournamentResultRequestLineItem tournamentResultRequestLineItem =
+                        new TournamentResultRequestLineItem();
+                tournamentResultRequestLineItem.setEventName(event.getName());
 
-                    final RoundRobinCell roundRobinCell = createRoundRobinCell(m);
-                    tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
+                tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
 
-                    if (isWinForPlayer1(player1, player2, winner)) {
-                        tournamentResultRequestLineItem.setWinner(player1Name);
-                        tournamentResultRequestLineItem.setLoser(player2Name);
-                        tournamentResultRequestLineItem.setResultString(convertToGameSummary(roundRobinCell.getGameList()));
-                    } else {
-                        final RoundRobinCell inverseCell = createInverseCell(roundRobinCell);
-                        tournamentResultRequestLineItem.setWinner(player2Name);
-                        tournamentResultRequestLineItem.setLoser(player1Name);
-                        tournamentResultRequestLineItem.setResultString(convertToGameSummary(inverseCell.getGameList()));
-                    }
+                if (isWinForPlayer1(player1, player2, winner)) {
+                    tournamentResultRequestLineItem.setWinner(player1Name);
+                    tournamentResultRequestLineItem.setLoser(player2Name);
+                    tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
+                } else {
+                    tournamentResultRequestLineItem.setWinner(player2Name);
+                    tournamentResultRequestLineItem.setLoser(player1Name);
+                    tournamentResultRequestLineItem.setResultString(m.transpose().getScoreSummary());
+                }
 
-                    return tournamentResultRequestLineItem;
-                })
-                .toArray(TournamentResultRequestLineItem[]::new);
+                return tournamentResultRequestLineItem;
+            })
+            .toArray(TournamentResultRequestLineItem[]::new);
     }
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {

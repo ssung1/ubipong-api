@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
@@ -60,10 +61,6 @@ public class TestEventManager {
     @Autowired
     private SpringJpaEventRepository springJpaEventRepository;
 
-    // only used to help with testing
-    @Autowired
-    private PlayerMapper playerMapper;
-
     @Autowired
     private EventManager subject;
 
@@ -95,6 +92,41 @@ public class TestEventManager {
         m3.setPlayer2Id(squidwardId);
 
         return Arrays.asList(m1, m2, m3);
+    }
+
+    private List<Match> createMatchList() {
+        Integer complete = com.eatsleeppong.ubipong.tournamentmanager.domain.Game.STATUS_COMPLETE;
+        com.eatsleeppong.ubipong.tournamentmanager.domain.Game.GameBuilder gameBuilder = com.eatsleeppong.ubipong.tournamentmanager.domain.Game.builder();
+        final Match m1 = Match.builder()
+            .player1Id(spongebobId)
+            .player2Id(patrickId)
+            .status(Match.STATUS_COMPLETE)
+            .winnerId(spongebobId)
+            .gameList(List.of(
+                gameBuilder.player1Score(11).player2Score(4).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(5).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(6).status(complete).build()
+            ))
+            .build();
+        final Match m2 = Match.builder()
+            .player1Id(patrickId)
+            .player2Id(squidwardId)
+            .status(Match.STATUS_COMPLETE)
+            .winnerId(squidwardId)
+            .gameList(List.of(
+                gameBuilder.player1Score(9).player2Score(11).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(8).status(complete).build(),
+                gameBuilder.player1Score(6).player2Score(11).status(complete).build(),
+                gameBuilder.player1Score(5).player2Score(11).status(complete).build()
+            ))
+            .build();
+        final Match m3 = Match.builder()
+            .player1Id(spongebobId)
+            .player2Id(squidwardId)
+            .status(Match.STATUS_INCOMPLETE)
+            .build();
+
+        return List.of(m1, m2, m3);
     }
 
     /**
@@ -178,6 +210,8 @@ public class TestEventManager {
     public void setupMocks() {
         when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createPlayerList());
+        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createMatchList());
 
         when(mockMatchRepository.getMatchList(challongeUrl))
             .thenReturn(getMatchWrapperArray1());
