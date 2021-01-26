@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EventMapper {
     private final PlayerRepository playerRepository;
+    private final MatchRepository matchRepository;
 
     public SpringJpaEvent mapEventToSpringJpaEvent(Event event) {
         SpringJpaEvent springJpaEvent = new SpringJpaEvent();
@@ -31,6 +33,7 @@ public class EventMapper {
             .tournamentId(springJpaEvent.getTournamentId())
             .name(springJpaEvent.getName())
             .playerRepository(playerRepository)
+            .matchRepository(matchRepository)
             .build();
     }
 
@@ -41,6 +44,7 @@ public class EventMapper {
             .name(eventDto.getName())
             .challongeUrl(eventDto.getChallongeUrl())
             .playerRepository(playerRepository)
+            .matchRepository(matchRepository)
             .build();
     }
 }

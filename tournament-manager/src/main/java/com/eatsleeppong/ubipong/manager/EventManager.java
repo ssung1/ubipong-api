@@ -286,9 +286,11 @@ public class EventManager {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
+        // final List<Match> matchList = event.getMatchList();
+
         final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
 
-        return matchList.parallelStream()
+        return matchList.stream()
                 .filter(this::isMatchResultValid)
                 .map(m -> {
                     final Integer player1 = m.getPlayer1Id();

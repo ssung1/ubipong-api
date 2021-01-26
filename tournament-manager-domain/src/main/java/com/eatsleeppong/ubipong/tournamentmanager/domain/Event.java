@@ -27,6 +27,7 @@ public class Event {
     public static final String BRACKET_TYPE_DOUBLE_ELIMINATION = "double elimination";
 
     private final PlayerRepository playerRepository;
+    private final MatchRepository matchRepository;
 
     Integer id;
 
@@ -110,5 +111,9 @@ public class Event {
 
     public List<Player> getPlayerList() {
         return playerRepository.findByChallongeUrl(challongeUrl);
+    }
+
+    public List<Match> getMatchList() {
+        return matchRepository.findByChallongeUrl(challongeUrl);
     }
 }
