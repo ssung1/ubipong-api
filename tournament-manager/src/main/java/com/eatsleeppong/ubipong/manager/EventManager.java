@@ -80,7 +80,7 @@ public class EventManager {
     public Map<Integer, String> createPlayerNameMap(
         List<ChallongeParticipant> playerList) {
 
-        return playerList.stream()
+        return playerList.parallelStream()
             .collect(Collectors.collectingAndThen(
                 Collectors.toMap(ChallongeParticipant::getId,
                     ChallongeParticipant::getDisplayName),
@@ -331,7 +331,8 @@ public class EventManager {
                 challongeParticipantRepository.getParticipantList(challongeUrl));
         final List<ChallongeMatch> matchList = unwrapChallongeMatchWrapperArray(challongeMatchRepository.getMatchList(challongeUrl));
 
-        final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
+        // final Map<Integer, String> playerNameMap = createPlayerNameMap(participantList);
+        final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
 
         return matchList.parallelStream()
                 .filter(this::isMatchResultValid)

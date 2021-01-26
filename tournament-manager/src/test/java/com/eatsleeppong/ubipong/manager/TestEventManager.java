@@ -55,8 +55,13 @@ public class TestEventManager {
     @MockBean
     private ChallongeMatchRepository mockMatchRepository;
 
+    // only used to help with testing
     @Autowired
     private SpringJpaEventRepository springJpaEventRepository;
+
+    // only used to help with testing
+    @Autowired
+    private PlayerMapper playerMapper;
 
     @Autowired
     private EventManager subject;

@@ -1,6 +1,10 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import lombok.AllArgsConstructor;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import lombok.Builder;
 import lombok.Value;
 
@@ -8,7 +12,6 @@ import lombok.Value;
 // meant to replace SpringJpaEvent
 @Value
 @Builder
-@AllArgsConstructor
 public class Event {
     /**
      * Overall round robin event, which contains all the players in the event
@@ -21,6 +24,8 @@ public class Event {
     // public static final String BRACKET_TYPE_ROUND_ROBIN_GROUP = "round robin group";
     public static final String BRACKET_TYPE_SINGLE_ELIMINATION = "single elimination";
     public static final String BRACKET_TYPE_DOUBLE_ELIMINATION = "double elimination";
+
+    private final PlayerRepository playerRepository;
 
     Integer id;
 
@@ -65,4 +70,14 @@ public class Event {
      * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
      */
     Integer tournamentId;
+
+    public Map<Integer, String> getPlayerNameMap() {
+
+        final List<Player> playerList = playerRepository.findByChallongeUrl(challongeUrl);
+
+        return playerList.parallelStream()
+            .collect(Collectors.collectingAndThen(
+                Collectors.toMap(Player::getId, Player::getName),
+                Collections::<Integer, String> unmodifiableMap));
+    }
 }
