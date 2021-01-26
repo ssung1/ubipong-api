@@ -1,10 +1,14 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Value;
+import lombok.With;
 
 @Value
 @Builder
+@With
 public class Match {
     public static final Integer STATUS_INCOMPLETE = 10;
     public static final Integer STATUS_COMPLETE = 11;
@@ -28,4 +32,10 @@ public class Match {
      * must have a code if the status is STATUS_COMPLETE
      */
     private Integer resultCode;
+
+    private List<Game> gameList;
+
+    public boolean isResultValid() {
+        return STATUS_COMPLETE == status;
+    }
 }
