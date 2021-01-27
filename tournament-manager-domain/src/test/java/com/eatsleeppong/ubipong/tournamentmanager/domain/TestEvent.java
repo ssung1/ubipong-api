@@ -49,16 +49,6 @@ public class TestEvent {
         when(mockPlayerRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(List.of(spongebob, patrick, squidward));
     }
-    
-    @Test
-    @DisplayName("should return a map of playerer ID and their index (seeding)")
-    public void testGetPlayerIndexMap() {
-        Map<Integer, Integer> indexMap = event.getPlayerIndexMap();
-
-        assertThat(indexMap.get(spongebobId), is(0));
-        assertThat(indexMap.get(patrickId), is(1));
-        assertThat(indexMap.get(squidwardId), is(2));
-    }
 
     @Test
     @DisplayName("should return a list of players with seeding populated")

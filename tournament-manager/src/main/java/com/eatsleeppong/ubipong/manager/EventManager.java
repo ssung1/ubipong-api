@@ -130,13 +130,13 @@ public class EventManager {
             }
         }
 
-        final Map<Integer, Integer> playerMap = event.getPlayerIndexMap();
+        final Map<Integer, Player> playerMap = event.getPlayerMap();
 
         for(Match match : matchList) {
             Integer player1 = match.getPlayer1Id();
             Integer player2 = match.getPlayer2Id();
-            int row = playerMap.get(player1);
-            int col = playerMap.get(player2);
+            int row = playerMap.get(player1).getEventSeed();
+            int col = playerMap.get(player2).getEventSeed();
 
             RoundRobinCell cell = createRoundRobinCell(match);
             innerGrid[row][col] = cell;
@@ -190,7 +190,6 @@ public class EventManager {
 
         final List<Match> matchList = event.getMatchList();
 
-        // final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
         final Map<Integer, Player> playerMap = event.getPlayerMap();
 
         return matchList.stream()
@@ -229,7 +228,6 @@ public class EventManager {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         final List<Match> matchList = event.getMatchList();
 
-        final Map<Integer, Integer> playerIndexMap = event.getPlayerIndexMap();
         final Map<Integer, Player> playerMap = event.getPlayerMap();
 
         return matchList.stream().map(m -> {
@@ -255,8 +253,8 @@ public class EventManager {
             roundRobinMatch.setPlayer1Name(player1.getName());
             roundRobinMatch.setPlayer2Name(player2.getName());
 
-            roundRobinMatch.setPlayer1Seed(numberToLetter(playerIndexMap.get(player1Id)));
-            roundRobinMatch.setPlayer2Seed(numberToLetter(playerIndexMap.get(player2Id)));
+            roundRobinMatch.setPlayer1Seed(player1.getEventSeedAsAlphabet());
+            roundRobinMatch.setPlayer2Seed(player2.getEventSeedAsAlphabet());
 
             return roundRobinMatch;
         }).collect(Collectors.toList());

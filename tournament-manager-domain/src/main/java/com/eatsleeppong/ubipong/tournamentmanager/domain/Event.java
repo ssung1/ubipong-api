@@ -74,29 +74,6 @@ public class Event {
      */
     Integer tournamentId;
 
-    /**
-     * given a list of integers, form a map so that
-     *
-     * first integer maps to 0
-     * second integer maps to 1
-     * ...
-     * and so on
-     *
-     * @param playerList
-     * @return
-     */
-    public Map<Integer, Integer> getPlayerIndexMap() {
-
-        final List<Player> playerList = playerRepository.findByChallongeUrl(challongeUrl);
-
-        Map<Integer, Integer> result = new HashMap<>();
-        for (int index = 0; index < playerList.size(); ++index) {
-            result.put(playerList.get(index).getId(), index);
-        }
-
-        return result;
-    }
-
     public List<Player> getPlayerList() {
         final List<Player> playerListWithoutSeed = playerRepository.findByChallongeUrl(challongeUrl);
         return IntStream.range(0, playerListWithoutSeed.size())
