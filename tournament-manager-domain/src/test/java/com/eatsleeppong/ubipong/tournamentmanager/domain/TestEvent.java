@@ -59,4 +59,20 @@ public class TestEvent {
         assertThat(indexMap.get(patrickId), is(1));
         assertThat(indexMap.get(squidwardId), is(2));
     }
+
+    @Test
+    @DisplayName("should return a list of players with seeding populated")
+    public void testGetPlayerList() {
+        List<Player> playerList = event.getPlayerList();
+
+        assertThat(playerList.get(0).getId(), is(spongebobId));
+        assertThat(playerList.get(0).getName(), is(spongebobName));
+        assertThat(playerList.get(0).getEventSeed(), is(0));
+        assertThat(playerList.get(1).getId(), is(patrickId));
+        assertThat(playerList.get(1).getName(), is(patrickName));
+        assertThat(playerList.get(1).getEventSeed(), is(1));
+        assertThat(playerList.get(2).getId(), is(squidwardId));
+        assertThat(playerList.get(2).getName(), is(squidwardName));
+        assertThat(playerList.get(2).getEventSeed(), is(2));
+    }
 }

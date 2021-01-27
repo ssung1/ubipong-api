@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import lombok.Builder;
 import lombok.Value;
@@ -110,7 +111,10 @@ public class Event {
     }
 
     public List<Player> getPlayerList() {
-        return playerRepository.findByChallongeUrl(challongeUrl);
+        final List<Player> playerListWithoutSeed = playerRepository.findByChallongeUrl(challongeUrl);
+        return IntStream.range(0, playerListWithoutSeed.size())
+            .mapToObj(index -> playerListWithoutSeed.get(index).withEventSeed(index))
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public List<Match> getMatchList() {
