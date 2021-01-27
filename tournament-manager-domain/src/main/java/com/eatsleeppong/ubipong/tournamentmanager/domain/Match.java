@@ -49,13 +49,7 @@ public class Match {
 
     public String getScoreSummary() {
         return gameList.stream()
-            .map(g -> {
-                if (g.isWinForPlayer1()) {
-                    return g.getPlayer2Score();
-                } else {
-                    return -g.getPlayer1Score();
-                }
-            })
+            .map(Game::getSimplifiedScore)
             .map(String::valueOf)
             .collect(Collectors.joining(" "));
     }

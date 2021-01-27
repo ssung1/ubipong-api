@@ -40,4 +40,17 @@ public class Game {
             .winnerIndex(winnerIndex)
             .build();
     }
+
+    /**
+     * If player 1 wins, return player 2's score
+     * If player 2 wins, return negative of player 1's score
+     * @return
+     */
+    public int getSimplifiedScore() {
+        if (isWinForPlayer1()) {
+            return getPlayer2Score();
+        } else {
+            return -getPlayer1Score();
+        }
+    }
 }
