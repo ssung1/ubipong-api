@@ -40,7 +40,7 @@ public class TournamentManager {
 
         return TournamentResultDto.builder()
             .tournamentName(tournament.getName())
-            .tournamentDate(tournament.getTournamentDate())
+            .tournamentDate(tournament.getTournamentDate().toInstant())
             .tournamentResultList(matchResultDtoList)
             .build();
     }

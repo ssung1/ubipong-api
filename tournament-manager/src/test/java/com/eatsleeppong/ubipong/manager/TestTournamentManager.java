@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -20,11 +22,9 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.Mockito.when;
 
 public class TestTournamentManager {
-    private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-
     private final Integer tournamentId = 1234987;
     private final String tournamentName = "Eat Sleep Pong Open 2019";
-    private final String tournamentDate = "2019-03-15T00:00:00-0500";
+    private final String tournamentDate = "2019-03-15T00:00:00-05:00";
     private final String event1ChallongeUrl = "pr_gr_1";
     private final String event2ChallongeUrl = "ca";
     private final String event1Name = "Preliminary Group 1";
@@ -80,7 +80,7 @@ public class TestTournamentManager {
 
         final SpringJpaTournament tournament = new SpringJpaTournament();
         tournament.setName(tournamentName);
-        tournament.setTournamentDate(df.parse(tournamentDate));
+        tournament.setTournamentDate(Date.from(OffsetDateTime.parse(tournamentDate).toInstant()));
 
         when(mockTournamentRepository.getOne(tournamentId)).thenReturn(tournament);
     }
@@ -90,7 +90,7 @@ public class TestTournamentManager {
         final TournamentResultDto tournamentResultDto =
             tournamentManager.createTournamentResultRequest(tournamentId);
         assertThat(tournamentResultDto.getTournamentName(), is(tournamentName));
-        assertThat(tournamentResultDto.getTournamentDate(), is(df.parse(tournamentDate)));
+        assertThat(tournamentResultDto.getTournamentDate(), is(OffsetDateTime.parse(tournamentDate).toInstant()));
         assertThat(tournamentResultDto.getTournamentResultList(), arrayWithSize(4));
         
         final MatchResultDto[] matchResultDtoList = 
