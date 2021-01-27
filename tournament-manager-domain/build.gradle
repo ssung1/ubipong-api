@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version "${springBootVersion}"
     // we want to use dependency management so we don't need to know the versions of dependencies
     id 'io.spring.dependency-management' version "${springDependencyVersion}"
-	id 'java-library'
+    id 'java-library'
     // automatically creates getters, setters, and other boilerplate
     id 'io.freefair.lombok' version "${lombokVersion}"
 }
