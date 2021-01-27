@@ -65,38 +65,6 @@ public class EventManager {
         return cell;
     }
 
-    /**
-     * Given a cell of W 1 2 3, produce the inverse L -1 -2 -3
-     *
-     * @param cell
-     * @return
-     */
-    public RoundRobinCell createInverseCell(RoundRobinCell cell) {
-        // inverse is only possible for completed matches
-        if (cell.getType() != RoundRobinCell.TYPE_MATCH_COMPLETE) {
-            return cell;
-        }
-
-        RoundRobinCell result = new RoundRobinCell();
-
-        result.setWinForPlayer1(!cell.isWinForPlayer1());
-        result.setWinByDefault(cell.isWinByDefault());
-
-        result.setGameList(cell.getGameList().stream()
-            .map(g -> {
-                Game inverseGame = new Game();
-                inverseGame.setWinForPlayer1(!g.isWinForPlayer1());
-                inverseGame.setPlayer1Score(g.getPlayer2Score());
-                inverseGame.setPlayer2Score(g.getPlayer1Score());
-
-                return inverseGame;
-            })
-            .collect(Collectors.toList()));
-
-        updateCellContent(result);
-        return result;
-    }
-
     private String convertToGameSummary(List<Game> gameList) {
         return gameList.stream()
                 .map(g -> {
@@ -172,7 +140,7 @@ public class EventManager {
 
             RoundRobinCell cell = createRoundRobinCell(match);
             innerGrid[row][col] = cell;
-            innerGrid[col][row] = createInverseCell(cell);
+            innerGrid[col][row] = createRoundRobinCell(match.transpose());
         }
 
         List<RoundRobinCell[]> resultAsList = new ArrayList<>();

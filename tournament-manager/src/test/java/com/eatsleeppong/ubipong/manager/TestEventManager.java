@@ -268,45 +268,6 @@ public class TestEventManager {
         assertThat(thirdGame.getPlayer2Score(), is(11));
     }
 
-    @Test
-    public void testCreateInverseCell() {
-        RoundRobinCell cell = new RoundRobinCell();
-        // W 1 -2 3
-        cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
-        cell.setWinForPlayer1(true);
-
-        Game game1 = new Game();
-        game1.setWinForPlayer1(true);
-        game1.setPlayer1Score(11);
-        game1.setPlayer2Score(1);
-
-        Game game2 = new Game();
-        game2.setWinForPlayer1(false);
-        game2.setPlayer1Score(2);
-        game2.setPlayer2Score(11);
-
-        Game game3 = new Game();
-        game3.setWinForPlayer1(true);
-        game3.setPlayer1Score(11);
-        game3.setPlayer2Score(3);
-
-        cell.setGameList(Arrays.asList(game1, game2, game3));
-
-        RoundRobinCell inverseCell = subject.createInverseCell(cell);
-
-        List<Game> gameList = inverseCell.getGameList();
-        // inverse of game1
-        assertThat(gameList.get(0).getPlayer1Score(), is(1));
-        assertThat(gameList.get(0).getPlayer2Score(), is(11));
-        assertThat(gameList.get(0).isWinForPlayer1(), is(false));
-
-        assertThat(gameList.get(1).getPlayer1Score(), is(11));
-        assertThat(gameList.get(1).getPlayer2Score(), is(2));
-        assertThat(gameList.get(1).isWinForPlayer1(), is(true));
-
-        assertThat(inverseCell.getContent(), is("L -1 2 -3"));
-    }
-
     /**
      * @see #testCreateRoundRobinGridOneSide
      */

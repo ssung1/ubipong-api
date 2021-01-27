@@ -220,7 +220,7 @@ public class TestEventController {
             .andExpect(jsonPath("[2][0].content").value(is("B")))
             .andExpect(jsonPath("[2][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
             .andExpect(jsonPath("[2][1].content").value(is(patrickName)))
-            .andExpect(jsonPath("[2][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[2][2].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
             .andExpect(jsonPath("[2][2].content").value(is("L -4 -5 -6")))
             .andExpect(
                 jsonPath("[2][2].gameList[0].player1Score").value(is(4)))
@@ -241,7 +241,7 @@ public class TestEventController {
             .andExpect(jsonPath("[3][1].content").value(is(squidwardName)))
             .andExpect(jsonPath("[3][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
             .andExpect(jsonPath("[3][2].content").value(is("")))
-            .andExpect(jsonPath("[3][3].type").value(is(RoundRobinCell.TYPE_EMPTY))) // this is incorrect: issue submitted
+            .andExpect(jsonPath("[3][3].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE))) // this is incorrect: issue submitted
             .andExpect(jsonPath("[3][3].content").value(is("W 9 -8 6 5")))
             .andExpect(jsonPath("[3][4].type").value(is(RoundRobinCell.TYPE_EMPTY)))
             .andExpect(jsonPath("[3][4].content").value(is("")));
