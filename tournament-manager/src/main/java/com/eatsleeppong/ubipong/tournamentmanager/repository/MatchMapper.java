@@ -59,7 +59,7 @@ public class MatchMapper {
     }
 
     private List<Game> mapScoreCsvToGameList(final String scoreCsv) {
-        if (scoreCsv == null) {
+        if (scoreCsv == null || scoreCsv.isBlank()) {
             return Collections.emptyList();
         }
         String[] scoreArray = scoreCsv.split(",");

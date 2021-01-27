@@ -4,7 +4,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
-import com.eatsleeppong.ubipong.model.challonge.*;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,13 +43,20 @@ import static org.hamcrest.MatcherAssert.*;
 @Transactional
 @ActiveProfiles("test")
 public class TestEventController {
-    final String challongeUrl = "bikiniBottomOpen-RoundRobin-Group-3";
-    final String eventName = "Round Robin Group 3";
-    final Integer matchId = 10101;
-    final Integer player1Id = 1;
-    final Integer player2Id = 2;
-    final String player1Name = "spongebob";
-    final String player2Name = "patrick";
+    private final String challongeUrl = "bb_201906_pg_rr_1";
+    private final String eventName = "Preliminary Group 1";
+
+    private final Integer matchId1 = 101;
+    private final Integer matchId2 = 102;
+    private final Integer matchId3 = 103;
+
+    private final Integer spongebobId = 123;
+    private final Integer patrickId = 234;
+    private final Integer squidwardId = 345;
+
+    private final String spongebobName = "spongebob";
+    private final String patrickName = "patrick";
+    private final String squidwardName = "squidward";
 
     @Autowired
     MockMvc mockMvc;
@@ -65,18 +70,6 @@ public class TestEventController {
     @MockBean
     ChallongeTournamentRepository mockTournamentRepository;
 
-    private ChallongeTournamentWrapper getTournamentWrapper1() {
-        ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
-        t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(challongeUrl);
-
-        ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
-        tw1.setTournament(t1);
-
-        return tw1;
-    }
-
     private EventDto createEvent() {
         return EventDto.builder()
             .challongeUrl(challongeUrl)
@@ -86,69 +79,72 @@ public class TestEventController {
     }
 
     private List<Player> createPlayerList() {
-        final Player p1 = Player.builder()
-            .id(player1Id)
-            .name(player1Name)
+        final Player spongebob = Player.builder()
+            .id(spongebobId)
+            .name(spongebobName)
             .build();
 
-        final Player p2 = Player.builder()
-            .id(player2Id)
-            .name(player2Name)
+        final Player patrick = Player.builder()
+            .id(patrickId)
+            .name(patrickName)
             .build();
 
-        return List.of(p1, p2);
+        final Player squidward = Player.builder()
+            .id(squidwardId)
+            .name(squidwardName)
+            .build();
+
+        return List.of(spongebob, patrick, squidward);
     }
 
-    //                A     B
-    // A  player1          11-9
-    // B  player2    9-11
+    /**
+     * <pre>
+     *                   A           B           C                 Place
+     *  A spongebob                  W 4 5 6
+     *  B patrick        L -4 -5 -6              L -9 8 -6 -5
+     *  C squidward                  W 9 -8 6 5
+     *
+     * </pre>
+     */
     private List<Match> createMatchList() {
-        return List.of(Match.builder()
-            .id(matchId)
-            .player1Id(player1Id)
-            .player2Id(player2Id)
-            .winnerId(player1Id)
+        Integer complete = Game.STATUS_COMPLETE;
+        Game.GameBuilder gameBuilder = Game.builder();
+        final Match m1 = Match.builder()
+            .id(matchId1)
+            .player1Id(spongebobId)
+            .player2Id(patrickId)
             .status(Match.STATUS_COMPLETE)
-            .gameList(Collections.unmodifiableList(List.of(
-                Game.builder().player1Score(11).player2Score(9).status(Game.STATUS_COMPLETE).build()
-            )))
-            .build()
-        );
+            .winnerId(spongebobId)
+            .gameList(List.of(
+                gameBuilder.player1Score(11).player2Score(4).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(5).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(6).status(complete).build()
+            ))
+            .build();
+        final Match m2 = Match.builder()
+            .id(matchId2)
+            .player1Id(patrickId)
+            .player2Id(squidwardId)
+            .status(Match.STATUS_COMPLETE)
+            .winnerId(squidwardId)
+            .gameList(List.of(
+                gameBuilder.player1Score(9).player2Score(11).status(complete).build(),
+                gameBuilder.player1Score(11).player2Score(8).status(complete).build(),
+                gameBuilder.player1Score(6).player2Score(11).status(complete).build(),
+                gameBuilder.player1Score(5).player2Score(11).status(complete).build()
+            ))
+            .build();
+        final Match m3 = Match.builder()
+            .id(matchId3)
+            .player1Id(spongebobId)
+            .player2Id(squidwardId)
+            .status(Match.STATUS_INCOMPLETE)
+            .build();
+
+        return List.of(m1, m2, m3);
     }
 
-    @BeforeEach
-    public void setupMocks() {
-        //                A     B
-        // A  player1          11-9
-        // B  player2    9-11
-        ChallongeMatch m = new ChallongeMatch();
-        m.setId(matchId);
-        m.setPlayer1Id(player1Id);
-        m.setPlayer2Id(player2Id);
-        m.setWinnerId(player1Id);
-        m.setScoresCsv("11-9");
-        m.setState(ChallongeMatch.STATE_COMPLETE);
-
-        ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
-        mw.setMatch(m);
-
-        when(mockMatchRepository.getMatchList(challongeUrl)).thenReturn(
-            new ChallongeMatchWrapper[] { mw } );
-
-        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
-            .thenReturn(createMatchList());
-
-        when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
-            .thenReturn(createPlayerList());
-
-        ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
-
-        when(mockTournamentRepository.getTournament(challongeUrl))
-            .thenReturn(getTournamentWrapper1());
-    }
-
-    public SpringJpaEvent addEvent(EventDto event) throws Exception {
+    private SpringJpaEvent addEvent(EventDto event) throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         final MvcResult mvcResult = mockMvc.perform(
@@ -163,6 +159,14 @@ public class TestEventController {
 
         final String responseContent = mvcResult.getResponse().getContentAsString();
         return objectMapper.readValue(responseContent, SpringJpaEvent.class);
+    }
+
+    @BeforeEach
+    public void setupMocks() {
+        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createMatchList());
+        when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createPlayerList());
     }
 
     @Test
@@ -188,40 +192,59 @@ public class TestEventController {
             .andExpect(jsonPath("[0][2].content").value(is("A")))
             .andExpect(jsonPath("[0][3].type").value(is(RoundRobinCell.TYPE_TEXT)))
             .andExpect(jsonPath("[0][3].content").value(is("B")))
+            .andExpect(jsonPath("[0][4].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[0][4].content").value(is("C")))
 
             // second row is for scores, with A spongebob score score ...
             .andExpect(jsonPath("[1]").isArray())
             .andExpect(jsonPath("[1][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
             .andExpect(jsonPath("[1][0].content").value(is("A")))
             .andExpect(jsonPath("[1][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
-            .andExpect(jsonPath("[1][1].content").value(is(player1Name)))
+            .andExpect(jsonPath("[1][1].content").value(is(spongebobName)))
             .andExpect(jsonPath("[1][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
             .andExpect(jsonPath("[1][2].content").value(is("")))
             .andExpect(jsonPath("[1][3].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
-            .andExpect(jsonPath("[1][3].content").value(is("W 9")))
+            .andExpect(jsonPath("[1][3].content").value(is("W 4 5 6")))
             .andExpect(
                 jsonPath("[1][3].gameList[0].player1Score").value(is(11)))
             .andExpect(
-                jsonPath("[1][3].gameList[0].player2Score").value(is(9)))
+                jsonPath("[1][3].gameList[0].player2Score").value(is(4)))
             .andExpect(
                 jsonPath("[1][3].gameList[0].winForPlayer1").value(is(true)))
-
-            // second row is for scores, with B patrick score score ...
+            .andExpect(jsonPath("[1][4].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[1][4].content").value(is("")))
+    
+            // third row is for scores, with B patrick score score ...
             .andExpect(jsonPath("[2]").isArray())
             .andExpect(jsonPath("[2][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
             .andExpect(jsonPath("[2][0].content").value(is("B")))
             .andExpect(jsonPath("[2][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
-            .andExpect(jsonPath("[2][1].content").value(is(player2Name)))
+            .andExpect(jsonPath("[2][1].content").value(is(patrickName)))
             .andExpect(jsonPath("[2][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
-            .andExpect(jsonPath("[2][2].content").value(is("L -9")))
+            .andExpect(jsonPath("[2][2].content").value(is("L -4 -5 -6")))
             .andExpect(
-                jsonPath("[2][2].gameList[0].player1Score").value(is(9)))
+                jsonPath("[2][2].gameList[0].player1Score").value(is(4)))
             .andExpect(
                 jsonPath("[2][2].gameList[0].player2Score").value(is(11)))
             .andExpect(
                 jsonPath("[2][2].gameList[0].winForPlayer1").value(is(false)))
-            .andExpect(jsonPath("[2][3].type").value(is(RoundRobinCell.TYPE_EMPTY))) // this is incorrect: issue submitted
-            .andExpect(jsonPath("[2][3].content").value(is("")));
+            .andExpect(jsonPath("[2][3].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[2][3].content").value(is("")))
+            .andExpect(jsonPath("[2][4].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
+            .andExpect(jsonPath("[2][4].content").value(is("L -9 8 -6 -5")))
+
+            // fourth row is for scores, with C squidward score score ...
+            .andExpect(jsonPath("[3]").isArray())
+            .andExpect(jsonPath("[3][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[3][0].content").value(is("C")))
+            .andExpect(jsonPath("[3][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[3][1].content").value(is(squidwardName)))
+            .andExpect(jsonPath("[3][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[3][2].content").value(is("")))
+            .andExpect(jsonPath("[3][3].type").value(is(RoundRobinCell.TYPE_EMPTY))) // this is incorrect: issue submitted
+            .andExpect(jsonPath("[3][3].content").value(is("W 9 -8 6 5")))
+            .andExpect(jsonPath("[3][4].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[3][4].content").value(is("")));
     }
 
     @Test
@@ -264,15 +287,35 @@ public class TestEventController {
             get(uriComponents.expand(uriMap).toUri())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].player1Id").value(is(player1Id)))
-            .andExpect(jsonPath("$[0].player1Name").value(is(player1Name)))
+            .andExpect(jsonPath("$[0].player1Id").value(is(spongebobId)))
+            .andExpect(jsonPath("$[0].player1Name").value(is(spongebobName)))
             .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
-            .andExpect(jsonPath("$[0].player2Id").value(is(player2Id)))
-            .andExpect(jsonPath("$[0].player2Name").value(is(player2Name)))
+            .andExpect(jsonPath("$[0].player2Id").value(is(patrickId)))
+            .andExpect(jsonPath("$[0].player2Name").value(is(patrickName)))
             .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
-            .andExpect(jsonPath("$[0].matchId").value(is(matchId)))
+            .andExpect(jsonPath("$[0].matchId").value(is(matchId1)))
             .andExpect(jsonPath("$[0].status").value(is(Match.STATUS_COMPLETE)))
-            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)));
+            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
+
+            .andExpect(jsonPath("$[1].player1Id").value(is(patrickId)))
+            .andExpect(jsonPath("$[1].player1Name").value(is(patrickName)))
+            .andExpect(jsonPath("$[1].player1Seed").value(is("B")))
+            .andExpect(jsonPath("$[1].player2Id").value(is(squidwardId)))
+            .andExpect(jsonPath("$[1].player2Name").value(is(squidwardName)))
+            .andExpect(jsonPath("$[1].player2Seed").value(is("C")))
+            .andExpect(jsonPath("$[1].matchId").value(is(matchId2)))
+            .andExpect(jsonPath("$[1].status").value(is(Match.STATUS_COMPLETE)))
+            .andExpect(jsonPath("$[1].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
+
+            .andExpect(jsonPath("$[2].player1Id").value(is(spongebobId)))
+            .andExpect(jsonPath("$[2].player1Name").value(is(spongebobName)))
+            .andExpect(jsonPath("$[2].player1Seed").value(is("A")))
+            .andExpect(jsonPath("$[2].player2Id").value(is(squidwardId)))
+            .andExpect(jsonPath("$[2].player2Name").value(is(squidwardName)))
+            .andExpect(jsonPath("$[2].player2Seed").value(is("C")))
+            .andExpect(jsonPath("$[2].matchId").value(is(matchId3)))
+            .andExpect(jsonPath("$[2].status").value(is(Match.STATUS_INCOMPLETE)))
+            .andExpect(jsonPath("$[2].resultCode").value(nullValue()));
     }
 
     @Test
@@ -291,9 +334,14 @@ public class TestEventController {
             get(uriComponents.expand(uriMap).toUri())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].winner").value(is(player1Name)))
-            .andExpect(jsonPath("$[0].loser").value(is(player2Name)))
+            .andExpect(jsonPath("$[0].winner").value(is(spongebobName)))
+            .andExpect(jsonPath("$[0].loser").value(is(patrickName)))
             .andExpect(jsonPath("$[0].eventName").value(is(eventName)))
-            .andExpect(jsonPath("$[0].resultString").value(is("9"))); // 9 because player1 won 11-9 
+            .andExpect(jsonPath("$[0].resultString").value(is("4 5 6"))) // because spongebob won 11-4 11-5 11-6 
+
+            .andExpect(jsonPath("$[1].winner").value(is(squidwardName)))
+            .andExpect(jsonPath("$[1].loser").value(is(patrickName)))
+            .andExpect(jsonPath("$[1].eventName").value(is(eventName)))
+            .andExpect(jsonPath("$[1].resultString").value(is("9 -8 6 5")));
     }
 }

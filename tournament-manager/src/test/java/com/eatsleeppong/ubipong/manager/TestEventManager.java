@@ -72,28 +72,6 @@ public class TestEventManager {
     private final String patrickName = "patrick";
     private final String squidwardName = "squidward";
 
-    private List<ChallongeMatch> getMatchList1() {
-        ChallongeMatch m1 = new ChallongeMatch();
-        m1.setPlayer1Id(spongebobId);
-        m1.setPlayer2Id(patrickId);
-        m1.setState(ChallongeMatch.STATE_COMPLETE);
-        m1.setWinnerId(spongebobId);
-        m1.setScoresCsv("11-4,11-5,11-6");
-
-        ChallongeMatch m2 = new ChallongeMatch();
-        m2.setPlayer1Id(patrickId);
-        m2.setPlayer2Id(squidwardId);
-        m2.setState(ChallongeMatch.STATE_COMPLETE);
-        m2.setWinnerId(squidwardId);
-        m2.setScoresCsv("9-11,11-8,6-11,5-11");
-
-        ChallongeMatch m3 = new ChallongeMatch();
-        m3.setPlayer1Id(spongebobId);
-        m3.setPlayer2Id(squidwardId);
-
-        return Arrays.asList(m1, m2, m3);
-    }
-
     private List<Match> createMatchList() {
         Integer complete = com.eatsleeppong.ubipong.tournamentmanager.domain.Game.STATUS_COMPLETE;
         com.eatsleeppong.ubipong.tournamentmanager.domain.Game.GameBuilder gameBuilder = com.eatsleeppong.ubipong.tournamentmanager.domain.Game.builder();
