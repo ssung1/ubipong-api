@@ -75,19 +75,6 @@ public class Event {
     Integer tournamentId;
 
     /**
-     * Create a map of player ID to player name
-     */
-    public Map<Integer, String> getPlayerNameMap() {
-
-        final List<Player> playerList = playerRepository.findByChallongeUrl(challongeUrl);
-
-        return playerList.parallelStream()
-            .collect(Collectors.collectingAndThen(
-                Collectors.toMap(Player::getId, Player::getName),
-                Collections::<Integer, String> unmodifiableMap));
-    }
-
-    /**
      * given a list of integers, form a map so that
      *
      * first integer maps to 0

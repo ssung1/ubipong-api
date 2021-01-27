@@ -190,16 +190,19 @@ public class EventManager {
 
         final List<Match> matchList = event.getMatchList();
 
-        final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
+        // final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
+        final Map<Integer, Player> playerMap = event.getPlayerMap();
 
         return matchList.stream()
             .filter(Match::isResultValid)
             .map(m -> {
-                final Integer player1 = m.getPlayer1Id();
-                final Integer player2 = m.getPlayer2Id();
+                final Integer player1Id = m.getPlayer1Id();
+                final Integer player2Id = m.getPlayer2Id();
                 final Integer winner = m.getWinnerId();
-                final String player1Name = playerNameMap.get(player1);
-                final String player2Name = playerNameMap.get(player2);
+                final Player player1 = playerMap.get(player1Id);
+                final Player player2 = playerMap.get(player2Id);
+                final String player1Name = player1.getName();
+                final String player2Name = player2.getName();
 
                 final TournamentResultRequestLineItem tournamentResultRequestLineItem =
                         new TournamentResultRequestLineItem();
@@ -207,7 +210,7 @@ public class EventManager {
 
                 tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
 
-                if (isWinForPlayer1(player1, player2, winner)) {
+                if (isWinForPlayer1(player1Id, player2Id, winner)) {
                     tournamentResultRequestLineItem.setWinner(player1Name);
                     tournamentResultRequestLineItem.setLoser(player2Name);
                     tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
@@ -227,12 +230,14 @@ public class EventManager {
         final List<Match> matchList = event.getMatchList();
 
         final Map<Integer, Integer> playerIndexMap = event.getPlayerIndexMap();
-        final Map<Integer, String> playerNameMap = event.getPlayerNameMap();
+        final Map<Integer, Player> playerMap = event.getPlayerMap();
 
         return matchList.stream().map(m -> {
             final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();
             final Integer player1Id = m.getPlayer1Id();
             final Integer player2Id = m.getPlayer2Id();
+            final Player player1 = playerMap.get(player1Id);
+            final Player player2 = playerMap.get(player2Id);
 
             roundRobinMatch.setMatchId(m.getId());
 
@@ -247,8 +252,8 @@ public class EventManager {
             roundRobinMatch.setPlayer1Id(player1Id);
             roundRobinMatch.setPlayer2Id(player2Id);
 
-            roundRobinMatch.setPlayer1Name(playerNameMap.get(player1Id));
-            roundRobinMatch.setPlayer2Name(playerNameMap.get(player2Id));
+            roundRobinMatch.setPlayer1Name(player1.getName());
+            roundRobinMatch.setPlayer2Name(player2.getName());
 
             roundRobinMatch.setPlayer1Seed(numberToLetter(playerIndexMap.get(player1Id)));
             roundRobinMatch.setPlayer2Seed(numberToLetter(playerIndexMap.get(player2Id)));
