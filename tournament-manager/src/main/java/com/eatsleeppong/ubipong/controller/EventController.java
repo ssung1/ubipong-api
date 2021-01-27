@@ -48,10 +48,10 @@ public class EventController {
     @ApiOperation(value = "Event", notes = "This is mainly used to get details that are only on challonge.com, " +
         "such as the event name.  For database-only event, use /crud/events")
     @GetMapping(value = "/{id}")
-    public SpringJpaEvent getEvent(
+    public EventDto getEvent(
         @PathVariable("id") Integer id
     ) {
-        return eventMapper.mapEventToSpringJpaEvent(eventRepository.getOne(id));
+        return eventMapper.mapEventToEventDto(eventRepository.getOne(id));
     }
 
     @ApiOperation(value = "Event Result", notes = "This generates the results of an event.  It is like " +
@@ -76,7 +76,8 @@ public class EventController {
         "This endpoint should be used instead of /crud/events.")
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public SpringJpaEvent addEvent(@RequestBody EventDto eventDto) {
-        return eventManager.addEvent(eventDto);
+    public EventDto addEvent(@RequestBody EventDto eventDto) {
+        return eventMapper.mapEventToEventDto(
+            eventMapper.mapSpringJpaEventToEvent(eventManager.addEvent(eventDto)));
     }
 }

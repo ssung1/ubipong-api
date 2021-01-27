@@ -16,8 +16,8 @@ public class EventMapper {
     private final PlayerRepository playerRepository;
     private final MatchRepository matchRepository;
 
-    public SpringJpaEvent mapEventToSpringJpaEvent(Event event) {
-        SpringJpaEvent springJpaEvent = new SpringJpaEvent();
+    public SpringJpaEvent mapEventToSpringJpaEvent(final Event event) {
+        final SpringJpaEvent springJpaEvent = new SpringJpaEvent();
         springJpaEvent.setName(event.getName());
         springJpaEvent.setTournamentId(event.getTournamentId());
         springJpaEvent.setId(event.getId());
@@ -26,7 +26,7 @@ public class EventMapper {
         return springJpaEvent;
     }
 
-    public Event mapSpringJpaEventToEvent(SpringJpaEvent springJpaEvent) {
+    public Event mapSpringJpaEventToEvent(final SpringJpaEvent springJpaEvent) {
         return Event.builder()
             .challongeUrl(springJpaEvent.getChallongeUrl())
             .id(springJpaEvent.getId())
@@ -37,7 +37,7 @@ public class EventMapper {
             .build();
     }
 
-    public Event mapEventDtoToEvent(EventDto eventDto) {
+    public Event mapEventDtoToEvent(final EventDto eventDto) {
         return Event.builder()
             .id(eventDto.getId())
             .tournamentId(eventDto.getTournamentId())
@@ -45,6 +45,15 @@ public class EventMapper {
             .challongeUrl(eventDto.getChallongeUrl())
             .playerRepository(playerRepository)
             .matchRepository(matchRepository)
+            .build();
+    }
+
+    public EventDto mapEventToEventDto(final Event event) {
+        return EventDto.builder()
+            .id(event.getId())
+            .tournamentId(event.getTournamentId())
+            .name(event.getName())
+            .challongeUrl(event.getChallongeUrl())
             .build();
     }
 }
