@@ -75,4 +75,20 @@ public class TestEvent {
         assertThat(playerList.get(2).getName(), is(squidwardName));
         assertThat(playerList.get(2).getEventSeed(), is(2));
     }
+
+    @Test
+    @DisplayName("should return a map of players keyed by ID")
+    public void testGetPlayerMap() {
+        Map<Integer, Player> playerMap = event.getPlayerMap();
+
+        assertThat(playerMap.get(spongebobId).getId(), is(spongebobId));
+        assertThat(playerMap.get(spongebobId).getName(), is(spongebobName));
+        assertThat(playerMap.get(spongebobId).getEventSeed(), is(0));
+        assertThat(playerMap.get(patrickId).getId(), is(patrickId));
+        assertThat(playerMap.get(patrickId).getName(), is(patrickName));
+        assertThat(playerMap.get(patrickId).getEventSeed(), is(1));
+        assertThat(playerMap.get(squidwardId).getId(), is(squidwardId));
+        assertThat(playerMap.get(squidwardId).getName(), is(squidwardName));
+        assertThat(playerMap.get(squidwardId).getEventSeed(), is(2));
+    }
 }

@@ -117,6 +117,17 @@ public class Event {
             .collect(Collectors.toUnmodifiableList());
     }
 
+    /**
+     * A map of players, keyed by ID
+     * @return
+     */
+    public Map<Integer, Player> getPlayerMap() {
+        final List<Player> playerListWithoutSeed = playerRepository.findByChallongeUrl(challongeUrl);
+        return IntStream.range(0, playerListWithoutSeed.size())
+            .mapToObj(index -> playerListWithoutSeed.get(index).withEventSeed(index))
+            .collect(Collectors.toMap(Player::getId, player -> player));
+    }
+
     public List<Match> getMatchList() {
         return matchRepository.findByChallongeUrl(challongeUrl);
     }
