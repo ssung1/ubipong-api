@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.ratingmanager.dto;
 
-import java.time.Instant;
+import java.util.Date;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Value;
 @AllArgsConstructor // remove after VSCode is fixed
 public class TournamentResultDto {
     private String tournamentName;
-    private Instant tournamentDate;
+    private Date tournamentDate;
 
-    private MatchResultDto[] matchResultList;
+    private MatchResultDto[] tournamentResultList;
 }

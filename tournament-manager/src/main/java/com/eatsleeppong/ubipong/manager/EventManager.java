@@ -7,7 +7,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
@@ -15,6 +14,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -185,7 +185,7 @@ public class EventManager {
         return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }
 
-    public TournamentResultRequestLineItem[] createTournamentResultList(final String challongeUrl) {
+    public MatchResultDto[] createTournamentResultList(final String challongeUrl) {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
 
         final List<Match> matchList = event.getMatchList();
@@ -197,31 +197,30 @@ public class EventManager {
             .map(m -> {
                 final Integer player1Id = m.getPlayer1Id();
                 final Integer player2Id = m.getPlayer2Id();
-                final Integer winner = m.getWinnerId();
+                final Integer winnerId = m.getWinnerId();
                 final Player player1 = playerMap.get(player1Id);
                 final Player player2 = playerMap.get(player2Id);
                 final String player1Name = player1.getName();
                 final String player2Name = player2.getName();
 
-                final TournamentResultRequestLineItem tournamentResultRequestLineItem =
-                        new TournamentResultRequestLineItem();
-                tournamentResultRequestLineItem.setEventName(event.getName());
+                final MatchResultDto.MatchResultDtoBuilder matchResultDtoBuilder =
+                    MatchResultDto.builder();
 
-                tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
+                matchResultDtoBuilder.eventName(event.getName());
 
-                if (isWinForPlayer1(player1Id, player2Id, winner)) {
-                    tournamentResultRequestLineItem.setWinner(player1Name);
-                    tournamentResultRequestLineItem.setLoser(player2Name);
-                    tournamentResultRequestLineItem.setResultString(m.getScoreSummary());
+                if (isWinForPlayer1(player1Id, player2Id, winnerId)) {
+                    matchResultDtoBuilder.winner(player1Name);
+                    matchResultDtoBuilder.loser(player2Name);
+                    matchResultDtoBuilder.resultString(m.getScoreSummary());
                 } else {
-                    tournamentResultRequestLineItem.setWinner(player2Name);
-                    tournamentResultRequestLineItem.setLoser(player1Name);
-                    tournamentResultRequestLineItem.setResultString(m.transpose().getScoreSummary());
+                    matchResultDtoBuilder.winner(player2Name);
+                    matchResultDtoBuilder.loser(player1Name);
+                    matchResultDtoBuilder.resultString(m.transpose().getScoreSummary());
                 }
 
-                return tournamentResultRequestLineItem;
+                return matchResultDtoBuilder.build();
             })
-            .toArray(TournamentResultRequestLineItem[]::new);
+            .toArray(MatchResultDto[]::new);
     }
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {

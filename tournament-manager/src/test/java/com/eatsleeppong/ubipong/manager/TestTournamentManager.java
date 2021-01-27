@@ -2,8 +2,8 @@ package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
+import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaTournamentRepository;
 
@@ -30,10 +30,10 @@ public class TestTournamentManager {
     private final String event1Name = "Preliminary Group 1";
     private final String event2Name = "Class A";
 
-    private final TournamentResultRequestLineItem event1Game1 = new TournamentResultRequestLineItem();
-    private final TournamentResultRequestLineItem event1Game2 = new TournamentResultRequestLineItem();
-    private final TournamentResultRequestLineItem event2Game1 = new TournamentResultRequestLineItem();
-    private final TournamentResultRequestLineItem event2Game2 = new TournamentResultRequestLineItem();
+    private MatchResultDto event1Game1;
+    private MatchResultDto event1Game2;
+    private MatchResultDto event2Game1;
+    private MatchResultDto event2Game2;
 
     private final SpringJpaEventRepository mockEventRepository = mock(SpringJpaEventRepository.class);
     private final EventManager mockEventManager = mock(EventManager.class);
@@ -46,14 +46,25 @@ public class TestTournamentManager {
     public void setupMocks() throws Exception {
         // because Lombok creates the equals method, each TournamentResultRequestLineItem needs to have different
         // content in order to be considered different (cannot use referential equality)
-        event1Game1.setEventName(event1Name);
-        event1Game1.setResultString("event1game1result");
-        event1Game2.setEventName(event1Name);
-        event1Game2.setResultString("event1game2result");
-        event2Game1.setEventName(event2Name);
-        event2Game1.setResultString("event2game1result");
-        event2Game2.setEventName(event2Name);
-        event2Game2.setResultString("event2game2result");
+        event1Game1 = MatchResultDto.builder()
+            .eventName(event1Name)
+            .resultString("event1game1result")
+            .build();
+
+        event1Game2 = MatchResultDto.builder()
+            .eventName(event1Name)
+            .resultString("event1game2result")
+            .build();
+
+        event2Game1 = MatchResultDto.builder()
+            .eventName(event2Name)
+            .resultString("event2game1result")
+            .build();
+
+        event2Game2 = MatchResultDto.builder()
+            .eventName(event2Name)
+            .resultString("event2game2result")
+            .build();
 
         final SpringJpaEvent event1 = new SpringJpaEvent();
         event1.setChallongeUrl(event1ChallongeUrl);
@@ -63,9 +74,9 @@ public class TestTournamentManager {
         when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(Arrays.asList(event1, event2));
 
         when(mockEventManager.createTournamentResultList(event1ChallongeUrl)).thenReturn(
-                new TournamentResultRequestLineItem[] { event1Game1, event1Game2 });
+                new MatchResultDto[] { event1Game1, event1Game2 });
         when(mockEventManager.createTournamentResultList(event2ChallongeUrl)).thenReturn(
-                new TournamentResultRequestLineItem[] { event2Game1, event2Game2 });
+                new MatchResultDto[] { event2Game1, event2Game2 });
 
         final SpringJpaTournament tournament = new SpringJpaTournament();
         tournament.setName(tournamentName);
@@ -76,18 +87,18 @@ public class TestTournamentManager {
 
     @Test
     public void testCreateTournamentResultRequest() throws Exception {
-        final TournamentResultRequest tournamentResultRequest =
-                tournamentManager.createTournamentResultRequest(tournamentId);
-        assertThat(tournamentResultRequest.getTournamentName(), is(tournamentName));
-        assertThat(tournamentResultRequest.getTournamentDate(), is(df.parse(tournamentDate)));
-        assertThat(tournamentResultRequest.getTournamentResultList(), arrayWithSize(4));
+        final TournamentResultDto tournamentResultDto =
+            tournamentManager.createTournamentResultRequest(tournamentId);
+        assertThat(tournamentResultDto.getTournamentName(), is(tournamentName));
+        assertThat(tournamentResultDto.getTournamentDate(), is(df.parse(tournamentDate)));
+        assertThat(tournamentResultDto.getTournamentResultList(), arrayWithSize(4));
         
-        final TournamentResultRequestLineItem[] tournamentResultRequestLineItem = 
-                tournamentResultRequest.getTournamentResultList();
+        final MatchResultDto[] matchResultDtoList = 
+            tournamentResultDto.getTournamentResultList();
 
-        assertThat(tournamentResultRequestLineItem, hasItemInArray(event1Game1));
-        assertThat(tournamentResultRequestLineItem, hasItemInArray(event1Game2));
-        assertThat(tournamentResultRequestLineItem, hasItemInArray(event2Game1));
-        assertThat(tournamentResultRequestLineItem, hasItemInArray(event2Game2));
+        assertThat(matchResultDtoList, hasItemInArray(event1Game1));
+        assertThat(matchResultDtoList, hasItemInArray(event1Game2));
+        assertThat(matchResultDtoList, hasItemInArray(event2Game1));
+        assertThat(matchResultDtoList, hasItemInArray(event2Game2));
     }
 }

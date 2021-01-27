@@ -31,6 +31,7 @@ configurations {
 dependencies {
     implementation project(':tournament-manager-dto')
     implementation project(':tournament-manager-domain')
+    implementation project(':rating-manager-dto')
 
     // spring stuff
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -2,8 +2,8 @@ package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
+import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaEventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaTournamentRepository;
 import org.springframework.stereotype.Service;
@@ -27,22 +27,21 @@ public class TournamentManager {
         this.tournamentRepository = tournamentRepository;
     }
 
-    public TournamentResultRequest createTournamentResultRequest(final Integer id) {
+    public TournamentResultDto createTournamentResultRequest(final Integer id) {
         final List<SpringJpaEvent> eventList = eventRepository.findByTournamentId(id);
 
-        final TournamentResultRequestLineItem[] tournamentResultRequestLineItemList = eventList.stream()
-                .map(SpringJpaEvent::getChallongeUrl)
-                .map(eventManager::createTournamentResultList)
-                .flatMap(Arrays::stream)
-                .toArray(TournamentResultRequestLineItem[]::new);
-
-        final TournamentResultRequest tournamentResultRequest = new TournamentResultRequest();
+        final MatchResultDto[] matchResultDtoList = eventList.stream()
+            .map(SpringJpaEvent::getChallongeUrl)
+            .map(eventManager::createTournamentResultList)
+            .flatMap(Arrays::stream)
+            .toArray(MatchResultDto[]::new);
 
         final SpringJpaTournament tournament = tournamentRepository.getOne(id);
-        tournamentResultRequest.setTournamentName(tournament.getName());
-        tournamentResultRequest.setTournamentDate(tournament.getTournamentDate());
-        tournamentResultRequest.setTournamentResultList(tournamentResultRequestLineItemList);
 
-        return tournamentResultRequest;
+        return TournamentResultDto.builder()
+            .tournamentName(tournament.getName())
+            .tournamentDate(tournament.getTournamentDate())
+            .tournamentResultList(matchResultDtoList)
+            .build();
     }
 }

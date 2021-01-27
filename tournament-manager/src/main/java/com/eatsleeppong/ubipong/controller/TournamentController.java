@@ -1,8 +1,7 @@
 package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.manager.TournamentManager;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequest;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +20,7 @@ public class TournamentController {
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
     @GetMapping(value = "/{id}/result")
-    public TournamentResultRequest getResult(@PathVariable("id") final Integer id) {
+    public TournamentResultDto getResult(@PathVariable("id") final Integer id) {
         return tournamentManager.createTournamentResultRequest(id);
     }
 

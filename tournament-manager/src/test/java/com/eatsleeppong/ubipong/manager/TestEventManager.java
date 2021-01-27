@@ -5,8 +5,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.model.challonge.*;
-
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
@@ -308,17 +307,17 @@ public class TestEventManager {
         final EventDto event = createEvent();
         subject.addEvent(event);
 
-        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
+        final MatchResultDto[] matchResultDtoList = subject.createTournamentResultList(challongeUrl);
 
-        assertThat(tournamentResultList, arrayWithSize(2));
+        assertThat(matchResultDtoList, arrayWithSize(2));
 
-        final List<String> allWinners = Arrays.stream(tournamentResultList)
-                .map(TournamentResultRequestLineItem::getWinner)
-                .collect(Collectors.toList());
+        final List<String> allWinners = Arrays.stream(matchResultDtoList)
+            .map(MatchResultDto::getWinner)
+            .collect(Collectors.toList());
 
-        final List<String> allLosers = Arrays.stream(tournamentResultList)
-                .map(TournamentResultRequestLineItem::getLoser)
-                .collect(Collectors.toList());
+        final List<String> allLosers = Arrays.stream(matchResultDtoList)
+            .map(MatchResultDto::getLoser)
+            .collect(Collectors.toList());
 
         /**
          * <pre>
@@ -335,8 +334,8 @@ public class TestEventManager {
         // I'm sorry, Patrick
         assertThat(allLosers, hasItem(patrickName));
 
-        final List<String> allResultStrings = Arrays.stream(tournamentResultList)
-                .map(TournamentResultRequestLineItem::getResultString)
+        final List<String> allResultStrings = Arrays.stream(matchResultDtoList)
+                .map(MatchResultDto::getResultString)
                 .collect(Collectors.toList());
         assertThat(allResultStrings, hasItem("4 5 6"));
         assertThat(allResultStrings, hasItem("9 -8 6 5"));
@@ -348,7 +347,7 @@ public class TestEventManager {
         final EventDto event = createEvent();
         subject.addEvent(event);
 
-        final TournamentResultRequestLineItem[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
+        final MatchResultDto[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
 
         // event name in the tournament result list is really the event title
         assertThat(tournamentResultList[0].getEventName(), is(eventName));

@@ -5,7 +5,7 @@ import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
-import com.eatsleeppong.ubipong.rating.model.TournamentResultRequestLineItem;
+import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
@@ -59,7 +59,7 @@ public class EventController {
         "unsuitable for submission to the rating authority because rating must be calculated from all the" +
         "results in a tournament, together, in a single batch.")
     @GetMapping(value = "/{challongeUrl}/result")
-    public TournamentResultRequestLineItem[] getResult(@PathVariable("challongeUrl") String challongeUrl) {
+    public MatchResultDto[] getResult(@PathVariable("challongeUrl") String challongeUrl) {
         return eventManager.createTournamentResultList(challongeUrl);
     }
 
