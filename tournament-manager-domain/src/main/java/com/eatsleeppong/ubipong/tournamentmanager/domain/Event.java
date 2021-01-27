@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import lombok.Builder;
 import lombok.Value;
+import lombok.With;
 
 // this is work in progress
 // meant to replace SpringJpaEvent
@@ -94,5 +95,14 @@ public class Event {
 
     public List<Match> getMatchList() {
         return matchRepository.findByChallongeUrl(challongeUrl);
+    }
+
+    /**
+     * This is just like getMatchList, except all the matches are written so that player1 is always
+     * the winner.
+     * @return
+     */
+    public List<Match> getMatchListForReporting() {
+        return null;
     }
 }
