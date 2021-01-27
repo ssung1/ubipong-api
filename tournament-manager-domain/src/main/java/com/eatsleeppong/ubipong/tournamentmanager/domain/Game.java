@@ -23,6 +23,30 @@ public class Game {
 
     private int status;
 
+    public static class GameBuilder {
+        private int player1Score;
+        private int player2Score;
+    
+        /**
+         * Easier way to set scores, using the form
+         * {player1score}-{player2score}
+         */
+        public GameBuilder scores(String score) {
+            if (score == null || score.isBlank()) {
+                return this;
+            }
+            int dash = score.indexOf('-');
+            if (dash > 0) {
+                player1Score = Integer.parseInt(score.substring(0, dash));
+                player2Score = Integer.parseInt(score.substring(dash + 1));
+            }
+            else {
+                player2Score = Integer.parseInt(score);
+            }
+            return this;
+        }
+    }
+
     public boolean isWinForPlayer1() {
         if (winnerIndex != null) {
             return winnerIndex == 1;

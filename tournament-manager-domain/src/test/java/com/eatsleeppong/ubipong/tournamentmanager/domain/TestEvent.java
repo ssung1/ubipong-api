@@ -20,9 +20,6 @@ public class TestEvent {
     final Player patrick = TestHelper.createPlayerPatrick();
     final Player squidward = TestHelper.createPlayerSquidward();
 
-    private final PlayerRepository mockPlayerRepository = mock(PlayerRepository.class);
-    private final MatchRepository mockMatchRepository = mock(MatchRepository.class);
-
     private final Event event = TestHelper.createEvent();
 
     @BeforeEach

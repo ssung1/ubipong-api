@@ -1,8 +1,14 @@
 package com.eatsleeppong.ubipong.tournamentmanager;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 
@@ -18,12 +24,25 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
  * patrick vs squidward: patrick wins 3 3 3 (ID: 102)
  */
 public class TestHelper {
+    public static int SPONGEBOB_ID = 1;
+    public static int PATRICK_ID = 1;
+    public static int SQUIDWARD_ID = 1;
+    public static String CHALLONGE_URL = "esp_201903_pg_rr_1";
+
     public static Event createEvent() {
+        final PlayerRepository mockPlayerRepository = mock(PlayerRepository.class);
+        final MatchRepository mockMatchRepository = mock(MatchRepository.class);
+
+        when(mockPlayerRepository.findByChallongeUrl(CHALLONGE_URL)).thenReturn(List.of(
+            createPlayerSpongebob(), createPlayerPatrick(), createPlayerSquidward()
+        ));
+
         return Event.builder()
             .id(100)
             .name("Preliminary Group 1")
-            .challongeUrl("esp_201903_pg_rr_1")
-            .playerRepository(mock(PlayerRepository.class))
+            .challongeUrl(CHALLONGE_URL)
+            .playerRepository(mockPlayerRepository)
+            .matchRepository(mockMatchRepository)
             .build();
     }
 
@@ -45,6 +64,55 @@ public class TestHelper {
         return Player.builder()
             .id(3)
             .name("patrick")
+            .build();
+    }
+
+    public static Match createMatch1() {
+        return Match.builder()
+            .id(100)
+            .player1Id(SPONGEBOB_ID)
+            .player2Id(PATRICK_ID)
+            .status(Match.STATUS_COMPLETE)
+            .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
+            .winnerId(SPONGEBOB_ID)
+            .gameList(List.of(
+                Game.builder().scores("11-3").build(),
+                Game.builder().scores("11-5").build(),
+                Game.builder().scores("11-1").build()
+            ))
+            .build();
+    }
+
+    public static Match createMatch2() {
+        return Match.builder()
+            .id(101)
+            .player1Id(SPONGEBOB_ID)
+            .player2Id(SQUIDWARD_ID)
+            .status(Match.STATUS_COMPLETE)
+            .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
+            .winnerId(SPONGEBOB_ID)
+            .gameList(List.of(
+                Game.builder().scores("13-11").build(),
+                Game.builder().scores("5-11").build(),
+                Game.builder().scores("11-9").build(),
+                Game.builder().scores("11-9").build()
+            ))
+            .build();
+    }
+
+    public static Match createMatch3() {
+        return Match.builder()
+            .id(101)
+            .player1Id(PATRICK_ID)
+            .player2Id(SQUIDWARD_ID)
+            .status(Match.STATUS_COMPLETE)
+            .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
+            .winnerId(PATRICK_ID)
+            .gameList(List.of(
+                Game.builder().scores("11-3").build(),
+                Game.builder().scores("11-3").build(),
+                Game.builder().scores("11-3").build()
+            ))
             .build();
     }
 }
