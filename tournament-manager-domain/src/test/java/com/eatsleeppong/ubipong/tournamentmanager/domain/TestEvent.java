@@ -109,12 +109,19 @@ public class TestEvent {
     @Test
     @DisplayName("should return a list of match results")
     public void testGetMatchResultList() {
+        // for this test, we cannot have any pending matches
+        when(event.getMatchRepository().findByChallongeUrl(event.getChallongeUrl()))
+            .thenReturn(List.of(
+                TestHelper.createMatch1(), TestHelper.createMatch2()
+            ));
+
         final List<MatchResult> matchResultList = event.getMatchResultList();
+        assertThat(matchResultList, hasSize(2));
 
         final MatchResult spongebobVsPatrick = matchResultList.get(0);
         assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
-        assertThat(spongebobVsPatrick.getWinner(), is(spongebob.getName()));
-        assertThat(spongebobVsPatrick.getLoser(), is(patrick.getName()));
+        assertThat(spongebobVsPatrick.getWinner(), is(patrick.getName()));
+        assertThat(spongebobVsPatrick.getLoser(), is(spongebob.getName()));
         assertThat(spongebobVsPatrick.getResult(), is("3 5 1"));
 
         final MatchResult spongebobVsSquidward = matchResultList.get(1);
@@ -122,11 +129,5 @@ public class TestEvent {
         assertThat(spongebobVsSquidward.getWinner(), is(spongebob.getName()));
         assertThat(spongebobVsSquidward.getLoser(), is(squidward.getName()));
         assertThat(spongebobVsSquidward.getResult(), is("11 -5 9 9"));
-
-        final MatchResult patrickVsSquidward = matchResultList.get(2);
-        assertThat(patrickVsSquidward.getEventName(), is(event.getName()));
-        assertThat(patrickVsSquidward.getWinner(), is(squidward.getName()));
-        assertThat(patrickVsSquidward.getLoser(), is(patrick.getName()));
-        assertThat(patrickVsSquidward.getResult(), is("3 3 3"));
     }
 }
