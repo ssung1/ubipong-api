@@ -20,13 +20,13 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
  * Players: spongebob (ID: 1), patrick (ID: 2), and squidward (ID: 3)
  * Scores:
  * spongebob vs patrick: patrick wins 3 5 1 (ID: 100)
- * spongebob vs squidward: spongebob wins 13 -5 9 9 (ID: 101)
+ * spongebob vs squidward: spongebob wins 11 -5 9 9 (ID: 101)
  * patrick vs squidward: patrick wins 3 3 3 (ID: 102)
  */
 public class TestHelper {
     public static int SPONGEBOB_ID = 1;
-    public static int PATRICK_ID = 1;
-    public static int SQUIDWARD_ID = 1;
+    public static int PATRICK_ID = 2;
+    public static int SQUIDWARD_ID = 3;
     public static String CHALLONGE_URL = "esp_201903_pg_rr_1";
 
     public static Event createEvent() {
@@ -52,21 +52,21 @@ public class TestHelper {
 
     public static Player createPlayerSpongebob() {
         return Player.builder()
-            .id(1)
+            .id(SPONGEBOB_ID)
             .name("spongebob")
             .build();
     }
 
     public static Player createPlayerPatrick() {
         return Player.builder()
-            .id(2)
+            .id(PATRICK_ID)
             .name("patrick")
             .build();
     }
 
     public static Player createPlayerSquidward() {
         return Player.builder()
-            .id(3)
+            .id(SQUIDWARD_ID)
             .name("patrick")
             .build();
     }
