@@ -30,45 +30,6 @@ public class MatchMapper {
         }
     }
 
-    /**
-     * score is in the form of {player1Score}-{player2Score}
-     * 
-     * in case where there is no dash found, the entire score is considered player1Score
-     * 
-     * @param score
-     * @return
-     */
-    private Game mapScoreToGame(final String score) {
-        final Game.GameBuilder gameBuilder = Game.builder();
-
-        int dash = score.indexOf('-');
-        if (dash > 0) {
-            int player1Score = Integer.parseInt(score.substring(0, dash));
-            int player2Score = Integer.parseInt(score.substring(dash + 1));
-
-            gameBuilder
-                .player1Score(player1Score)
-                .player2Score(player2Score)
-                .status(Game.STATUS_COMPLETE);
-        }
-        else {
-            gameBuilder.player1Score(Integer.parseInt(score));
-        }
-
-        return gameBuilder.build();
-    }
-
-    private List<Game> mapScoreCsvToGameList(final String scoreCsv) {
-        if (scoreCsv == null || scoreCsv.isBlank()) {
-            return Collections.emptyList();
-        }
-        String[] scoreArray = scoreCsv.split(",");
-        return Arrays.stream(scoreArray)
-            .map(String::trim)
-            .map(this::mapScoreToGame)
-            .collect(Collectors.toUnmodifiableList());
-    }
-
     public Match mapChallongeMatchToMatch(ChallongeMatch challongeMatch) {
         return Match.builder()
             .id(challongeMatch.getId())
@@ -77,7 +38,7 @@ public class MatchMapper {
             .player2Id(challongeMatch.getPlayer2Id())
             .winnerId(challongeMatch.getWinnerId())
             .resultCode(mapParticipantMatchStateToMatchResultCode(challongeMatch.getState()))
-            .gameList(mapScoreCsvToGameList(challongeMatch.getScoresCsv()))
+            .scores(challongeMatch.getScoresCsv())
             .build();
     }
 

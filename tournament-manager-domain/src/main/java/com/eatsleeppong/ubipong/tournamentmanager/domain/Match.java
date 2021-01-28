@@ -25,7 +25,8 @@ public class Match {
     private Integer id;
     // not used for now
     // private Integer eventId;
-    private Integer status;
+    @Default
+    private Integer status = Match.STATUS_INCOMPLETE;
     private Integer player1Id;
     private Integer player2Id;
     /**

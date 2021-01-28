@@ -24,12 +24,15 @@ public class Game {
     private int status;
 
     public static class GameBuilder {
-        private int player1Score;
-        private int player2Score;
+        private int player1Score = 0;
+        private int player2Score = 0;
+        private int status = Game.STATUS_INCOMPLETE;
     
         /**
          * Easier way to set scores, using the form
          * {player1score}-{player2score}
+         * 
+         * In case where there is no dash, the number is considered player2's score
          */
         public GameBuilder scores(final String rawScore) {
             if (rawScore == null || rawScore.isBlank()) {
@@ -44,6 +47,7 @@ public class Game {
             else {
                 player2Score = Integer.parseInt(score);
             }
+            this.status = Game.STATUS_COMPLETE;
             return this;
         }
     }
