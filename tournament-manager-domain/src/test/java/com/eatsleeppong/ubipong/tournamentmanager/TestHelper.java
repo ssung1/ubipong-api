@@ -21,7 +21,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
  * Scores:
  * spongebob vs patrick: patrick wins 3 5 1 (ID: 100)
  * spongebob vs squidward: spongebob wins 11 -5 9 9 (ID: 101)
- * patrick vs squidward: squidward wins 3 3 3 (ID: 102)
+ * patrick vs squidward: not played yet (ID: 102)
  */
 public class TestHelper {
     public static int SPONGEBOB_ID = 1;
@@ -78,11 +78,11 @@ public class TestHelper {
             .player2Id(PATRICK_ID)
             .status(Match.STATUS_COMPLETE)
             .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
-            .winnerId(SPONGEBOB_ID)
+            .winnerId(PATRICK_ID)
             .gameList(List.of(
-                Game.builder().scores("11-3").build(),
-                Game.builder().scores("11-5").build(),
-                Game.builder().scores("11-1").build()
+                Game.builder().scores("3-11").build(),
+                Game.builder().scores("5-11").build(),
+                Game.builder().scores("1-11").build()
             ))
             .build();
     }
@@ -109,14 +109,6 @@ public class TestHelper {
             .id(101)
             .player1Id(PATRICK_ID)
             .player2Id(SQUIDWARD_ID)
-            .status(Match.STATUS_COMPLETE)
-            .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
-            .winnerId(SQUIDWARD_ID)
-            .gameList(List.of(
-                Game.builder().scores("3-11").build(),
-                Game.builder().scores("3-11").build(),
-                Game.builder().scores("3-11").build()
-            ))
             .build();
     }
 }

@@ -92,13 +92,13 @@ public class TestMatch {
     @Test
     @DisplayName("should return whether player1 is the winner: true")
     public void testIsWinForPlayer1True() {
-        assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(true));
+        assertThat(TestHelper.createMatch2().isWinForPlayer1(), is(true));
     }
 
     @Test
     @DisplayName("should return whether player1 is the winner: false")
     public void testIsWinForPlayer1False() {
-        assertThat(TestHelper.createMatch3().isWinForPlayer1(), is(false));
+        assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(false));
     }
 
     @Test
@@ -163,12 +163,14 @@ public class TestMatch {
     @Test
     @DisplayName("should return number of games won by player 1")
     public void testGetNumberOfGamesWonByPlayer1() {
-        assertThat(TestHelper.createMatch1().getGamesWonByPlayer1(), is(3L));
+        assertThat(TestHelper.createMatch1().getGamesWonByPlayer1(), is(0L));
+        assertThat(TestHelper.createMatch2().getGamesWonByPlayer1(), is(3L));
     }
 
     @Test
     @DisplayName("should return number of games won by player 2")
     public void testGetNumberOfGamesWonByPlayer2() {
-        assertThat(TestHelper.createMatch1().getGamesWonByPlayer2(), is(0L));
+        assertThat(TestHelper.createMatch1().getGamesWonByPlayer2(), is(3L));
+        assertThat(TestHelper.createMatch2().getGamesWonByPlayer2(), is(1L));
     }
 }
