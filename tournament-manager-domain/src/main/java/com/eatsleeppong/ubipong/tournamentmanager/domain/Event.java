@@ -11,10 +11,9 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
-// this is work in progress
-// meant to replace SpringJpaEvent
 @Value
 @Builder
+@With
 public class Event {
     /**
      * Overall round robin event, which contains all the players in the event
@@ -97,17 +96,6 @@ public class Event {
         return matchRepository.findByChallongeUrl(challongeUrl);
     }
 
-    /**
-     * This is just like getMatchList, except all the matches are written so that player1 is always
-     * the winner.
-     * @return
-     */
-    public List<Match> getMatchListForReporting() {
-        return matchRepository.findByChallongeUrl(challongeUrl).stream()
-            .map(Match::transposeIfWinForPlayer2)
-            .collect(Collectors.toUnmodifiableList());
-    }
-
     private MatchResult mapMatchToMatchResult(final Match match) {
         // we want to arrange the match so that player 1 is the winner
         final Match matchForReporting = match.transposeIfWinForPlayer2();
@@ -118,9 +106,13 @@ public class Event {
             .eventName(getName())
             .winner(player1Name)
             .loser(player2Name)
+            .result(matchForReporting.getScoreSummary())
             .build();
     }
+
     public List<MatchResult> getMatchResultList() {
-        return null;
+        return getMatchList().stream()
+            .map(this::mapMatchToMatchResult)
+            .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -118,63 +118,6 @@ public class TestEvent {
     }
 
     @Test
-    @DisplayName("should return a list of matches arranged for reporting")
-    public void testGetMatchListForReporting() {
-        final List<Match> matchList = event.getMatchListForReporting();
-
-        final Match spongebobVsPatrick = matchList.get(0);
-        assertThat(spongebobVsPatrick.getPlayer1Id(), is(spongebob.getId()));
-        assertThat(spongebobVsPatrick.getPlayer2Id(), is(patrick.getId()));
-        assertThat(spongebobVsPatrick.getStatus(), is(Match.STATUS_COMPLETE));
-        assertThat(spongebobVsPatrick.getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
-        assertThat(spongebobVsPatrick.getWinnerId(), is(spongebob.getId()));
-        assertThat(spongebobVsPatrick.getGame(0).getPlayer1Score(), is(11));
-        assertThat(spongebobVsPatrick.getGame(0).getPlayer2Score(), is(3));
-        assertThat(spongebobVsPatrick.getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(spongebobVsPatrick.getGame(1).getPlayer1Score(), is(11));
-        assertThat(spongebobVsPatrick.getGame(1).getPlayer2Score(), is(5));
-        assertThat(spongebobVsPatrick.getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(spongebobVsPatrick.getGame(2).getPlayer1Score(), is(11));
-        assertThat(spongebobVsPatrick.getGame(2).getPlayer2Score(), is(1));
-        assertThat(spongebobVsPatrick.getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
-
-        final Match spongebobVsSquidward = matchList.get(1);
-        assertThat(spongebobVsSquidward.getPlayer1Id(), is(spongebob.getId()));
-        assertThat(spongebobVsSquidward.getPlayer2Id(), is(squidward.getId()));
-        assertThat(spongebobVsSquidward.getStatus(), is(Match.STATUS_COMPLETE));
-        assertThat(spongebobVsSquidward.getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
-        assertThat(spongebobVsSquidward.getWinnerId(), is(spongebob.getId()));
-        assertThat(spongebobVsSquidward.getGame(0).getPlayer1Score(), is(13));
-        assertThat(spongebobVsSquidward.getGame(0).getPlayer2Score(), is(11));
-        assertThat(spongebobVsSquidward.getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(spongebobVsSquidward.getGame(1).getPlayer1Score(), is(5));
-        assertThat(spongebobVsSquidward.getGame(1).getPlayer2Score(), is(11));
-        assertThat(spongebobVsSquidward.getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(spongebobVsSquidward.getGame(2).getPlayer1Score(), is(11));
-        assertThat(spongebobVsSquidward.getGame(2).getPlayer2Score(), is(9));
-        assertThat(spongebobVsSquidward.getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(spongebobVsSquidward.getGame(3).getPlayer1Score(), is(11));
-        assertThat(spongebobVsSquidward.getGame(3).getPlayer2Score(), is(9));
-        assertThat(spongebobVsSquidward.getGame(3).getStatus(), is(Game.STATUS_COMPLETE));
-
-        final Match patrickVsSquidward = matchList.get(2);
-        assertThat(patrickVsSquidward.getPlayer1Id(), is(squidward.getId()));
-        assertThat(patrickVsSquidward.getPlayer2Id(), is(patrick.getId()));
-        assertThat(patrickVsSquidward.getStatus(), is(Match.STATUS_COMPLETE));
-        assertThat(patrickVsSquidward.getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
-        assertThat(patrickVsSquidward.getWinnerId(), is(squidward.getId()));
-        assertThat(patrickVsSquidward.getGame(0).getPlayer1Score(), is(11));
-        assertThat(patrickVsSquidward.getGame(0).getPlayer2Score(), is(3));
-        assertThat(patrickVsSquidward.getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(patrickVsSquidward.getGame(1).getPlayer1Score(), is(11));
-        assertThat(patrickVsSquidward.getGame(1).getPlayer2Score(), is(3));
-        assertThat(patrickVsSquidward.getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(patrickVsSquidward.getGame(2).getPlayer1Score(), is(11));
-        assertThat(patrickVsSquidward.getGame(2).getPlayer2Score(), is(3));
-        assertThat(patrickVsSquidward.getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
-    }
-
-    @Test
     @DisplayName("should return a list of match results")
     public void testGetMatchResultList() {
         final List<MatchResult> matchResultList = event.getMatchResultList();
