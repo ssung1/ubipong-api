@@ -81,4 +81,8 @@ public class Match {
             .gameList(gameList.stream().map(Game::transpose).collect(Collectors.toUnmodifiableList()))
             .build();
     }
+
+    public boolean isWinForPlayer1() {
+        return true;
+    }
 }

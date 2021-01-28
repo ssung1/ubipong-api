@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 
+import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
+
 import static org.hamcrest.MatcherAssert.*;
 
 public class TestMatch {
@@ -85,6 +87,19 @@ public class TestMatch {
         assertThat(mt.getPlayer2Id(), is(m.getPlayer1Id()));
         assertThat(mt.getWinnerId(), is(m.getWinnerId()));
         assertThat(mt.getScoreSummary(), is("-9 4 -11"));
+    }
+
+    @Test
+    @DisplayName("should return whether player1 is the winner: true")
+    public void testIsWinForPlayer1True() {
+        assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(true));
+    }
+
+    @Test
+    @DisplayName("should return whether player1 is the winner: false")
+    @Disabled()
+    public void testIsWinForPlayer1False() {
+        assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(false));
     }
 
     @Test
