@@ -121,5 +121,6 @@ public class Event {
             .build();
     }
     public List<MatchResult> getMatchResultList() {
+        return null;
     }
 }

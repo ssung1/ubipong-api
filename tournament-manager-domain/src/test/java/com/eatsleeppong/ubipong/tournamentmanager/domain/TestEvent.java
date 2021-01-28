@@ -175,7 +175,7 @@ public class TestEvent {
     }
 
     @Test
-    @DisplayName("should return a list of matche results")
+    @DisplayName("should return a list of match results")
     public void testGetMatchResultList() {
         final List<MatchResult> matchResultList = event.getMatchResultList();
 
