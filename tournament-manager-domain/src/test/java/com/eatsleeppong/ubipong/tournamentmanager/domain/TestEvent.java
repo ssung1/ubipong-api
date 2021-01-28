@@ -69,6 +69,7 @@ public class TestEvent {
         assertThat(matchList.get(0).getPlayer2Id(), is(patrick.getId()));
         assertThat(matchList.get(0).getStatus(), is(Match.STATUS_COMPLETE));
         assertThat(matchList.get(0).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
+        assertThat(matchList.get(0).getWinnerId(), is(spongebob.getId()));
         assertThat(matchList.get(0).getGame(0).getPlayer1Score(), is(11));
         assertThat(matchList.get(0).getGame(0).getPlayer2Score(), is(3));
         assertThat(matchList.get(0).getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
@@ -83,6 +84,7 @@ public class TestEvent {
         assertThat(matchList.get(1).getPlayer2Id(), is(squidward.getId()));
         assertThat(matchList.get(1).getStatus(), is(Match.STATUS_COMPLETE));
         assertThat(matchList.get(1).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
+        assertThat(matchList.get(1).getWinnerId(), is(spongebob.getId()));
         assertThat(matchList.get(1).getGame(0).getPlayer1Score(), is(13));
         assertThat(matchList.get(1).getGame(0).getPlayer2Score(), is(11));
         assertThat(matchList.get(1).getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
@@ -100,14 +102,15 @@ public class TestEvent {
         assertThat(matchList.get(2).getPlayer2Id(), is(squidward.getId()));
         assertThat(matchList.get(2).getStatus(), is(Match.STATUS_COMPLETE));
         assertThat(matchList.get(2).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
-        assertThat(matchList.get(2).getGame(0).getPlayer1Score(), is(11));
-        assertThat(matchList.get(2).getGame(0).getPlayer2Score(), is(3));
+        assertThat(matchList.get(2).getWinnerId(), is(squidward.getId()));
+        assertThat(matchList.get(2).getGame(0).getPlayer1Score(), is(3));
+        assertThat(matchList.get(2).getGame(0).getPlayer2Score(), is(11));
         assertThat(matchList.get(2).getGame(0).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(matchList.get(2).getGame(1).getPlayer1Score(), is(11));
-        assertThat(matchList.get(2).getGame(1).getPlayer2Score(), is(3));
+        assertThat(matchList.get(2).getGame(1).getPlayer1Score(), is(3));
+        assertThat(matchList.get(2).getGame(1).getPlayer2Score(), is(11));
         assertThat(matchList.get(2).getGame(1).getStatus(), is(Game.STATUS_COMPLETE));
-        assertThat(matchList.get(2).getGame(2).getPlayer1Score(), is(11));
-        assertThat(matchList.get(2).getGame(2).getPlayer2Score(), is(3));
+        assertThat(matchList.get(2).getGame(2).getPlayer1Score(), is(3));
+        assertThat(matchList.get(2).getGame(2).getPlayer2Score(), is(11));
         assertThat(matchList.get(2).getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
     }
 
