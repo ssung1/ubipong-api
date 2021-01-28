@@ -108,7 +108,18 @@ public class Event {
             .collect(Collectors.toUnmodifiableList());
     }
 
+    private MatchResult mapMatchToMatchResult(final Match match) {
+        // we want to arrange the match so that player 1 is the winner
+        final Match matchForReporting = match.transposeIfWinForPlayer2();
+        final Map<Integer, Player> playerMap = getPlayerMap();
+        final String player1Name = playerMap.get(matchForReporting.getPlayer1Id()).getName();
+        final String player2Name = playerMap.get(matchForReporting.getPlayer2Id()).getName();
+        return MatchResult.builder()
+            .eventName(getName())
+            .winner(player1Name)
+            .loser(player2Name)
+            .build();
+    }
     public List<MatchResult> getMatchResultList() {
-        return null;
     }
 }

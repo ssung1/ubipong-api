@@ -106,6 +106,11 @@ public class Match {
         }
     }
 
+    /**
+     * Transpose the match if it is a win for player2
+     * Otherwise, return original match
+     * @return
+     */
     public Match transposeIfWinForPlayer2() {
         if (!isWinForPlayer1()) {
             return transpose();
