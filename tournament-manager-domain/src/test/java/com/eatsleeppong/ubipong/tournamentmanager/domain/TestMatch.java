@@ -1,6 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
@@ -11,7 +10,6 @@ import java.util.List;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 
 import static org.hamcrest.MatcherAssert.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestMatch {
     private final int spongebobId = 1;

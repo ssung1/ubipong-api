@@ -103,6 +103,8 @@ public class Event {
      * @return
      */
     public List<Match> getMatchListForReporting() {
-        return null;
+        return matchRepository.findByChallongeUrl(challongeUrl).stream()
+            .map(Match::transposeIfWinForPlayer2)
+            .collect(Collectors.toUnmodifiableList());
     }
 }

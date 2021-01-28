@@ -105,4 +105,12 @@ public class Match {
             return player1Games > player2Games;
         }
     }
+
+    public Match transposeIfWinForPlayer2() {
+        if (!isWinForPlayer1()) {
+            return transpose();
+        } else {
+            return this;
+        }
+    }
 }
