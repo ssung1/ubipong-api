@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,8 +37,22 @@ public class Match {
      */
     private Integer resultCode;
 
-    @Default
-    private List<Game> gameList = Collections.emptyList();
+    private List<Game> gameList;
+
+    public static class MatchBuilder {
+        private List<Game> gameList = Collections.emptyList();
+
+        public MatchBuilder scores(final String scoreCsv) {
+            if (scoreCsv == null || scoreCsv.isBlank()) {
+                return this;
+            }
+            final String[] scoreArray = scoreCsv.split(",");
+            gameList = Arrays.stream(scoreArray)
+                .map(scores -> Game.builder().scores(scores).build())
+                .collect(Collectors.toUnmodifiableList());
+            return this;
+        }
+    }
 
     public Game getGame(int index) {
         return gameList.get(index);

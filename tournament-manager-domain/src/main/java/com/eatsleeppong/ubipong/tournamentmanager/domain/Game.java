@@ -31,11 +31,12 @@ public class Game {
          * Easier way to set scores, using the form
          * {player1score}-{player2score}
          */
-        public GameBuilder scores(String score) {
-            if (score == null || score.isBlank()) {
+        public GameBuilder scores(final String rawScore) {
+            if (rawScore == null || rawScore.isBlank()) {
                 return this;
             }
-            int dash = score.indexOf('-');
+            final String score = rawScore.trim();
+            final int dash = score.indexOf('-');
             if (dash > 0) {
                 player1Score = Integer.parseInt(score.substring(0, dash));
                 player2Score = Integer.parseInt(score.substring(dash + 1));
