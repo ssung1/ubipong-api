@@ -4,12 +4,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 
 import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestMatch {
     private final int spongebobId = 1;
@@ -97,15 +99,66 @@ public class TestMatch {
 
     @Test
     @DisplayName("should return whether player1 is the winner: false")
-    @Disabled()
     public void testIsWinForPlayer1False() {
-        assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(false));
+        assertThat(TestHelper.createMatch3().isWinForPlayer1(), is(false));
     }
 
     @Test
-    @DisplayName("should flag the result as invalid if the scores are not valid")
-    @Disabled("will do this later")
-    public void testResultInvalidIfScoreInvalid() {
+    @DisplayName("should return whether player1 is the winner: error because match is not done")
+    public void testIsWinForPlayer1MatchIncomplete() {
+        final Match m = TestHelper.createMatch1().withStatus(Match.STATUS_INCOMPLETE);
+        assertThrows(IllegalStateException.class, () -> {
+            m.isWinForPlayer1();
+        });
+    }
 
+    @Test
+    @DisplayName("should return whether player1 is the winner: error because winner is invalid")
+    public void testIsWinForPlayer1MatchInvalidWinner() {
+        final Match m = TestHelper.createMatch1().withWinnerId(-100);
+        assertThrows(IllegalStateException.class, () -> {
+            m.isWinForPlayer1();
+        });
+    }
+
+    @Test
+    @DisplayName("should return whether player1 is the winner: error because games are tied")
+    public void testIsWinForPlayer1MatchGamesTied() {
+        final Match m = TestHelper.createMatch1()
+            .withGameList(List.of(
+                Game.builder().scores("11-5").build(),
+                Game.builder().scores("8-11").build()
+            ))
+            .withWinnerId(null);
+        assertThrows(IllegalStateException.class, () -> {
+            m.isWinForPlayer1();
+        });
+    }
+
+    @Test
+    @DisplayName("should return whether player1 is the winner: true because player1 won more games")
+    public void testIsWinForPlayer1Player1WonMoreGames() {
+        final Match m = TestHelper.createMatch1()
+            .withGameList(List.of(
+                Game.builder().scores("11-5").build(),
+                Game.builder().scores("11-8").build()
+            ))
+            .withWinnerId(null);
+
+        assertThat(m.isWinForPlayer1(), is(true));
+    }
+
+    @Test
+    @DisplayName("should return whether player1 is the winner: false because player2 won more games")
+    public void testIsWinForPlayer1Player2WonMoreGames() {
+        final Match m = TestHelper.createMatch1()
+            .withGameList(List.of(
+                Game.builder().scores("4-11").build(),
+                Game.builder().scores("11-8").build(),
+                Game.builder().scores("10-12").build()
+            ))
+            .withWinnerId(null);
+
+        assertThat(m.isWinForPlayer1(), is(false));
     }
 }

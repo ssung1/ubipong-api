@@ -83,6 +83,26 @@ public class Match {
     }
 
     public boolean isWinForPlayer1() {
-        return true;
+        if (!isResultValid()) {
+            throw new IllegalStateException("Cannot determine winner");
+        } else if (winnerId != null) {
+            // winner is set by *someone*
+            if (winnerId.equals(player1Id)) {
+                return true;
+            } else if (winnerId.equals(player2Id)) {
+                return false;
+            } else {
+                throw new IllegalStateException("Winner ID does not match any player");
+            }
+        } else {
+            // determine winner by game scores
+            final long player1Games = gameList.stream().filter(Game::isWinForPlayer1).count();
+            final long player2Games = gameList.size() - player1Games;
+
+            if (player1Games == player2Games) {
+                throw new IllegalStateException("Game scores are tied");
+            }
+            return player1Games > player2Games;
+        }
     }
 }
