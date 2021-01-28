@@ -173,4 +173,28 @@ public class TestEvent {
         assertThat(patrickVsSquidward.getGame(2).getPlayer2Score(), is(3));
         assertThat(patrickVsSquidward.getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
     }
+
+    @Test
+    @DisplayName("should return a list of matche results")
+    public void testGetMatchResultList() {
+        final List<MatchResult> matchResultList = event.getMatchResultList();
+
+        final MatchResult spongebobVsPatrick = matchResultList.get(0);
+        assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
+        assertThat(spongebobVsPatrick.getWinner(), is(spongebob.getName()));
+        assertThat(spongebobVsPatrick.getLoser(), is(patrick.getName()));
+        assertThat(spongebobVsPatrick.getResult(), is("3 5 1"));
+
+        final MatchResult spongebobVsSquidward = matchResultList.get(1);
+        assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
+        assertThat(spongebobVsSquidward.getWinner(), is(spongebob.getName()));
+        assertThat(spongebobVsSquidward.getLoser(), is(squidward.getName()));
+        assertThat(spongebobVsSquidward.getResult(), is("11 -5 9 9"));
+
+        final MatchResult patrickVsSquidward = matchResultList.get(2);
+        assertThat(patrickVsSquidward.getEventName(), is(event.getName()));
+        assertThat(patrickVsSquidward.getWinner(), is(squidward.getName()));
+        assertThat(patrickVsSquidward.getLoser(), is(patrick.getName()));
+        assertThat(patrickVsSquidward.getResult(), is("3 3 3"));
+    }
 }

@@ -107,4 +107,8 @@ public class Event {
             .map(Match::transposeIfWinForPlayer2)
             .collect(Collectors.toUnmodifiableList());
     }
+
+    public List<MatchResult> getMatchResultList() {
+        return null;
+    }
 }
