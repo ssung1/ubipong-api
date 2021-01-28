@@ -16,16 +16,15 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 public class TestEvent {
-    final Player spongebob = TestHelper.createPlayerSpongebob();
-    final Player patrick = TestHelper.createPlayerPatrick();
-    final Player squidward = TestHelper.createPlayerSquidward();
+    private final Player spongebob = TestHelper.createPlayerSpongebob();
+    private final Player patrick = TestHelper.createPlayerPatrick();
+    private final Player squidward = TestHelper.createPlayerSquidward();
 
-    private final Event event = TestHelper.createEvent();
+    Event event;
 
     @BeforeEach
     public void setupMocks() {
-        when(event.getPlayerRepository().findByChallongeUrl(event.getChallongeUrl()))
-            .thenReturn(List.of(spongebob, patrick, squidward));
+        event = TestHelper.createEvent();
     }
 
     @Test
@@ -63,6 +62,13 @@ public class TestEvent {
     @Test
     @DisplayName("should return a list of matches")
     public void testGetMatchList() {
+        List<Match> matchList = event.getMatchList();
 
+        assertThat(matchList.get(0).getPlayer1Id(), is(spongebob.getId()));
+        assertThat(matchList.get(0).getPlayer2Id(), is(patrick.getId()));
+        assertThat(matchList.get(0).getStatus(), is(Match.STATUS_COMPLETE));
+        assertThat(matchList.get(0).getResultCode(), is(Match.RESULT_CODE_WIN_BY_PLAYING));
+        assertThat(matchList.get(0).getGame(0).getPlayer1Score(), is(11));
+        assertThat(matchList.get(0).getGame(0).getPlayer2Score(), is(3));
     }
 }

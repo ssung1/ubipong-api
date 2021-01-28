@@ -37,6 +37,10 @@ public class TestHelper {
             createPlayerSpongebob(), createPlayerPatrick(), createPlayerSquidward()
         ));
 
+        when(mockMatchRepository.findByChallongeUrl(CHALLONGE_URL)).thenReturn(List.of(
+            createMatch1(), createMatch2(), createMatch3()
+        ));
+
         return Event.builder()
             .id(100)
             .name("Preliminary Group 1")
