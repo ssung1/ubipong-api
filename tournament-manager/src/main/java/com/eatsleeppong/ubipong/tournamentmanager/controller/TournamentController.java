@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.controller;
+package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
 import com.eatsleeppong.ubipong.manager.TournamentManager;
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
