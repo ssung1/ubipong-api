@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong.ratingmanager.dto;
 
 import java.time.Instant;
-import java.util.Date;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,5 +17,5 @@ public class TournamentResultDto {
     private String tournamentName;
     private Instant tournamentDate;
 
-    private MatchResultDto[] tournamentResultList;
+    private List<MatchResultDto> tournamentResultList;
 }

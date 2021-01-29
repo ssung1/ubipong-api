@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -91,14 +92,13 @@ public class TestTournamentManager {
             tournamentManager.createTournamentResultRequest(tournamentId);
         assertThat(tournamentResultDto.getTournamentName(), is(tournamentName));
         assertThat(tournamentResultDto.getTournamentDate(), is(OffsetDateTime.parse(tournamentDate).toInstant()));
-        assertThat(tournamentResultDto.getTournamentResultList(), arrayWithSize(4));
+        assertThat(tournamentResultDto.getTournamentResultList(), hasSize(4));
         
-        final MatchResultDto[] matchResultDtoList = 
-            tournamentResultDto.getTournamentResultList();
+        final List<MatchResultDto> matchResultDtoList = tournamentResultDto.getTournamentResultList();
 
-        assertThat(matchResultDtoList, hasItemInArray(event1Game1));
-        assertThat(matchResultDtoList, hasItemInArray(event1Game2));
-        assertThat(matchResultDtoList, hasItemInArray(event2Game1));
-        assertThat(matchResultDtoList, hasItemInArray(event2Game2));
+        assertThat(matchResultDtoList, hasItem(event1Game1));
+        assertThat(matchResultDtoList, hasItem(event1Game2));
+        assertThat(matchResultDtoList, hasItem(event2Game1));
+        assertThat(matchResultDtoList, hasItem(event2Game2));
     }
 }
