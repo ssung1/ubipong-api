@@ -100,13 +100,6 @@ public class TestTournamentController {
             .build();
     }
 
-    private ChallongeTournamentWrapper createChallongeTournamentWrapper() {
-        ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
-        tw1.setTournament(createChallongeTournament());
-
-        return tw1;
-    }
-
     private ChallongeTournament createChallongeTournament() {
         ChallongeTournament t1 = new ChallongeTournament();
         t1.setName(eventName);
@@ -149,9 +142,6 @@ public class TestTournamentController {
 
     @BeforeEach
     public void setupMocks() {
-        when(mockChallongeTournamentRepository.createTournament(any())).thenReturn(createChallongeTournamentWrapper());
-        when(mockChallongeTournamentRepository.getTournament(any())).thenReturn(createChallongeTournamentWrapper());
-
         when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList());
 
