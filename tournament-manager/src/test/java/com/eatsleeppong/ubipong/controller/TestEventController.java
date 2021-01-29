@@ -340,7 +340,7 @@ public class TestEventController {
             .andExpect(jsonPath("$[0].winner").value(is(spongebobName)))
             .andExpect(jsonPath("$[0].loser").value(is(patrickName)))
             .andExpect(jsonPath("$[0].eventName").value(is(eventName)))
-            .andExpect(jsonPath("$[0].resultString").value(is("4 5 6"))) // because spongebob won 11-4 11-5 11-6 
+            .andExpect(jsonPath("$[0].resultString").value(is("4 5 6"))) // because patrick won 11-4 11-5 11-6 
 
             .andExpect(jsonPath("$[1].winner").value(is(squidwardName)))
             .andExpect(jsonPath("$[1].loser").value(is(patrickName)))

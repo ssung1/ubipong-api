@@ -302,46 +302,6 @@ public class TestEventManager {
     }
 
     @Test
-    @DisplayName("should create tournament result list")
-    public void testCreateTournamentResultList() {
-        final EventDto event = createEvent();
-        subject.addEvent(event);
-
-        final MatchResultDto[] matchResultDtoList = subject.createTournamentResultList(challongeUrl);
-
-        assertThat(matchResultDtoList, arrayWithSize(2));
-
-        final List<String> allWinners = Arrays.stream(matchResultDtoList)
-            .map(MatchResultDto::getWinner)
-            .collect(Collectors.toList());
-
-        final List<String> allLosers = Arrays.stream(matchResultDtoList)
-            .map(MatchResultDto::getLoser)
-            .collect(Collectors.toList());
-
-        /**
-         * <pre>
-         *                   A           B           C                 Place
-         *  A spongebob                  W 4 5 6
-         *  B patrick        L -4 -5 -6              L -9 8 -6 -5
-         *  C squidward                  W 9 -8 6 5
-         *
-         * </pre>
-         */
-
-        assertThat(allWinners, hasItem(spongebobName));
-        assertThat(allWinners, hasItem(squidwardName));
-        // I'm sorry, Patrick
-        assertThat(allLosers, hasItem(patrickName));
-
-        final List<String> allResultStrings = Arrays.stream(matchResultDtoList)
-                .map(MatchResultDto::getResultString)
-                .collect(Collectors.toList());
-        assertThat(allResultStrings, hasItem("4 5 6"));
-        assertThat(allResultStrings, hasItem("9 -8 6 5"));
-    }
-
-    @Test
     @DisplayName("should include event name in the tournament result list")
     public void testCreateTournamentResultListShouldIncludeEventTitle() {
         final EventDto event = createEvent();
