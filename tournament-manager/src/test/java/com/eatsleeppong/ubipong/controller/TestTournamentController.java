@@ -140,9 +140,9 @@ public class TestTournamentController {
             .player2Id(player2Id)
             .winnerId(player1Id)
             .status(Match.STATUS_COMPLETE)
-            .gameList(Collections.unmodifiableList(List.of(
+            .gameList(List.of(
                 Game.builder().player1Score(11).player2Score(9).status(Game.STATUS_COMPLETE).build()
-            )))
+            ))
             .build()
         );
     }
@@ -151,23 +151,6 @@ public class TestTournamentController {
     public void setupMocks() {
         when(mockChallongeTournamentRepository.createTournament(any())).thenReturn(createChallongeTournamentWrapper());
         when(mockChallongeTournamentRepository.getTournament(any())).thenReturn(createChallongeTournamentWrapper());
-
-        //                A     B
-        // A  player1          11-9
-        // B  player2    9-11
-        ChallongeMatch m = new ChallongeMatch();
-        m.setId(matchId);
-        m.setPlayer1Id(player1Id);
-        m.setPlayer2Id(player2Id);
-        m.setWinnerId(player1Id);
-        m.setScoresCsv("11-9");
-        m.setState(ChallongeMatch.STATE_COMPLETE);
-
-        ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
-        mw.setMatch(m);
-
-        when(mockChallongeMatchRepository.getMatchList(challongeUrl)).thenReturn(
-            new ChallongeMatchWrapper[] { mw } );
 
         when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList());
