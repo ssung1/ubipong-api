@@ -1,22 +1,22 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import java.time.Instant;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 
 @Value
+@Builder
 @AllArgsConstructor
 public class Tournament {
-//    private final EventManager eventManager;
-//    private final EventRepository eventRepository;
-//    private final TournamentRepository tournamentRepository;
-//
-//    public Tournament(final EventManager eventManager, final EventRepository eventRepository,
-//        final TournamentRepository tournamentRepository) {
-//        this.eventManager = eventManager;
-//        this.eventRepository = eventRepository;
-//        this.tournamentRepository = tournamentRepository;
-//    }
-//
+    private final EventRepository eventRepository;
+
+    private final Integer id;
+    private final String name;
+    private final Instant tournamentDate;
+
 //    public TournamentResultRequest createTournamentResultRequest(final Integer tournamentId) {
 //        final List<Event> eventList = eventRepository.findByTournamentId(tournamentId);
 //
@@ -35,4 +35,13 @@ public class Tournament {
 //
 //        return tournamentResultRequest;
 //    }
+
+    public TournamentResult getResult() {
+        return TournamentResult.builder().build();
+    }
+
+    public List<Event> getEventList() {
+        // return eventRepository.findByTournamentId(id);
+        return null;
+    }
 }

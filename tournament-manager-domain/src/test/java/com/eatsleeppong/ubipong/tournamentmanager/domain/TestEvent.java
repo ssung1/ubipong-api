@@ -21,7 +21,7 @@ public class TestEvent {
     private final Player patrick = TestHelper.createPlayerPatrick();
     private final Player squidward = TestHelper.createPlayerSquidward();
 
-    Event event;
+    private Event event;
 
     @BeforeEach
     public void setupMocks() {

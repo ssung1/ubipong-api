@@ -3,14 +3,17 @@ package com.eatsleeppong.ubipong.tournamentmanager;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.util.List;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 
 /**
  * Tournament Setup:
@@ -28,6 +31,15 @@ public class TestHelper {
     public static int PATRICK_ID = 2;
     public static int SQUIDWARD_ID = 3;
     public static String CHALLONGE_URL = "esp_201903_pg_rr_1";
+
+    public static Tournament createTournament() {
+        final EventRepository mockEventRepository = mock(EventRepository.class);
+        return Tournament.builder()
+            .eventRepository(mockEventRepository)
+            .name("Eat Sleep Pong Open 2019")
+            .tournamentDate(Instant.parse("2019-03-16T12:00:00Z"))
+            .build();
+    }
 
     public static Event createEvent() {
         final PlayerRepository mockPlayerRepository = mock(PlayerRepository.class);
