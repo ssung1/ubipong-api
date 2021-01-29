@@ -321,6 +321,9 @@ public class TestEventController {
     @Test
     @DisplayName("should generate the event result report")
     public void testEventResultList() throws Exception {
+        // for this test, we cannot have any pending matches
+        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(createMatchList().subList(0, 2));
         addEvent(createEvent());
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
