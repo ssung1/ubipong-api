@@ -27,14 +27,21 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
  * patrick vs squidward: not played yet (ID: 102)
  */
 public class TestHelper {
-    public static int SPONGEBOB_ID = 1;
-    public static int PATRICK_ID = 2;
-    public static int SQUIDWARD_ID = 3;
-    public static String CHALLONGE_URL = "esp_201903_pg_rr_1";
+    public static final int TOURNAMENT_ID = 10;
+    public static final int SPONGEBOB_ID = 1;
+    public static final int PATRICK_ID = 2;
+    public static final int SQUIDWARD_ID = 3;
+    public static final String CHALLONGE_URL = "esp_201903_pg_rr_1";
+    public static final String EVENT_NAME = "Preliminary Group 1";
 
     public static Tournament createTournament() {
         final EventRepository mockEventRepository = mock(EventRepository.class);
+        final Event event = createEvent();
+        when(mockEventRepository.findByTournamentId(TOURNAMENT_ID)).thenReturn(List.of(
+            event
+        ));
         return Tournament.builder()
+            .id(TOURNAMENT_ID)
             .eventRepository(mockEventRepository)
             .name("Eat Sleep Pong Open 2019")
             .tournamentDate(Instant.parse("2019-03-16T12:00:00Z"))
@@ -85,7 +92,7 @@ public class TestHelper {
 
     public static Match createMatch1() {
         return Match.builder()
-            .id(100)
+            .id(1000)
             .player1Id(SPONGEBOB_ID)
             .player2Id(PATRICK_ID)
             .status(Match.STATUS_COMPLETE)
@@ -101,7 +108,7 @@ public class TestHelper {
 
     public static Match createMatch2() {
         return Match.builder()
-            .id(101)
+            .id(1001)
             .player1Id(SPONGEBOB_ID)
             .player2Id(SQUIDWARD_ID)
             .status(Match.STATUS_COMPLETE)
@@ -118,7 +125,7 @@ public class TestHelper {
 
     public static Match createMatch3() {
         return Match.builder()
-            .id(101)
+            .id(1001)
             .player1Id(PATRICK_ID)
             .player2Id(SQUIDWARD_ID)
             .build();

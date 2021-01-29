@@ -23,6 +23,11 @@ public class TestTournament {
     @DisplayName("should return events in the tournament")
     public void testGetEventList() {
         final List<Event> eventList = tournament.getEventList(); 
+
+        assertThat(eventList, hasSize(1));
+        assertThat(eventList.get(0).getTournamentId(), is(tournament.getId()));
+        assertThat(eventList.get(0).getName(), is(TestHelper.EVENT_NAME));
+        assertThat(eventList.get(0).getChallongeUrl(), is(TestHelper.CHALLONGE_URL));
     }
 
     @Test
