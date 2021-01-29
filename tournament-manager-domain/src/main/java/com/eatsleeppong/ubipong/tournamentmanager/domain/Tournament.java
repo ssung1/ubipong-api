@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,14 @@ public class Tournament {
 //    }
 
     public TournamentResult getResult() {
-        return TournamentResult.builder().build();
+        return TournamentResult.builder()
+            .tournamentName(getName())
+            .tournamentDate(getTournamentDate())
+            .matchResultList(getEventList().stream()
+                .map(Event::getMatchResultList)
+                .flatMap(List::stream)
+                .collect(Collectors.toUnmodifiableList()))
+            .build();
     }
 
     public List<Event> getEventList() {

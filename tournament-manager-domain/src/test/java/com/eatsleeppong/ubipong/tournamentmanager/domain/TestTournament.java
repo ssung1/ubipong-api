@@ -9,9 +9,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.*;
 
 public class TestTournament {
+    private final Player spongebob = TestHelper.createPlayerSpongebob();
+    private final Player patrick = TestHelper.createPlayerPatrick();
+    private final Player squidward = TestHelper.createPlayerSquidward();
+
     private Tournament tournament;
 
     @BeforeEach
@@ -33,28 +38,29 @@ public class TestTournament {
     @Test
     @DisplayName("should return tournament result")
     public void testGetResult() {
-        final String eventName = "xxx";
+        // need to override event list because we cannot get result for incomplete
+        // matches
+        final Event event = tournament.getEventList().get(0);
+        when(event.getMatchRepository().findByChallongeUrl(event.getChallongeUrl()))
+            .thenReturn(List.of(
+                TestHelper.createMatch1(), TestHelper.createMatch2()
+            ));
+
         final TournamentResult tournamentResult = tournament.getResult();
 
-        // assertThat(tournamentResult.getTournamentName(), is(tournament.getName()));
-        // assertThat(tournamentResult.getTournamentDate(), is(tournament.getTournamentDate()));
+        assertThat(tournamentResult.getTournamentName(), is(tournament.getName()));
+        assertThat(tournamentResult.getTournamentDate(), is(tournament.getTournamentDate()));
 
-        // final List<MatchResult> matchResultList = tournamentResult.getMatchResultList();
-        // assertThat(matchResultList, hasSize(2));
-        // assertThat(matchResultList[0].getEventName(), is(event.getName()));
-        // assertThat(matchResultList[0].getWinner(), is(patrick.getName()));
-        // assertThat(matchResultList[0].getLoser(), is(spongebob.getName()));
-        // assertThat(matchResultList[0].getResult(), is("3 5 1"));
+        final List<MatchResult> matchResultList = tournamentResult.getMatchResultList();
+        assertThat(matchResultList, hasSize(2));
+        assertThat(matchResultList.get(0).getEventName(), is(event.getName()));
+        assertThat(matchResultList.get(0).getWinner(), is(patrick.getName()));
+        assertThat(matchResultList.get(0).getLoser(), is(spongebob.getName()));
+        assertThat(matchResultList.get(0).getResult(), is("3 5 1"));
 
-        // assertThat(matchResultList[1].getEventName(), is(eventName));
-        // assertThat(matchResultList[1].getWinner(), is("spongebob"));
-        // assertThat(matchResultList[1].getLoser(), is("squidward"));
-        // assertThat(matchResultList[1].getResult(), is("11 -5 9 9"));
-
-        // assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
-        // assertThat(spongebobVsSquidward.getWinner(), is(spongebob.getName()));
-        // assertThat(spongebobVsSquidward.getLoser(), is(squidward.getName()));
-        // assertThat(spongebobVsSquidward.getResult(), is("11 -5 9 9"));
-
+        assertThat(matchResultList.get(1).getEventName(), is(event.getName()));
+        assertThat(matchResultList.get(1).getWinner(), is(spongebob.getName()));
+        assertThat(matchResultList.get(1).getLoser(), is(squidward.getName()));
+        assertThat(matchResultList.get(1).getResult(), is("11 -5 9 9"));
     }
 }
