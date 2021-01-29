@@ -9,27 +9,38 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.List;
+
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
 public class TestEventRepositoryImpl {
+    private final Integer tournamentId = 123;
     @MockBean
     private ChallongeTournamentRepository challongeTournamentRepository;
 
     @Autowired
     private EventRepositoryImpl eventRepositoryImpl;
 
+    private Event event;
+
     private Event createEvent() {
         return Event.builder()
             .name("Preliminary Group 1")
             .challongeUrl("bb_201906_pg_rr_1")
-            .tournamentId(1)
+            .tournamentId(tournamentId)
             .build();
+    }
+
+    @BeforeEach
+    public void saveEvent() {
+        event = eventRepositoryImpl.save(createEvent());
     }
 
     @Test
@@ -47,26 +58,31 @@ public class TestEventRepositoryImpl {
     @Test
     @DisplayName("should find an existing event")
     public void testFindEvent() {
-        final Event eventToAdd = createEvent();
-        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
 
-        final Event loadedEvent = eventRepositoryImpl.getOne(addedEvent.getId());
-
-        assertThat(loadedEvent.getId(), is(addedEvent.getId()));
-        assertThat(loadedEvent.getName(), is(addedEvent.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(addedEvent.getChallongeUrl()));
+        assertThat(loadedEvent.getId(), is(event.getId()));
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
     }
 
     @Test
     @DisplayName("should find an existing event by challongeUrl")
     public void testFindEventByChallongeUrl() {
-        final Event eventToAdd = createEvent();
-        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+        final Event loadedEvent = eventRepositoryImpl.getOneByChallongeUrl(event.getChallongeUrl());
 
-        final Event loadedEvent = eventRepositoryImpl.getOneByChallongeUrl(addedEvent.getChallongeUrl());
+        assertThat(loadedEvent.getId(), is(event.getId()));
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
+    }
 
-        assertThat(loadedEvent.getId(), is(addedEvent.getId()));
-        assertThat(loadedEvent.getName(), is(addedEvent.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(addedEvent.getChallongeUrl()));
+    @Test
+    @DisplayName("should find list of events of a tournament")
+    public void testFindEventByTournamentId() {
+        final List<Event> eventList = eventRepositoryImpl.findByTournamentId(tournamentId);
+
+        assertThat(eventList, hasSize(1));
+        assertThat(eventList.get(0).getId(), is(event.getId()));
+        assertThat(eventList.get(0).getName(), is(event.getName()));
+        assertThat(eventList.get(0).getChallongeUrl(), is(event.getChallongeUrl()));
     }
 }

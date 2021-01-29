@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -63,5 +64,12 @@ public class EventRepositoryImpl implements EventRepository {
         }
 
         return eventMapper.mapSpringJpaEventToEvent(eventList.get(0));
+    }
+
+    @Override
+    public List<Event> findByTournamentId(final Integer tournamentId) {
+        return springJpaEventRepository.findByTournamentId(tournamentId).stream()
+            .map(eventMapper::mapSpringJpaEventToEvent)
+            .collect(Collectors.toUnmodifiableList());
     }
 }
