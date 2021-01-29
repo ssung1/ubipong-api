@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.repository;
+package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
 import java.util.Arrays;
 import java.util.Collections;

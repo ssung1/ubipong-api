@@ -2,7 +2,8 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
 import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.EventMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchResultMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
 import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
@@ -25,7 +26,7 @@ public class EventController {
     private final EventManager eventManager;
     private final EventRepositoryImpl eventRepository;
     private final EventMapper eventMapper;
-    private final MatchResultMapper matchResultMapper = new MatchResultMapper();
+    private final MatchResultMapper matchResultMapper;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +

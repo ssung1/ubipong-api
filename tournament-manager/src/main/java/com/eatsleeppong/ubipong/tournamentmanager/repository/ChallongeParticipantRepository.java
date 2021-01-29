@@ -4,20 +4,18 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.PlayerMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ChallongeParticipantRepository implements PlayerRepository {

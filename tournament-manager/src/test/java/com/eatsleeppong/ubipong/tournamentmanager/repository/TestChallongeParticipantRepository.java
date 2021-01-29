@@ -1,7 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -15,6 +14,7 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.PlayerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
