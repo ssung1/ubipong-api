@@ -66,6 +66,7 @@ public class TestHelper {
             .challongeUrl(CHALLONGE_URL)
             .playerRepository(mockPlayerRepository)
             .matchRepository(mockMatchRepository)
+            .tournamentId(TOURNAMENT_ID)
             .build();
     }
 

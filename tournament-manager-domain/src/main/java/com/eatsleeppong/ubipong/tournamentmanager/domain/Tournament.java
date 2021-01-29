@@ -41,7 +41,6 @@ public class Tournament {
     }
 
     public List<Event> getEventList() {
-        // return eventRepository.findByTournamentId(id);
-        return null;
+        return eventRepository.findByTournamentId(id);
     }
 }
