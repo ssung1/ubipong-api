@@ -22,8 +22,8 @@ public class MatchResultMapper {
     public String mapMatchResultToUsattCsv(final MatchResult matchResult) {
         return List.of(
             "id?",
-            matchResult.getWinnerReferenceId(),
-            matchResult.getLoserReferenceId(),
+            matchResult.getWinnerName(),
+            matchResult.getLoserName(),
             "\"" + matchResult.getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(",")) + "\"",
             matchResult.getEventName()
         ).stream().collect(Collectors.joining(","));

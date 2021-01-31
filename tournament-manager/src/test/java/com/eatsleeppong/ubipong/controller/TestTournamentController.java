@@ -218,7 +218,7 @@ public class TestTournamentController {
 
         final String[] matchResult = responseContent.split("\n");
 
-        assertThat(matchResult[0].trim(), is("id?,10002,10001,\"3,5,1\",Preliminary Group 1"));
-        assertThat(matchResult[1].trim(), is("id?,10001,10003,\"11,-5,9,9\",Preliminary Group 1"));
+        assertThat(matchResult[0].trim(), is("id?,patrick,spongebob,\"3,5,1\",Preliminary Group 1"));
+        assertThat(matchResult[1].trim(), is("id?,spongebob,squidward,\"11,-5,9,9\",Preliminary Group 1"));
     }
 }
