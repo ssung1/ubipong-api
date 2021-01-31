@@ -15,6 +15,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
@@ -39,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +49,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -164,11 +167,11 @@ public class TestTournamentController {
         final Event event = TestHelper.createEvent().withTournamentId(tournamentId);
         eventRepositoryImpl.save(event);
 
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path(tournamentContext)
             .path("/{tournamentId}/result")
             .build();
-        Map<String, String> uriMap = Stream.of(new String[][] {
+        final Map<String, String> uriMap = Stream.of(new String[][] {
             { "tournamentId", springJpaTournament.getId().toString() },
         }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
@@ -197,18 +200,25 @@ public class TestTournamentController {
         final Event event = TestHelper.createEvent().withTournamentId(tournamentId);
         eventRepositoryImpl.save(event);
 
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path(tournamentContext)
             .path("/{tournamentId}/usatt-result")
             .build();
-        Map<String, String> uriMap = Stream.of(new String[][] {
+        final  Map<String, String> uriMap = Stream.of(new String[][] {
             { "tournamentId", springJpaTournament.getId().toString() },
         }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-        mockMvc.perform(
+        final MvcResult mvcResult = mockMvc.perform(
             get(uriComponents.expand(uriMap).toUri())
                 .accept("text/csv"))
             .andExpect(status().isOk())
-            .andExpect(content().string(is("xxxx")));
+            .andReturn();
+
+        final String responseContent = mvcResult.getResponse().getContentAsString();
+
+        final String[] matchResult = responseContent.split("\n");
+
+        assertThat(matchResult[0].trim(), is("id?,patrick,spongebob,\"3,5,1\",Preliminary Group 1"));
+        assertThat(matchResult[1].trim(), is("id?,spongebob,patrick,\"11,-5,9,9\",Preliminary Group 1"));
     }
 }
