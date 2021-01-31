@@ -100,15 +100,6 @@ public class TestTournamentController {
             .build();
     }
 
-    private ChallongeTournament createChallongeTournament() {
-        ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
-        t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(challongeUrl);
-
-        return t1;
-    }
-
     private List<Player> createPlayerList() {
         final Player p1 = Player.builder()
             .id(player1Id)
@@ -162,7 +153,7 @@ public class TestTournamentController {
     }
 
     @Test
-    @DisplayName("should generate the event result report")
+    @DisplayName("should generate tournament result report")
     public void testTournamentResultList() throws Exception {
         final SpringJpaTournament springJpaTournamentToAdd = createTournament();
         final SpringJpaTournament addedSpringJpaTournament = springJpaTournamentRepository.save(springJpaTournamentToAdd);
@@ -189,5 +180,31 @@ public class TestTournamentController {
             .andExpect(jsonPath("$.tournamentResultList[0].loser").value(is(player2Name)))
             .andExpect(jsonPath("$.tournamentResultList[0].eventName").value(is(eventName)))
             .andExpect(jsonPath("$.tournamentResultList[0].resultString").value(is("9"))); // 9 because player1 won 11-9
+    }
+    
+    @Test
+    @Disabled("going to find a better solution for match result")
+    @DisplayName("should generate tournament result report for USATT")
+    public void testUsattTournamentResultList() throws Exception {
+        final SpringJpaTournament springJpaTournamentToAdd = createTournament();
+        final SpringJpaTournament addedSpringJpaTournament = springJpaTournamentRepository.save(springJpaTournamentToAdd);
+
+        final Integer tournamentId = addedSpringJpaTournament.getId();
+        final Event eventToAdd = createEvent(tournamentId);
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path(tournamentContext)
+            .path("/{tournamentId}/usatt-result")
+            .build();
+        Map<String, String> uriMap = Stream.of(new String[][] {
+            { "tournamentId", addedSpringJpaTournament.getId().toString() },
+        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+        mockMvc.perform(
+            get(uriComponents.expand(uriMap).toUri())
+                .accept("text/csv"))
+            .andExpect(status().isOk());
+            // .andExpect(content().string(is("xxxx")));
     }
 }

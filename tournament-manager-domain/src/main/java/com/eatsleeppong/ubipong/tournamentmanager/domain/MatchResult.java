@@ -1,5 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Value;
 
@@ -19,4 +21,5 @@ public class MatchResult {
     private String winner;
     private String loser;
     private String result;
+    // private List<Integer> scoreSummary;
 }

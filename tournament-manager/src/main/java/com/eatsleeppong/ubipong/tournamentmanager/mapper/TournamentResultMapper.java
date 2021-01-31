@@ -1,5 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
@@ -24,5 +26,11 @@ public class TournamentResultMapper {
                 .collect(Collectors.toUnmodifiableList())
             )
             .build();
+    }
+
+    public String mapTournamentResultToUsattCsv(final TournamentResult tournamentResult) {
+        return tournamentResult.getMatchResultList().stream()
+            .map(matchResultMapper::mapMatchResultToUsattCsv)
+            .collect(Collectors.joining("\r\n"));
     }
 }

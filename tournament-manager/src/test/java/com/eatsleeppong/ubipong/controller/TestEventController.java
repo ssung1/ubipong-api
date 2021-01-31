@@ -319,7 +319,7 @@ public class TestEventController {
     }
 
     @Test
-    @DisplayName("should generate the event result report")
+    @DisplayName("should generate event result report")
     public void testEventResultList() throws Exception {
         // for this test, we cannot have any pending matches
         when(mockMatchRepository.findByChallongeUrl(challongeUrl))

@@ -339,7 +339,7 @@ GET https://{host}/rest/v0/events/{challongeUrl}/result
 To get results of all the events of one tournament, so we can use this
 
 ```
-GET https://{host}rest/v0/tournaments/{id}/result
+GET https://{host}/rest/v0/tournaments/{id}/result
 ```
 
 ```json
@@ -361,4 +361,15 @@ GET https://{host}rest/v0/tournaments/{id}/result
     }
   ]
 }
+```
+
+To get results for USATT reporting, do this
+
+```
+GET https://{host}/rest/v0/tournaments/{id}/usatt-result
+```
+
+```csv
+EventID,MemNum_W,MemNum_L,Score,Division
+12345,123,234,"3,5,6",Preliminary Group 1
 ```
