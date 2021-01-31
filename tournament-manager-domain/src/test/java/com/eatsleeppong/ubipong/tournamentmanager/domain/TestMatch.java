@@ -43,7 +43,7 @@ public class TestMatch {
             gb.player1Score(1).player2Score(11).build()
         ));
 
-        assertThat(m.getScoreSummary(), is("-1"));
+        assertThat(m.getScoreSummary(), is(List.of(-1)));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class TestMatch {
             gb.player1Score(11).player2Score(3).build()
         ));
 
-        assertThat(m.getScoreSummary(), is("5 3"));
+        assertThat(m.getScoreSummary(), is(List.of(5, 3)));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TestMatch {
             gb.player1Score(13).player2Score(11).build()
         ));
 
-        assertThat(m.getScoreSummary(), is("9 -4 11"));
+        assertThat(m.getScoreSummary(), is(List.of(9, -4, 11)));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class TestMatch {
         assertThat(mt.getPlayer1Id(), is(m.getPlayer2Id()));
         assertThat(mt.getPlayer2Id(), is(m.getPlayer1Id()));
         assertThat(mt.getWinnerId(), is(m.getWinnerId()));
-        assertThat(mt.getScoreSummary(), is("-9 4 -11"));
+        assertThat(mt.getScoreSummary(), is(List.of(-9, 4, -11)));
     }
 
     @Test

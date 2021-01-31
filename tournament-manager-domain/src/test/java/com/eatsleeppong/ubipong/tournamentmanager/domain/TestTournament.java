@@ -56,11 +56,11 @@ public class TestTournament {
         assertThat(matchResultList.get(0).getEventName(), is(event.getName()));
         assertThat(matchResultList.get(0).getWinner(), is(patrick.getName()));
         assertThat(matchResultList.get(0).getLoser(), is(spongebob.getName()));
-        assertThat(matchResultList.get(0).getResult(), is("3 5 1"));
+        assertThat(matchResultList.get(0).getScoreSummary(), is(List.of(3, 5, 1)));
 
         assertThat(matchResultList.get(1).getEventName(), is(event.getName()));
         assertThat(matchResultList.get(1).getWinner(), is(spongebob.getName()));
         assertThat(matchResultList.get(1).getLoser(), is(squidward.getName()));
-        assertThat(matchResultList.get(1).getResult(), is("11 -5 9 9"));
+        assertThat(matchResultList.get(1).getScoreSummary(), is(List.of(11, -5, 9, 9)));
     }
 }

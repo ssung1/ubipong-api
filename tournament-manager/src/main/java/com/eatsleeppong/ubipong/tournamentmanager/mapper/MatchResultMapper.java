@@ -15,7 +15,7 @@ public class MatchResultMapper {
             .eventName(matchResult.getEventName())
             .winner(matchResult.getWinner())
             .loser(matchResult.getLoser())
-            .resultString(matchResult.getResult())
+            .resultString(matchResult.getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(" ")))
             .build();
     }
 
@@ -24,7 +24,7 @@ public class MatchResultMapper {
             "id?",
             matchResult.getWinner(),
             matchResult.getLoser(),
-            matchResult.getResult(),
+            "\"" + matchResult.getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(",")) + "\"",
             matchResult.getEventName()
         ).stream().collect(Collectors.joining(","));
     }

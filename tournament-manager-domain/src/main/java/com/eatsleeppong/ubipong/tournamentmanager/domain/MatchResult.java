@@ -20,6 +20,5 @@ public class MatchResult {
     private String eventName;
     private String winner;
     private String loser;
-    private String result;
-    // private List<Integer> scoreSummary;
+    private List<Integer> scoreSummary;
 }

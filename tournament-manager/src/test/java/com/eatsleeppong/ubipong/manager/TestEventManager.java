@@ -302,18 +302,6 @@ public class TestEventManager {
     }
 
     @Test
-    @DisplayName("should include event name in the tournament result list")
-    public void testCreateTournamentResultListShouldIncludeEventTitle() {
-        final EventDto event = createEvent();
-        subject.addEvent(event);
-
-        final MatchResultDto[] tournamentResultList = subject.createTournamentResultList(challongeUrl);
-
-        // event name in the tournament result list is really the event title
-        assertThat(tournamentResultList[0].getEventName(), is(eventName));
-    }
-
-    @Test
     public void testCreateRoundRobinMatch() {
         subject.addEvent(createEvent());
         final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(challongeUrl);

@@ -106,7 +106,7 @@ public class Event {
             .eventName(getName())
             .winner(player1Name)
             .loser(player2Name)
-            .result(matchForReporting.getScoreSummary())
+            .scoreSummary(matchForReporting.getScoreSummary())
             .build();
     }
 

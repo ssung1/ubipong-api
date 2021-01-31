@@ -122,12 +122,12 @@ public class TestEvent {
         assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
         assertThat(spongebobVsPatrick.getWinner(), is(patrick.getName()));
         assertThat(spongebobVsPatrick.getLoser(), is(spongebob.getName()));
-        assertThat(spongebobVsPatrick.getResult(), is("3 5 1"));
+        assertThat(spongebobVsPatrick.getScoreSummary(), is(List.of(3, 5 ,1)));
 
         final MatchResult spongebobVsSquidward = matchResultList.get(1);
         assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
         assertThat(spongebobVsSquidward.getWinner(), is(spongebob.getName()));
         assertThat(spongebobVsSquidward.getLoser(), is(squidward.getName()));
-        assertThat(spongebobVsSquidward.getResult(), is("11 -5 9 9"));
+        assertThat(spongebobVsSquidward.getScoreSummary(), is(List.of(11, -5, 9, 9)));
     }
 }

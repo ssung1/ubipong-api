@@ -183,44 +183,6 @@ public class EventManager {
         return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }
 
-    public MatchResultDto[] createTournamentResultList(final String challongeUrl) {
-        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-
-        final List<Match> matchList = event.getMatchList();
-
-        final Map<Integer, Player> playerMap = event.getPlayerMap();
-
-        return matchList.stream()
-            .filter(Match::isResultValid)
-            .map(m -> {
-                final Integer player1Id = m.getPlayer1Id();
-                final Integer player2Id = m.getPlayer2Id();
-                final Integer winnerId = m.getWinnerId();
-                final Player player1 = playerMap.get(player1Id);
-                final Player player2 = playerMap.get(player2Id);
-                final String player1Name = player1.getName();
-                final String player2Name = player2.getName();
-
-                final MatchResultDto.MatchResultDtoBuilder matchResultDtoBuilder =
-                    MatchResultDto.builder();
-
-                matchResultDtoBuilder.eventName(event.getName());
-
-                if (isWinForPlayer1(player1Id, player2Id, winnerId)) {
-                    matchResultDtoBuilder.winner(player1Name);
-                    matchResultDtoBuilder.loser(player2Name);
-                    matchResultDtoBuilder.resultString(m.getScoreSummary());
-                } else {
-                    matchResultDtoBuilder.winner(player2Name);
-                    matchResultDtoBuilder.loser(player1Name);
-                    matchResultDtoBuilder.resultString(m.transpose().getScoreSummary());
-                }
-
-                return matchResultDtoBuilder.build();
-            })
-            .toArray(MatchResultDto[]::new);
-    }
-
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         final List<Match> matchList = event.getMatchList();

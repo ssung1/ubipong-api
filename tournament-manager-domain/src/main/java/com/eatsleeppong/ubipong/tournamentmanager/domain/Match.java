@@ -63,11 +63,10 @@ public class Match {
         return STATUS_COMPLETE == status;
     }
 
-    public String getScoreSummary() {
+    public List<Integer> getScoreSummary() {
         return gameList.stream()
             .map(Game::getSimplifiedScore)
-            .map(String::valueOf)
-            .collect(Collectors.joining(" "));
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public Match transpose() {
