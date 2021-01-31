@@ -100,12 +100,18 @@ public class Event {
         // we want to arrange the match so that player 1 is the winner
         final Match matchForReporting = match.transposeIfWinForPlayer2();
         final Map<Integer, Player> playerMap = getPlayerMap();
-        final String player1Name = playerMap.get(matchForReporting.getPlayer1Id()).getName();
-        final String player2Name = playerMap.get(matchForReporting.getPlayer2Id()).getName();
+        final Player player1 = playerMap.get(matchForReporting.getPlayer1Id());
+        final Player player2 = playerMap.get(matchForReporting.getPlayer2Id());
+        final String player1Name = player1.getName();
+        final String player2Name = player2.getName();
+        final Integer player1ReferenceId = player1.getUsattNumber();
+        final Integer player2ReferenceId = player2.getUsattNumber();
         return MatchResult.builder()
             .eventName(getName())
-            .winner(player1Name)
-            .loser(player2Name)
+            .winnerName(player1Name)
+            .winnerReferenceId(String.valueOf(player1ReferenceId))
+            .loserName(player2Name)
+            .loserReferenceId(String.valueOf(player2ReferenceId))
             .scoreSummary(matchForReporting.getScoreSummary())
             .build();
     }

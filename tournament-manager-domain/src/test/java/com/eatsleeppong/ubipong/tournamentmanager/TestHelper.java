@@ -31,6 +31,9 @@ public class TestHelper {
     public static final int SPONGEBOB_ID = 1;
     public static final int PATRICK_ID = 2;
     public static final int SQUIDWARD_ID = 3;
+    public static final int SPONGEBOB_USATT = 10001;
+    public static final int PATRICK_USATT = 10002;
+    public static final int SQUIDWARD_USATT = 10003;
     public static final String CHALLONGE_URL = "esp_201903_pg_rr_1";
     public static final String EVENT_NAME = "Preliminary Group 1";
 
@@ -74,6 +77,7 @@ public class TestHelper {
         return Player.builder()
             .id(SPONGEBOB_ID)
             .name("spongebob")
+            .usattNumber(SPONGEBOB_USATT)
             .build();
     }
 
@@ -81,13 +85,15 @@ public class TestHelper {
         return Player.builder()
             .id(PATRICK_ID)
             .name("patrick")
+            .usattNumber(PATRICK_USATT)
             .build();
     }
 
     public static Player createPlayerSquidward() {
         return Player.builder()
             .id(SQUIDWARD_ID)
-            .name("patrick")
+            .name("squidward")
+            .usattNumber(SQUIDWARD_USATT)
             .build();
     }
 

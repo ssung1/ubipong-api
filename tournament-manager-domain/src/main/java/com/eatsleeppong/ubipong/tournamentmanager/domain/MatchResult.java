@@ -18,7 +18,9 @@ import lombok.Value;
 @Builder
 public class MatchResult {
     private String eventName;
-    private String winner;
-    private String loser;
+    private String winnerName;
+    private String winnerReferenceId;
+    private String loserName;
+    private String loserReferenceId;
     private List<Integer> scoreSummary;
 }

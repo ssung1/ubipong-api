@@ -54,13 +54,17 @@ public class TestTournament {
         final List<MatchResult> matchResultList = tournamentResult.getMatchResultList();
         assertThat(matchResultList, hasSize(2));
         assertThat(matchResultList.get(0).getEventName(), is(event.getName()));
-        assertThat(matchResultList.get(0).getWinner(), is(patrick.getName()));
-        assertThat(matchResultList.get(0).getLoser(), is(spongebob.getName()));
+        assertThat(matchResultList.get(0).getWinnerName(), is(patrick.getName()));
+        assertThat(matchResultList.get(0).getWinnerReferenceId(), is(String.valueOf(patrick.getUsattNumber())));
+        assertThat(matchResultList.get(0).getLoserName(), is(spongebob.getName()));
+        assertThat(matchResultList.get(0).getLoserReferenceId(), is(String.valueOf(spongebob.getUsattNumber())));
         assertThat(matchResultList.get(0).getScoreSummary(), is(List.of(3, 5, 1)));
 
         assertThat(matchResultList.get(1).getEventName(), is(event.getName()));
-        assertThat(matchResultList.get(1).getWinner(), is(spongebob.getName()));
-        assertThat(matchResultList.get(1).getLoser(), is(squidward.getName()));
+        assertThat(matchResultList.get(1).getWinnerName(), is(spongebob.getName()));
+        assertThat(matchResultList.get(1).getWinnerReferenceId(), is(String.valueOf(spongebob.getUsattNumber())));
+        assertThat(matchResultList.get(1).getLoserName(), is(squidward.getName()));
+        assertThat(matchResultList.get(1).getLoserReferenceId(), is(String.valueOf(squidward.getUsattNumber())));
         assertThat(matchResultList.get(1).getScoreSummary(), is(List.of(11, -5, 9, 9)));
     }
 }

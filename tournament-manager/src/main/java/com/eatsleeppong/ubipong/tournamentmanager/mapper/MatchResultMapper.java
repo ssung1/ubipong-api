@@ -13,8 +13,8 @@ public class MatchResultMapper {
     public MatchResultDto mapMatchResultToMatchResultDto(final MatchResult matchResult) {
         return MatchResultDto.builder()
             .eventName(matchResult.getEventName())
-            .winner(matchResult.getWinner())
-            .loser(matchResult.getLoser())
+            .winner(matchResult.getWinnerName())
+            .loser(matchResult.getLoserName())
             .resultString(matchResult.getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(" ")))
             .build();
     }
@@ -22,8 +22,8 @@ public class MatchResultMapper {
     public String mapMatchResultToUsattCsv(final MatchResult matchResult) {
         return List.of(
             "id?",
-            matchResult.getWinner(),
-            matchResult.getLoser(),
+            matchResult.getWinnerReferenceId(),
+            matchResult.getLoserReferenceId(),
             "\"" + matchResult.getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(",")) + "\"",
             matchResult.getEventName()
         ).stream().collect(Collectors.joining(","));

@@ -120,14 +120,18 @@ public class TestEvent {
 
         final MatchResult spongebobVsPatrick = matchResultList.get(0);
         assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
-        assertThat(spongebobVsPatrick.getWinner(), is(patrick.getName()));
-        assertThat(spongebobVsPatrick.getLoser(), is(spongebob.getName()));
+        assertThat(spongebobVsPatrick.getWinnerName(), is(patrick.getName()));
+        assertThat(spongebobVsPatrick.getWinnerReferenceId(), is(String.valueOf(patrick.getUsattNumber())));
+        assertThat(spongebobVsPatrick.getLoserName(), is(spongebob.getName()));
+        assertThat(spongebobVsPatrick.getLoserReferenceId(), is(String.valueOf(spongebob.getUsattNumber())));
         assertThat(spongebobVsPatrick.getScoreSummary(), is(List.of(3, 5 ,1)));
 
         final MatchResult spongebobVsSquidward = matchResultList.get(1);
         assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
-        assertThat(spongebobVsSquidward.getWinner(), is(spongebob.getName()));
-        assertThat(spongebobVsSquidward.getLoser(), is(squidward.getName()));
+        assertThat(spongebobVsSquidward.getWinnerName(), is(spongebob.getName()));
+        assertThat(spongebobVsSquidward.getWinnerReferenceId(), is(String.valueOf(spongebob.getUsattNumber())));
+        assertThat(spongebobVsSquidward.getLoserName(), is(squidward.getName()));
+        assertThat(spongebobVsSquidward.getLoserReferenceId(), is(String.valueOf(squidward.getUsattNumber())));
         assertThat(spongebobVsSquidward.getScoreSummary(), is(List.of(11, -5, 9, 9)));
     }
 }
