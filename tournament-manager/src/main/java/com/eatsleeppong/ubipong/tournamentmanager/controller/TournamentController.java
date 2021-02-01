@@ -30,7 +30,7 @@ public class TournamentController {
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the USATT " +
         "after the tournament has ended.  It contains all the matches in the tournament in one big list.")
-    @GetMapping(value = "/{id}/usatt-result")
+    @GetMapping(value = "/{id}/usatt-result", produces = "text/csv")
     public String getUsattResult(@PathVariable("id") final Integer id) {
         return tournamentResultMapper.mapTournamentResultToUsattCsv(
             tournamentRepository.getOne(id).getResult()

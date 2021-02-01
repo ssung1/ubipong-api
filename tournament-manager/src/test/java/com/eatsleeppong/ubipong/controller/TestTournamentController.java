@@ -210,8 +210,9 @@ public class TestTournamentController {
 
         final MvcResult mvcResult = mockMvc.perform(
             get(uriComponents.expand(uriMap).toUri())
-                .accept("text/csv"))
+                .accept("*/*"))
             .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith("text/csv"))
             .andReturn();
 
         final String responseContent = mvcResult.getResponse().getContentAsString();
