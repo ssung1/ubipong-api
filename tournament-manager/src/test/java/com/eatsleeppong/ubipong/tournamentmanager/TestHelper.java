@@ -17,6 +17,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 
 /**
  * Tournament Setup:
@@ -37,6 +38,7 @@ public class TestHelper {
     public static final int SPONGEBOB_USATT = 10001;
     public static final int PATRICK_USATT = 10002;
     public static final int SQUIDWARD_USATT = 10003;
+    public static final int EVENT_ID = 100;
     public static final String CHALLONGE_URL = "esp_201903_pg_rr_1";
     public static final String EVENT_NAME = "Preliminary Group 1";
 
@@ -67,11 +69,20 @@ public class TestHelper {
         ));
 
         return Event.builder()
-            .id(100)
-            .name("Preliminary Group 1")
+            .id(EVENT_ID)
+            .name(EVENT_NAME)
             .challongeUrl(CHALLONGE_URL)
             .playerRepository(mockPlayerRepository)
             .matchRepository(mockMatchRepository)
+            .tournamentId(TOURNAMENT_ID)
+            .build();
+    }
+
+    public static EventDto createEventDto() {
+        return EventDto.builder()
+            .id(EVENT_ID)
+            .name(EVENT_NAME)
+            .challongeUrl(CHALLONGE_URL)
             .tournamentId(TOURNAMENT_ID)
             .build();
     }

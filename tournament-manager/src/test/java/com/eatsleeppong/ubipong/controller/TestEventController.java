@@ -44,8 +44,8 @@ import static org.hamcrest.MatcherAssert.*;
 @Transactional
 @ActiveProfiles("test")
 public class TestEventController {
-    private final String challongeUrl = "bb_201906_pg_rr_1";
-    private final String eventName = "Preliminary Group 1";
+    private final String challongeUrl = TestHelper.CHALLONGE_URL;
+    private final String eventName = TestHelper.EVENT_NAME;
 
     private final Integer matchId1 = 101;
     private final Integer matchId2 = 102;
@@ -58,7 +58,7 @@ public class TestEventController {
     private final String spongebobName = "spongebob";
     private final String patrickName = "patrick";
     private final String squidwardName = "squidward";
-
+    
     @Autowired
     MockMvc mockMvc;
 
@@ -70,14 +70,6 @@ public class TestEventController {
 
     @MockBean
     ChallongeTournamentRepository mockChallongeTournamentRepository;
-
-    private EventDto createEvent() {
-        return EventDto.builder()
-            .challongeUrl(challongeUrl)
-            .name(eventName)
-            .tournamentId(1)
-            .build();
-    }
 
     private List<Player> createPlayerList() {
         final Player spongebob = Player.builder()
@@ -175,7 +167,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to get the bracket display for a round robin event")
     public void testGetRoundRobinGrid() throws Exception {
-        addEvent(createEvent());
+        addEvent(TestHelper.createEventDto());
         mockMvc.perform(
             get("/rest/v0/events/" + challongeUrl + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
@@ -253,7 +245,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
-        final EventDto event = createEvent();
+        final EventDto event = TestHelper.createEventDto();
         final SpringJpaEvent addedEvent = addEvent(event);
 
         mockMvc.perform(
@@ -267,7 +259,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
-        final EventDto event = createEvent();
+        final EventDto event = TestHelper.createEventDto();
         final SpringJpaEvent addedEvent = addEvent(event);
 
         assertThat(addedEvent.getId(), not(is(0)));
@@ -278,7 +270,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to return list of matches for round robin")
     public void testRoundRobinMatchList() throws Exception {
-        addEvent(createEvent());
+        addEvent(TestHelper.createEventDto());
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
             .build();
@@ -327,7 +319,7 @@ public class TestEventController {
         // for this test, we cannot have any pending matches
         when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList().subList(0, 2));
-        addEvent(createEvent());
+        addEvent(TestHelper.createEventDto());
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/result")
