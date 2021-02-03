@@ -29,6 +29,11 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
  * spongebob vs patrick: patrick wins 3 5 1 (ID: 100)
  * spongebob vs squidward: spongebob wins 11 -5 9 9 (ID: 101)
  * patrick vs squidward: not played yet (ID: 102)
+ *
+ *                         A              B              C
+ * A  spongebob                        L -3 -5 -1    W 11 -5 9 9
+ * B  patrick          W 3 5 1
+ * C  squidward        L -11 5 -9 -9
  */
 public class TestHelper {
     public static final int TOURNAMENT_ID = 10;
