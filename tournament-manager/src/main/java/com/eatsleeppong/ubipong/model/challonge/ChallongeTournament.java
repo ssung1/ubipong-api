@@ -32,4 +32,12 @@ public class ChallongeTournament {
      * "Table Tennis"
      */
     private String gameName;
+
+    /**
+     * "pending": not started; cannot get list of matches
+     * "underway": started but not finished; can get list of matches but not all will have results
+     * "awaiting_review": all results are in, but not fully finalized
+     * "complete": all results are in, and user hit "end tournament" button
+     */
+    private String state;
 }

@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
+import lombok.Builder.Default;
 
 @Value
 @Builder
@@ -68,6 +69,12 @@ public class Event {
      * Type of the bracket
      */
     BracketType bracketType;
+
+    /**
+     * Status of event
+     */
+    @Default
+    EventStatus status = EventStatus.CREATED;
 
     /**
      * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)

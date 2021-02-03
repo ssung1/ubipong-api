@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
 
 @Component
 @Value
@@ -50,7 +51,17 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Event getOne(final Integer id) {
-        return eventMapper.mapSpringJpaEventToEvent(springJpaEventRepository.getOne(id));
+        final SpringJpaEvent springJpaEvent = springJpaEventRepository.getOne(id);
+
+        final ChallongeTournamentWrapper challongeTournamentWrapper =
+            challongeTournamentRepository.getTournament(springJpaEvent.getChallongeUrl());
+
+        final EventStatus eventStatus = eventMapper.mapChallongeTournamentStateToEventStatus(
+            challongeTournamentWrapper.getTournament().getState());
+
+        return eventMapper
+            .mapSpringJpaEventToEvent(springJpaEvent)
+            .withStatus(eventStatus);
     }
 
     @Override

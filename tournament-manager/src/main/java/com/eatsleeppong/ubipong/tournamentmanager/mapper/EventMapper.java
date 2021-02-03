@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
@@ -55,5 +56,20 @@ public class EventMapper {
             .name(event.getName())
             .challongeUrl(event.getChallongeUrl())
             .build();
+    }
+
+    public EventStatus mapChallongeTournamentStateToEventStatus(final String challongeTournamentState) {
+        if ("pending".equals(challongeTournamentState)) {
+            return EventStatus.CREATED;
+        } else if ("underway".equals(challongeTournamentState)) {
+            return EventStatus.STARTED;
+        } else if ("awaiting_review".equals(challongeTournamentState)) {
+            return EventStatus.AWAITING_REVIEW;
+        } else if ("complete".equals(challongeTournamentState)) {
+            return EventStatus.COMPLETED;
+        } else {
+            throw new IllegalArgumentException("Cannot understand challong tournament state: " +
+                challongeTournamentState);
+        }
     }
 }

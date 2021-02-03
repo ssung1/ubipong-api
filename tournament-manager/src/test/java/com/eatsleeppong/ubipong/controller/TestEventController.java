@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
+import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
@@ -62,13 +63,13 @@ public class TestEventController {
     MockMvc mockMvc;
 
     @MockBean
-    ChallongeMatchRepository mockMatchRepository;
+    ChallongeMatchRepository mockChallongeMatchRepository;
 
     @MockBean
-    ChallongeParticipantRepository mockParticipantRepository;
+    ChallongeParticipantRepository mockChallongeParticipantRepository;
 
     @MockBean
-    ChallongeTournamentRepository mockTournamentRepository;
+    ChallongeTournamentRepository mockChallongeTournamentRepository;
 
     private EventDto createEvent() {
         return EventDto.builder()
@@ -163,10 +164,12 @@ public class TestEventController {
 
     @BeforeEach
     public void setupMocks() {
-        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
+        when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList());
-        when(mockParticipantRepository.findByChallongeUrl(challongeUrl))
+        when(mockChallongeParticipantRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createPlayerList());
+        when(mockChallongeTournamentRepository.getTournament(challongeUrl))
+            .thenReturn(TestHelper.createChallongeTournamentWrapper());
     }
 
     @Test
@@ -322,7 +325,7 @@ public class TestEventController {
     @DisplayName("should generate event result report")
     public void testEventResultList() throws Exception {
         // for this test, we cannot have any pending matches
-        when(mockMatchRepository.findByChallongeUrl(challongeUrl))
+        when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList().subList(0, 2));
         addEvent(createEvent());
 

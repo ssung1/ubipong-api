@@ -6,6 +6,9 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.List;
 
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
@@ -136,6 +139,20 @@ public class TestHelper {
             .player1Id(PATRICK_ID)
             .player2Id(SQUIDWARD_ID)
             .build();
+    }
+
+    public static ChallongeTournamentWrapper createChallongeTournamentWrapper() {
+        final ChallongeTournament challongeTournament = new ChallongeTournament();
+        challongeTournament.setUrl(CHALLONGE_URL);
+        challongeTournament.setName(EVENT_NAME);
+        challongeTournament.setTournamentType(SpringJpaEvent.EVENT_TYPE_ROUND_ROBIN);
+        challongeTournament.setGameName("table tennis");
+        challongeTournament.setState("pending");
+
+        final ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
+        challongeTournamentWrapper.setTournament(challongeTournament);
+
+        return challongeTournamentWrapper;
     }
 
 }

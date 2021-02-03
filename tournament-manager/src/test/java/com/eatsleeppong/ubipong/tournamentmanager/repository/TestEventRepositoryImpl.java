@@ -2,7 +2,12 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import org.junit.jupiter.api.Test;
 
+import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
+import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
+import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
+import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -21,32 +27,29 @@ import java.util.List;
 @ActiveProfiles("test")
 @Transactional
 public class TestEventRepositoryImpl {
-    private final Integer tournamentId = 123;
+    private final Integer tournamentId = TestHelper.TOURNAMENT_ID;
+
     @MockBean
-    private ChallongeTournamentRepository challongeTournamentRepository;
+    private ChallongeTournamentRepository mockChallongeTournamentRepository;
 
     @Autowired
     private EventRepositoryImpl eventRepositoryImpl;
 
     private Event event;
 
-    private Event createEvent() {
-        return Event.builder()
-            .name("Preliminary Group 1")
-            .challongeUrl("bb_201906_pg_rr_1")
-            .tournamentId(tournamentId)
-            .build();
-    }
-
     @BeforeEach
     public void saveEvent() {
-        event = eventRepositoryImpl.save(createEvent());
+        event = eventRepositoryImpl.save(TestHelper.createEvent());
+
+        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
+            TestHelper.createChallongeTournamentWrapper()
+        );
     }
 
     @Test
     @DisplayName("should be able to add event and a corresponding tournament on challonge.com")
     public void testAddEvent() {
-        final Event eventToAdd = createEvent();
+        final Event eventToAdd = TestHelper.createEvent();
         final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
 
         assertThat(addedEvent.getId(), notNullValue());
@@ -56,13 +59,71 @@ public class TestEventRepositoryImpl {
     }
 
     @Test
-    @DisplayName("should find an existing event")
-    public void testFindEvent() {
+    @DisplayName("should find an existing event in 'created' status")
+    public void testFindEventStatusCreated() {
+        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
+        challongeTournamentWrapper.getTournament().setState("pending");
+        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
+            challongeTournamentWrapper
+        );
+
         final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
 
         assertThat(loadedEvent.getId(), is(event.getId()));
         assertThat(loadedEvent.getName(), is(event.getName()));
         assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
+        assertThat(loadedEvent.getStatus(), is(EventStatus.CREATED));
+    }
+
+    @Test
+    @DisplayName("should find an existing event in 'started' status")
+    public void testFindEventStatusStarted() {
+        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
+        challongeTournamentWrapper.getTournament().setState("underway");
+        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
+            challongeTournamentWrapper
+        );
+
+        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
+
+        assertThat(loadedEvent.getId(), is(event.getId()));
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
+        assertThat(loadedEvent.getStatus(), is(EventStatus.STARTED));
+    }
+
+    @Test
+    @DisplayName("should find an existing event in 'awaiting review' status")
+    public void testFindEventStatusAwaitingReview() {
+        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
+        challongeTournamentWrapper.getTournament().setState("awaiting_review");
+        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
+            challongeTournamentWrapper
+        );
+
+        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
+
+        assertThat(loadedEvent.getId(), is(event.getId()));
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
+        assertThat(loadedEvent.getStatus(), is(EventStatus.AWAITING_REVIEW));
+    }
+
+    @Test
+    @DisplayName("should find an existing event in 'completed' status")
+    public void testFindEventStatusCompleted() {
+        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
+        challongeTournamentWrapper.getTournament().setState("complete");
+        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
+            challongeTournamentWrapper
+        );
+
+        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
+
+        assertThat(loadedEvent.getId(), is(event.getId()));
+        assertThat(loadedEvent.getName(), is(event.getName()));
+        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
+        assertThat(loadedEvent.getStatus(), is(EventStatus.COMPLETED));
     }
 
     @Test

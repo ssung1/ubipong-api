@@ -13,6 +13,7 @@ import java.util.Date;
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ChallongeMatch {
+    // match has result, but may not be actually complete
     public static final String STATE_COMPLETE = "complete";
     // match has no result (yet)
     public static final String STATE_OPEN = "open";
