@@ -2,10 +2,10 @@ package com.eatsleeppong.ubipong.controller;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventStatusDto;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
@@ -67,7 +67,7 @@ public class TestEventController {
     @MockBean
     ChallongeTournamentRepository mockChallongeTournamentRepository;
 
-    private SpringJpaEvent addEvent(EventDto event) throws Exception {
+    private EventDto addEvent(EventDto event) throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         final MvcResult mvcResult = mockMvc.perform(
@@ -81,7 +81,7 @@ public class TestEventController {
             .andReturn();
 
         final String responseContent = mvcResult.getResponse().getContentAsString();
-        return objectMapper.readValue(responseContent, SpringJpaEvent.class);
+        return objectMapper.readValue(responseContent, EventDto.class);
     }
 
     @BeforeEach
@@ -175,25 +175,27 @@ public class TestEventController {
     @DisplayName("should be able to get an existing event by ID")
     public void testGetEvent() throws Exception {
         final EventDto event = TestHelper.createEventDto();
-        final SpringJpaEvent addedEvent = addEvent(event);
+        final EventDto addedEvent = addEvent(event);
 
         mockMvc.perform(
             get("/rest/v0/events/" + addedEvent.getId())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("id").value(is(addedEvent.getId())))
             .andExpect(jsonPath("name").value(is(eventName)))
-            .andExpect(jsonPath("challongeUrl").value(is(challongeUrl)));
+            .andExpect(jsonPath("challongeUrl").value(is(challongeUrl)))
+            .andExpect(jsonPath("status").value(is(EventStatusDto.STARTED.getValue())));
     }
 
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
         final EventDto event = TestHelper.createEventDto();
-        final SpringJpaEvent addedEvent = addEvent(event);
+        final EventDto addedEvent = addEvent(event);
 
         assertThat(addedEvent.getId(), not(is(0)));
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
+        assertThat(addedEvent.getStatus(), is(EventStatusDto.CREATED));
     }
 
     @Test

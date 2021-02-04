@@ -10,6 +10,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class EventController {
         "event.  It is useful for generating match sheets, but the UI is responsible for all formatting.")
     @GetMapping(value = "/{challongeUrl}/roundRobinMatchList")
     public List<RoundRobinMatch> getRoundRobinMatchList(
-        @PathVariable("challongeUrl") String challongeUrl
+        @ApiParam(value = "The URL of the challonge tournament") @PathVariable("challongeUrl") String challongeUrl
     ) {
         return eventManager.createRoundRobinMatchList(challongeUrl);
     }
@@ -80,6 +81,7 @@ public class EventController {
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto addEvent(@RequestBody EventDto eventDto) {
+
         return eventMapper.mapEventToEventDto(
             eventMapper.mapSpringJpaEventToEvent(eventManager.addEvent(eventDto)));
     }

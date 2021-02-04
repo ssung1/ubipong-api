@@ -6,6 +6,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.EventStatusDto;
 
 import org.springframework.stereotype.Component;
 
@@ -46,6 +47,7 @@ public class EventMapper {
             .challongeUrl(eventDto.getChallongeUrl())
             .playerRepository(playerRepository)
             .matchRepository(matchRepository)
+            .status(EventStatus.valueOf(eventDto.getStatus().name()))
             .build();
     }
 
@@ -55,6 +57,7 @@ public class EventMapper {
             .tournamentId(event.getTournamentId())
             .name(event.getName())
             .challongeUrl(event.getChallongeUrl())
+            .status(EventStatusDto.valueOf(event.getStatus().name()))
             .build();
     }
 

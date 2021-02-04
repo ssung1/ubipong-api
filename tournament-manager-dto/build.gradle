@@ -40,6 +40,9 @@ dependencies {
     // need Jackson for the annotations such as "JsonIgnoreProperties"
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
+    // swagger API documentation
+    compileOnly 'io.springfox:springfox-boot-starter:3.0.0'
+
     // test stuff using spring to manage dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

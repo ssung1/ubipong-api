@@ -163,7 +163,7 @@ public class TestHelper {
         challongeTournament.setName(EVENT_NAME);
         challongeTournament.setTournamentType(SpringJpaEvent.EVENT_TYPE_ROUND_ROBIN);
         challongeTournament.setGameName("table tennis");
-        challongeTournament.setState("pending");
+        challongeTournament.setState("underway");
 
         final ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
         challongeTournamentWrapper.setTournament(challongeTournament);
