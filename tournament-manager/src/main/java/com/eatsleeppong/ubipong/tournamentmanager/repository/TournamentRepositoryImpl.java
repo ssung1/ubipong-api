@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
+import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
@@ -21,5 +22,14 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     @Override
     public Tournament getOne(final Integer id) {
         return tournamentMapper.mapSpringJpaTournamentToTournament(springJpaTournamentRepository.getOne(id));
+    }
+
+    @Override
+    public Tournament save(final Tournament tournament) {
+        final SpringJpaTournament springJpaTournamentToAdd =
+            tournamentMapper.mapTournamentToSpringJpaTournament(tournament);
+        final SpringJpaTournament addedSpringJpaTournament =
+            springJpaTournamentRepository.save(springJpaTournamentToAdd);
+        return tournamentMapper.mapSpringJpaTournamentToTournament(addedSpringJpaTournament);
     }
 }

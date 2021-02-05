@@ -1,11 +1,10 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
@@ -39,15 +38,7 @@ public class TournamentController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public TournamentResponse addTournament(@RequestBody TournamentRequest tournamentRequest) {
-        // somehow build a Tournament out of this request
-        // call the "repo" to save a tournament
-        // translate tournament to tournamentresponse
-
-        // is all of this necessary(?)
-        return TournamentResponse.builder()
-            .name(tournamentRequest.getName())
-            .tournamentDate(tournamentRequest.getTournamentDate())
-            .build();
+    public Tournament addTournament(@RequestBody Tournament tournament) {
+        return tournamentRepository.save(tournament);
     }
 }

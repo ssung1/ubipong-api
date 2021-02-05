@@ -15,6 +15,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,6 +101,9 @@ public class TestTournamentController {
 
     @BeforeEach
     public void setupMocks() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
         when(mockChallongeMatchRepository.findByChallongeUrl(TestHelper.CHALLONGE_URL))
             .thenReturn(List.of(TestHelper.createMatch1(), TestHelper.createMatch2()));
 
@@ -107,6 +112,21 @@ public class TestTournamentController {
                 TestHelper.createPlayerPatrick(),
                 TestHelper.createPlayerSpongebob(),
                 TestHelper.createPlayerSquidward()));
+    }
+
+    @Test
+    @DisplayName("should be able to add a tournament")
+    public void testAddTournament() throws Exception {
+        final Tournament tournamentToAdd = TestHelper.createTournament().withId(null);
+
+        mockMvc.perform(
+            post(tournamentContext)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tournamentToAdd)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").value(notNullValue()))
+            .andExpect(jsonPath("$.name").value(is(tournamentToAdd.getName())))
+            .andExpect(jsonPath("$.tournamentDate").value(is(tournamentToAdd.getTournamentDate().toString())));
     }
 
     @Test

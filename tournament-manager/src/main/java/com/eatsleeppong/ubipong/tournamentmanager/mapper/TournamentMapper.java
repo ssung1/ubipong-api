@@ -1,5 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
+import java.util.Date;
+
 import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
@@ -20,5 +22,14 @@ public class TournamentMapper {
             .tournamentDate(springJpaTournament.getTournamentDate().toInstant())
             .eventRepository(eventRepository)
             .build();
+    }
+
+    public SpringJpaTournament mapTournamentToSpringJpaTournament(final Tournament tournament) {
+        final SpringJpaTournament springJpaTournament = new SpringJpaTournament();
+        springJpaTournament.setId(tournament.getId());
+        springJpaTournament.setName(tournament.getName());
+        springJpaTournament.setTournamentDate(Date.from(tournament.getTournamentDate()));
+
+        return springJpaTournament;
     }
 }

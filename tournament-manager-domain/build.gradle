@@ -35,6 +35,9 @@ configurations {
 }
 
 dependencies {
+    // for @JsonIgnore (and maybe others)
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+
     // spring stuff
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
