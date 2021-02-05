@@ -58,15 +58,6 @@ import static org.hamcrest.MatcherAssert.*;
 public class TestTournamentController {
     private final String tournamentContext = "/rest/v0/tournaments";
 
-
-    private final String eventName = "Preliminary Group 1";
-    private final String challongeUrl = "bb_201906_pg_rr_1";
-    private final Integer matchId = 10101;
-    private final Integer player1Id = 1;
-    private final Integer player2Id = 2;
-    private final String player1Name = "spongebob";
-    private final String player2Name = "patrick";
-
     private final Player spongebob = TestHelper.createPlayerSpongebob();
     private final Player patrick = TestHelper.createPlayerPatrick();
     private final Player squidward = TestHelper.createPlayerSquidward();
@@ -104,45 +95,6 @@ public class TestTournamentController {
         springJpaTournament.setTournamentDate(Date.from(tournament.getTournamentDate()));
 
         return springJpaTournamentRepository.save(springJpaTournament);
-    }
-
-    private Event createEvent(final Integer tournamentId) {
-        return Event.builder()
-            .name(eventName)
-            .challongeUrl(challongeUrl)
-            .tournamentId(tournamentId)
-            .build();
-    }
-
-    private List<Player> createPlayerList() {
-        final Player p1 = Player.builder()
-            .id(player1Id)
-            .name(player1Name)
-            .build();
-
-        final Player p2 = Player.builder()
-            .id(player2Id)
-            .name(player2Name)
-            .build();
-
-        return List.of(p1, p2);
-    }
-
-    //                A     B
-    // A  player1          11-9
-    // B  player2    9-11
-    private List<Match> createMatchList() {
-        return List.of(Match.builder()
-            .id(matchId)
-            .player1Id(player1Id)
-            .player2Id(player2Id)
-            .winnerId(player1Id)
-            .status(Match.STATUS_COMPLETE)
-            .gameList(List.of(
-                Game.builder().player1Score(11).player2Score(9).status(Game.STATUS_COMPLETE).build()
-            ))
-            .build()
-        );
     }
 
     @BeforeEach
