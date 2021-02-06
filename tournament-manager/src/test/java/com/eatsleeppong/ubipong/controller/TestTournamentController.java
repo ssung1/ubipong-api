@@ -11,8 +11,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentResult;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
