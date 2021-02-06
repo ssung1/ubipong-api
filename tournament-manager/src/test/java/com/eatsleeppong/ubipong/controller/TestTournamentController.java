@@ -14,6 +14,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.request.TournamentRequest;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.TournamentResponse;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -64,16 +65,7 @@ public class TestTournamentController {
     private final Player patrick = TestHelper.createPlayerPatrick();
     private final Player squidward = TestHelper.createPlayerSquidward();
 
-    final TournamentRequest tournamentRequest = TournamentRequest.builder()
-        .name("Eat Sleep Pong Open 2020")
-        .tournamentDate("2020-12-31")
-        .build();
-
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    // this is just a helper to set up tests
-    @Autowired
-    private SpringJpaTournamentRepository springJpaTournamentRepository;
 
     // this is just a helper to set up tests
     @Autowired
@@ -91,19 +83,28 @@ public class TestTournamentController {
     @Autowired
     private MockMvc mockMvc;
 
-    private SpringJpaTournament addTournament(final Tournament tournament) throws Exception {
-        final SpringJpaTournament springJpaTournament = new SpringJpaTournament();
-        springJpaTournament.setName(tournament.getName());
-        springJpaTournament.setTournamentDate(Date.from(tournament.getTournamentDate()));
+    private Tournament addTournament(final Tournament tournament) throws Exception {
+        final MvcResult mvcResult = mockMvc.perform(
+            post(tournamentContext)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tournament.withId(null))))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").value(notNullValue()))
+            .andExpect(jsonPath("$.name").value(is(tournament.getName())))
+            .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())))
+            .andReturn();
 
-        return springJpaTournamentRepository.save(springJpaTournament);
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Tournament.class);
+    }
+
+    @BeforeEach
+    public void setupObjectMapper() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     @BeforeEach
     public void setupMocks() {
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
         when(mockChallongeMatchRepository.findByChallongeUrl(TestHelper.CHALLONGE_URL))
             .thenReturn(List.of(TestHelper.createMatch1(), TestHelper.createMatch2()));
 
@@ -118,24 +119,40 @@ public class TestTournamentController {
     @DisplayName("should be able to add a tournament")
     public void testAddTournament() throws Exception {
         final Tournament tournamentToAdd = TestHelper.createTournament().withId(null);
+        final Tournament addedTournament = addTournament(tournamentToAdd);
 
+        assertThat(addedTournament.getId(), notNullValue());
+        assertThat(addedTournament.getName(), is(tournamentToAdd.getName()));
+        assertThat(addedTournament.getTournamentDate(), is(tournamentToAdd.getTournamentDate()));
+    }
+
+    @Test
+    @DisplayName("should get a tournament by ID")
+    public void testGetTournament() throws Exception {
+        final Tournament tournament = addTournament(TestHelper.createTournament());
+
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path(tournamentContext)
+            .path("/{tournamentId}")
+            .build();
+        final Map<String, String> uriMap = Stream.of(new String[][] {
+            { "tournamentId", tournament.getId().toString() },
+        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+    
         mockMvc.perform(
-            post(tournamentContext)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(tournamentToAdd)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(notNullValue()))
-            .andExpect(jsonPath("$.name").value(is(tournamentToAdd.getName())))
-            .andExpect(jsonPath("$.tournamentDate").value(is(tournamentToAdd.getTournamentDate().toString())));
+            get(uriComponents.expand(uriMap).toUri()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(is(tournament.getId())))
+            .andExpect(jsonPath("$.name").value(is(tournament.getName())))
+            .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())));
     }
 
     @Test
     @DisplayName("should generate tournament result report")
     public void testTournamentResultList() throws Exception {
-        final Tournament tournament = TestHelper.createTournament();
-        final SpringJpaTournament springJpaTournament = addTournament(tournament);
+        final Tournament tournament = addTournament(TestHelper.createTournament());
 
-        final Integer tournamentId = springJpaTournament.getId();
+        final Integer tournamentId = tournament.getId();
         final Event event = TestHelper.createEvent().withTournamentId(tournamentId);
         eventRepositoryImpl.save(event);
 
@@ -144,14 +161,14 @@ public class TestTournamentController {
             .path("/{tournamentId}/result")
             .build();
         final Map<String, String> uriMap = Stream.of(new String[][] {
-            { "tournamentId", springJpaTournament.getId().toString() },
+            { "tournamentId", tournament.getId().toString() },
         }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         mockMvc.perform(
             get(uriComponents.expand(uriMap).toUri())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.tournamentName").value(is(springJpaTournament.getName())))
+            .andExpect(jsonPath("$.tournamentName").value(is(tournament.getName())))
             .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())))
             .andExpect(jsonPath("$.tournamentResultList[0].winner").value(is(patrick.getName())))
             .andExpect(jsonPath("$.tournamentResultList[0].loser").value(is(spongebob.getName())))
@@ -166,9 +183,9 @@ public class TestTournamentController {
     @Test
     @DisplayName("should generate tournament result report for USATT")
     public void testUsattTournamentResultList() throws Exception {
-        final SpringJpaTournament springJpaTournament = addTournament(TestHelper.createTournament());
+        final Tournament tournament = addTournament(TestHelper.createTournament());
 
-        final Integer tournamentId = springJpaTournament.getId();
+        final Integer tournamentId = tournament.getId();
         final Event event = TestHelper.createEvent().withTournamentId(tournamentId);
         eventRepositoryImpl.save(event);
 
@@ -177,7 +194,7 @@ public class TestTournamentController {
             .path("/{tournamentId}/usatt-result")
             .build();
         final  Map<String, String> uriMap = Stream.of(new String[][] {
-            { "tournamentId", springJpaTournament.getId().toString() },
+            { "tournamentId", tournament.getId().toString() },
         }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         final MvcResult mvcResult = mockMvc.perform(

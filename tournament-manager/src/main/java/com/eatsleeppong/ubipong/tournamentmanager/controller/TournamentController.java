@@ -36,9 +36,18 @@ public class TournamentController {
         );
     }
 
+    @ApiOperation(value = "Tournament", notes = "Add a new tournament")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Tournament addTournament(@RequestBody Tournament tournament) {
         return tournamentRepository.save(tournament);
+    }
+
+    @ApiOperation(value = "Tournament", notes = "Get tournament details")
+    @GetMapping("/{id}")
+    public Tournament getTournament(
+        @PathVariable("id") final Integer id
+    ) {
+        return tournamentRepository.getOne(id);
     }
 }
