@@ -1,11 +1,12 @@
 package com.eatsleeppong.ubipong.manager;
 
 import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
 import com.eatsleeppong.ubipong.model.challonge.*;
-import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.webservices.client.AutoConfigureWebServiceClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,17 +25,12 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * An event is represented as a list of matches in challonge.com
@@ -61,6 +56,12 @@ public class TestEventManager {
     private SpringJpaEventRepository springJpaEventRepository;
 
     @Autowired
+    private EventRepositoryImpl eventRepositoryImpl;
+
+    @Autowired
+    private EventMapper eventMapper;
+
+    @Autowired
     private EventManager subject;
 
     private final Integer spongebobId = 123;
@@ -70,6 +71,10 @@ public class TestEventManager {
     private final String spongebobName = "spongebob";
     private final String patrickName = "patrick";
     private final String squidwardName = "squidward";
+
+    private Event addEvent(EventDto event) {
+        return eventRepositoryImpl.save(eventMapper.mapEventDtoToEvent(event));
+    }
 
     private List<Match> createMatchList() {
         Integer complete = com.eatsleeppong.ubipong.tournamentmanager.domain.Game.STATUS_COMPLETE;
@@ -106,44 +111,6 @@ public class TestEventManager {
         return List.of(m1, m2, m3);
     }
 
-    /**
-     * <pre>
-     *                   A           B           C                 Place
-     *  A spongebob                  W 4 5 6
-     *  B patrick        L -4 -5 -6              L -9 8 -6 -5
-     *  C squidward                  W 9 -8 6 5
-     *
-     * </pre>
-     */
-    private ChallongeMatchWrapper[] getMatchWrapperArray1() {
-        ChallongeMatch m1 = new ChallongeMatch();
-        m1.setPlayer1Id(spongebobId);
-        m1.setPlayer2Id(patrickId);
-        m1.setState(ChallongeMatch.STATE_COMPLETE);
-        m1.setWinnerId(spongebobId);
-        m1.setScoresCsv("11-4,11-5,11-6");
-
-        ChallongeMatch m2 = new ChallongeMatch();
-        m2.setPlayer1Id(patrickId);
-        m2.setPlayer2Id(squidwardId);
-        m2.setState(ChallongeMatch.STATE_COMPLETE);
-        m2.setWinnerId(squidwardId);
-        m2.setScoresCsv("9-11,11-8,6-11,5-11");
-
-        ChallongeMatch m3 = new ChallongeMatch();
-        m3.setPlayer1Id(spongebobId);
-        m3.setPlayer2Id(squidwardId);
-        m3.setState(ChallongeMatch.STATE_OPEN);
-
-        return Stream.of(m1, m2, m3)
-            .map(m -> {
-                ChallongeMatchWrapper mw = new ChallongeMatchWrapper();
-                mw.setMatch(m);
-                return mw;
-            })
-            .toArray(ChallongeMatchWrapper[]::new);
-    }
-
     private List<Player> createPlayerList() {
         final Player spongebob = Player.builder()
             .id(spongebobId)
@@ -163,18 +130,6 @@ public class TestEventManager {
         return List.of(spongebob, patrick, squidward);
     }
 
-    private ChallongeTournamentWrapper getTournamentWrapper1() {
-        ChallongeTournament t1 = new ChallongeTournament();
-        t1.setName(eventName);
-        t1.setDescription("an event is called a tournament on challonge.com");
-        t1.setUrl(challongeUrl);
-
-        ChallongeTournamentWrapper tw1 = new ChallongeTournamentWrapper();
-        tw1.setTournament(t1);
-
-        return tw1;
-    }
-
     private EventDto createEvent() {
         return EventDto.builder()
             .challongeUrl(challongeUrl)
@@ -189,17 +144,12 @@ public class TestEventManager {
             .thenReturn(createPlayerList());
         when(mockMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(createMatchList());
-
-        when(mockMatchRepository.getMatchList(challongeUrl))
-            .thenReturn(getMatchWrapperArray1());
-        when(mockTournamentRepository.getTournament(challongeUrl))
-            .thenReturn(getTournamentWrapper1());
     }
 
     @Test
     @DisplayName("should create the display for a round robin grid from match result")
     public void testCreateRoundRobinGridOneSide() {
-        subject.addEvent(createEvent());
+        addEvent(createEvent());
         RoundRobinCell[][] roundRobinGrid =
             subject.createRoundRobinGrid(challongeUrl);
 
@@ -273,7 +223,7 @@ public class TestEventManager {
     @Test
     @DisplayName("should create round robin grid from both player's point of view")
     public void testCreateRoundRobinGridBothSides() {
-        subject.addEvent(createEvent());
+        addEvent(createEvent());
         RoundRobinCell[][] roundRobinGrid =
             subject.createRoundRobinGrid(challongeUrl);
 
@@ -303,7 +253,7 @@ public class TestEventManager {
 
     @Test
     public void testCreateRoundRobinMatch() {
-        subject.addEvent(createEvent());
+        addEvent(createEvent());
         final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(challongeUrl);
 
         assertThat(roundRobinMatchList, hasSize(3));
@@ -331,7 +281,7 @@ public class TestEventManager {
 
         final ArgumentCaptor<ChallongeTournamentWrapper> argument = 
            ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
-        final SpringJpaEvent addedEvent = subject.addEvent(event);
+        final Event addedEvent = addEvent(event);
         verify(mockTournamentRepository).createTournament(argument.capture());
 
         assertThat(argument.getValue().getTournament().getName(), is(event.getName()));
