@@ -10,6 +10,9 @@ public class MatchSheetDto {
     String eventName;
     Integer matchId;
 
+    Integer player1Id;
+    Integer player2Id;
+
     Integer player1UsattNumber;
     Integer player2UsattNumber;
 

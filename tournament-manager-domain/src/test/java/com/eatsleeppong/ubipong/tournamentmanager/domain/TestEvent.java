@@ -152,9 +152,11 @@ public class TestEvent {
         final MatchSheet spongebobVsPatrickSheet = matchSheetList.get(0);
         assertThat(spongebobVsPatrickSheet.getEventName(), is(event.getName()));
         assertThat(spongebobVsPatrickSheet.getMatchId(), is(spongebobVsPatrick.getId()));
+        assertThat(spongebobVsPatrickSheet.getPlayer1Id(), is(spongebob.getId()));
         assertThat(spongebobVsPatrickSheet.getPlayer1UsattNumber(), is(spongebob.getUsattNumber()));
         assertThat(spongebobVsPatrickSheet.getPlayer1Name(), is(spongebob.getName()));
         assertThat(spongebobVsPatrickSheet.getPlayer1Seed(), is(0));
+        assertThat(spongebobVsPatrickSheet.getPlayer2Id(), is(patrick.getId()));
         assertThat(spongebobVsPatrickSheet.getPlayer2UsattNumber(), is(patrick.getUsattNumber()));
         assertThat(spongebobVsPatrickSheet.getPlayer2Name(), is(patrick.getName()));
         assertThat(spongebobVsPatrickSheet.getPlayer2Seed(), is(1));

@@ -13,18 +13,21 @@ import lombok.Value;
 @Value
 @Builder
 public class MatchSheet {
-    private String eventName;
-    private Integer matchId;
+    String eventName;
+    Integer matchId;
 
-    private Integer player1UsattNumber;
-    private Integer player2UsattNumber;
+    Integer player1Id;
+    Integer player2Id;
 
-    private String player1Name;
-    private String player2Name;
+    Integer player1UsattNumber;
+    Integer player2UsattNumber;
+
+    String player1Name;
+    String player2Name;
 
     /**
      * Seeding of the player within the event, starting with 0
      */
-    private Integer player1Seed;
-    private Integer player2Seed;
+    Integer player1Seed;
+    Integer player2Seed;
 }
