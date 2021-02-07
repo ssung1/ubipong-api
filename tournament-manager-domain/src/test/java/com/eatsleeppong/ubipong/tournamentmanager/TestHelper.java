@@ -102,7 +102,6 @@ public class TestHelper {
             .id(1000)
             .player1Id(SPONGEBOB_ID)
             .player2Id(PATRICK_ID)
-            .status(Match.STATUS_COMPLETE)
             .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
             .winnerId(PATRICK_ID)
             .gameList(List.of(
@@ -118,7 +117,6 @@ public class TestHelper {
             .id(1001)
             .player1Id(SPONGEBOB_ID)
             .player2Id(SQUIDWARD_ID)
-            .status(Match.STATUS_COMPLETE)
             .resultCode(Match.RESULT_CODE_WIN_BY_PLAYING)
             .winnerId(SPONGEBOB_ID)
             .gameList(List.of(

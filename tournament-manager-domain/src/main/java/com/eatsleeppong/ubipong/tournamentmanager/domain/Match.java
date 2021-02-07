@@ -14,8 +14,6 @@ import lombok.Builder.Default;
 @Builder
 @With
 public class Match {
-    public static final Integer STATUS_INCOMPLETE = 10;
-    public static final Integer STATUS_COMPLETE = 11;
 
     public static final Integer RESULT_CODE_WIN_BY_PLAYING = 10;
     public static final Integer RESULT_CODE_WIN_BY_DEFAULT = 11;
@@ -25,8 +23,7 @@ public class Match {
     private Integer id;
     // not used for now
     // private Integer eventId;
-    @Default
-    private Integer status = Match.STATUS_INCOMPLETE;
+
     private Integer player1Id;
     private Integer player2Id;
     /**
@@ -60,7 +57,7 @@ public class Match {
     }
 
     public boolean isResultValid() {
-        return STATUS_COMPLETE == status;
+        return winnerId != null || gameList.size() > 0;
     }
 
     public List<Integer> getScoreSummary() {
@@ -75,7 +72,6 @@ public class Match {
             .player1Id(player2Id)
             .player2Id(player1Id)
             .resultCode(resultCode)
-            .status(status)
             .winnerId(winnerId)
             .gameList(gameList.stream().map(Game::transpose).collect(Collectors.toUnmodifiableList()))
             .build();

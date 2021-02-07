@@ -189,12 +189,8 @@ public class EventManager {
 
             roundRobinMatch.setMatchId(m.getId());
 
-            if (Match.STATUS_COMPLETE.equals(m.getStatus())) {
-                roundRobinMatch.setStatus(Match.STATUS_COMPLETE);
-                // currently there is no way to record a defaulted match
+            if(m.isResultValid()) {
                 roundRobinMatch.setResultCode(Match.RESULT_CODE_WIN_BY_PLAYING);
-            } else {
-                roundRobinMatch.setStatus(Match.STATUS_INCOMPLETE);
             }
 
             roundRobinMatch.setPlayer1Id(player1Id);

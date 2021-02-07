@@ -82,7 +82,6 @@ public class TestEventManager {
         final Match m1 = Match.builder()
             .player1Id(spongebobId)
             .player2Id(patrickId)
-            .status(Match.STATUS_COMPLETE)
             .winnerId(spongebobId)
             .gameList(List.of(
                 gameBuilder.player1Score(11).player2Score(4).status(complete).build(),
@@ -93,7 +92,6 @@ public class TestEventManager {
         final Match m2 = Match.builder()
             .player1Id(patrickId)
             .player2Id(squidwardId)
-            .status(Match.STATUS_COMPLETE)
             .winnerId(squidwardId)
             .gameList(List.of(
                 gameBuilder.player1Score(9).player2Score(11).status(complete).build(),
@@ -105,7 +103,6 @@ public class TestEventManager {
         final Match m3 = Match.builder()
             .player1Id(spongebobId)
             .player2Id(squidwardId)
-            .status(Match.STATUS_INCOMPLETE)
             .build();
 
         return List.of(m1, m2, m3);

@@ -14,14 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MatchMapper {
-    private int mapParticipantMatchStateToMatchStatus(final String matchState) {
-        if (ChallongeMatch.STATE_COMPLETE.equalsIgnoreCase(matchState)) {
-            return Match.STATUS_COMPLETE;
-        } else {
-            return Match.STATUS_INCOMPLETE;
-        }
-    }
-
     private Integer mapParticipantMatchStateToMatchResultCode(final String matchState) {
         if (ChallongeMatch.STATE_COMPLETE.equalsIgnoreCase(matchState)) {
             return Match.RESULT_CODE_WIN_BY_PLAYING;
@@ -33,7 +25,6 @@ public class MatchMapper {
     public Match mapChallongeMatchToMatch(ChallongeMatch challongeMatch) {
         return Match.builder()
             .id(challongeMatch.getId())
-            .status(mapParticipantMatchStateToMatchStatus(challongeMatch.getState()))
             .player1Id(challongeMatch.getPlayer1Id())
             .player2Id(challongeMatch.getPlayer2Id())
             .winnerId(challongeMatch.getWinnerId())

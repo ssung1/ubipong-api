@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
@@ -22,17 +23,24 @@ public class TestMatch {
         .build();
 
     @Test
-    @DisplayName("should flag the result as invalid if match is not complete")
-    public void testResultInvalidIfMatchIncomplete() {
-        final Match m = match.withStatus(Match.STATUS_INCOMPLETE);
+    @DisplayName("should flag the result as invalid if match has no winners and no games played")
+    public void testResultInvalidIfMatchHasNoWinnerAndNoGames() {
+        final Match m = match.withWinnerId(null).withGameList(Collections.emptyList());
         assertThat(m.isResultValid(), is(false));
     }
 
     @Test
-    @DisplayName("should flag the result as valid if match is complete")
-    public void testResultValidIfMatchComplete() {
-        final Match m = match.withStatus(Match.STATUS_COMPLETE);
+    @DisplayName("should flag the result as invalid if match has winner but no games")
+    public void testResultValidIfMatchHasWinnerButNoGames() {
+        final Match m = match.withGameList(Collections.emptyList());
         assertThat(m.isResultValid(), is(true));
+    }
+
+    @Test
+    @DisplayName("should flag the result as invalid if match has no winner but has games")
+    public void testResultInvalidIfMatchHasNoWinnerButHasGames() {
+        final Match m = match.withWinnerId(null);
+        assertThat(m.isResultValid(), is(false));
     }
 
     @Test
@@ -99,15 +107,6 @@ public class TestMatch {
     @DisplayName("should return whether player1 is the winner: false")
     public void testIsWinForPlayer1False() {
         assertThat(TestHelper.createMatch1().isWinForPlayer1(), is(false));
-    }
-
-    @Test
-    @DisplayName("should return whether player1 is the winner: error because match is not done")
-    public void testIsWinForPlayer1MatchIncomplete() {
-        final Match m = TestHelper.createMatch1().withStatus(Match.STATUS_INCOMPLETE);
-        assertThrows(IllegalStateException.class, () -> {
-            m.isWinForPlayer1();
-        });
     }
 
     @Test

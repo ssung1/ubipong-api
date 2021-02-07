@@ -92,7 +92,7 @@ public class TestChallongeMatchRepository {
 
         assertThat(matchList, hasSize(3));
 
-        assertThat(matchList.get(0).getStatus(), is(Match.STATUS_COMPLETE));
+        assertThat(matchList.get(0).isResultValid(), is(true));
         assertThat(matchList.get(0).getPlayer1Id(), is(spongebobId));
         assertThat(matchList.get(0).getPlayer2Id(), is(patrickId));
         assertThat(matchList.get(0).getWinnerId(), is(spongebobId));
@@ -110,7 +110,7 @@ public class TestChallongeMatchRepository {
         assertThat(matchList.get(0).getGame(2).getStatus(), is(Game.STATUS_COMPLETE));
         assertThat(matchList.get(0).getGame(2).isWinForPlayer1(), is(true));
 
-        assertThat(matchList.get(1).getStatus(), is(Match.STATUS_COMPLETE));
+        assertThat(matchList.get(1).isResultValid(), is(true));
         assertThat(matchList.get(1).getPlayer1Id(), is(patrickId));
         assertThat(matchList.get(1).getPlayer2Id(), is(squidwardId));
         assertThat(matchList.get(1).getWinnerId(), is(squidwardId));
@@ -132,7 +132,7 @@ public class TestChallongeMatchRepository {
         assertThat(matchList.get(1).getGame(3).getStatus(), is(Game.STATUS_COMPLETE));
         assertThat(matchList.get(1).getGame(3).isWinForPlayer1(), is(false));
 
-        assertThat(matchList.get(2).getStatus(), is(Match.STATUS_INCOMPLETE));
+        assertThat(matchList.get(2).isResultValid(), is(false));
         assertThat(matchList.get(2).getPlayer1Id(), is(spongebobId));
         assertThat(matchList.get(2).getPlayer2Id(), is(squidwardId));
         assertThat(matchList.get(2).getWinnerId(), nullValue());

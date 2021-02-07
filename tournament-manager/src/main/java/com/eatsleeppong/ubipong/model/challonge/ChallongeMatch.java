@@ -17,6 +17,8 @@ public class ChallongeMatch {
     public static final String STATE_COMPLETE = "complete";
     // match has no result (yet)
     public static final String STATE_OPEN = "open";
+    // match cannot be played yet because the players are indetermined
+    public static final String STATE_PENDING = "pending";
 
     private Integer id;
     private Integer tournamentId;
