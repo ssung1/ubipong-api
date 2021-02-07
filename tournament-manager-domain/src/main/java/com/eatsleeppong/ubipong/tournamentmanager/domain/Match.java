@@ -60,6 +60,10 @@ public class Match {
         return winnerId != null || gameList.size() > 0;
     }
 
+    public boolean arePlayersValid() {
+        return player1Id != null && player2Id != null;
+    }
+
     public List<Integer> getScoreSummary() {
         return gameList.stream()
             .map(Game::getSimplifiedScore)

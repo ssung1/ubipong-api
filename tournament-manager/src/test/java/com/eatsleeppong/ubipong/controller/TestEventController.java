@@ -200,8 +200,8 @@ public class TestEventController {
     }
 
     @Test
-    @DisplayName("should be able to return list of matches for round robin")
-    public void testRoundRobinMatchList() throws Exception {
+    @DisplayName("should be able to return list of matche sheets for round robin")
+    public void testRoundRobinMatchSheetList() throws Exception {
         addEvent(TestHelper.createEventDto());
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
@@ -244,52 +244,34 @@ public class TestEventController {
 
     @Test
     @DisplayName("should be able to return match sheets, skipping matches whose players are not yet identified")
-    @Disabled("finidh later")
-    public void testRoundRobinMatchListSkipMatchesWithUnidentifiedPlayers() throws Exception {
-//        when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
-//            .thenReturn(List.of(spongebobVsPatrick, ));
-//
-//        addEvent(TestHelper.createEventDto());
-//        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-//            .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
-//            .build();
-//        Map<String, String> uriMap = Stream.of(new String[][] {
-//            { "challongeUrl", challongeUrl },
-//        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
-//
-//        mockMvc.perform(
-//            get(uriComponents.expand(uriMap).toUri())
-//                .accept(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$[0].player1Id").value(is(spongebob.getId())))
-//            .andExpect(jsonPath("$[0].player1Name").value(is(spongebob.getName())))
-//            .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
-//            .andExpect(jsonPath("$[0].player2Id").value(is(patrick.getId())))
-//            .andExpect(jsonPath("$[0].player2Name").value(is(patrick.getName())))
-//            .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
-//            .andExpect(jsonPath("$[0].matchId").value(is(spongebobVsPatrick.getId())))
-//            .andExpect(jsonPath("$[0].status").value(is(Match.STATUS_COMPLETE)))
-//            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
-//
-//            .andExpect(jsonPath("$[1].player1Id").value(is(spongebob.getId())))
-//            .andExpect(jsonPath("$[1].player1Name").value(is(spongebob.getName())))
-//            .andExpect(jsonPath("$[1].player1Seed").value(is("A")))
-//            .andExpect(jsonPath("$[1].player2Id").value(is(squidward.getId())))
-//            .andExpect(jsonPath("$[1].player2Name").value(is(squidward.getName())))
-//            .andExpect(jsonPath("$[1].player2Seed").value(is("C")))
-//            .andExpect(jsonPath("$[1].matchId").value(is(spongebobVsSquidward.getId())))
-//            .andExpect(jsonPath("$[1].status").value(is(Match.STATUS_COMPLETE)))
-//            .andExpect(jsonPath("$[1].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
-//
-//            .andExpect(jsonPath("$[2].player1Id").value(is(patrick.getId())))
-//            .andExpect(jsonPath("$[2].player1Name").value(is(patrick.getName())))
-//            .andExpect(jsonPath("$[2].player1Seed").value(is("B")))
-//            .andExpect(jsonPath("$[2].player2Id").value(is(squidward.getId())))
-//            .andExpect(jsonPath("$[2].player2Name").value(is(squidward.getName())))
-//            .andExpect(jsonPath("$[2].player2Seed").value(is("C")))
-//            .andExpect(jsonPath("$[2].matchId").value(is(spongebobVsSquidward.getId())))
-//            .andExpect(jsonPath("$[2].status").value(is(Match.STATUS_INCOMPLETE)))
-//            .andExpect(jsonPath("$[2].resultCode").value(nullValue()));
+    public void testRoundRobinMatchSheetListSkipMatchesWithUnidentifiedPlayers() throws Exception {
+        final Match matchWithNoPlayers = Match.builder()
+            .player1Id(null)
+            .player2Id(null)
+            .build();
+        when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
+            .thenReturn(List.of(spongebobVsPatrick, matchWithNoPlayers));
+
+        addEvent(TestHelper.createEventDto());
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
+            .build();
+        Map<String, String> uriMap = Stream.of(new String[][] {
+            { "challongeUrl", challongeUrl },
+        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+        mockMvc.perform(
+            get(uriComponents.expand(uriMap).toUri())
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].player1Id").value(is(spongebob.getId())))
+            .andExpect(jsonPath("$[0].player1Name").value(is(spongebob.getName())))
+            .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
+            .andExpect(jsonPath("$[0].player2Id").value(is(patrick.getId())))
+            .andExpect(jsonPath("$[0].player2Name").value(is(patrick.getName())))
+            .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
+            .andExpect(jsonPath("$[0].matchId").value(is(spongebobVsPatrick.getId())))
+            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)));
     }
 
     @Test

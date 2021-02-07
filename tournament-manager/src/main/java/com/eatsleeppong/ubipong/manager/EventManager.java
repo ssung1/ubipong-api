@@ -180,7 +180,7 @@ public class EventManager {
 
         final Map<Integer, Player> playerMap = event.getPlayerMap();
 
-        return matchList.stream().map(m -> {
+        return matchList.stream().filter(Match::arePlayersValid).map(m -> {
             final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();
             final Integer player1Id = m.getPlayer1Id();
             final Integer player2Id = m.getPlayer2Id();
