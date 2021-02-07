@@ -2,7 +2,6 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
 import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchSheetMapper;
