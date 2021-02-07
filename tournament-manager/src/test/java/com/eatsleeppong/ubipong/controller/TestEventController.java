@@ -214,37 +214,35 @@ public class TestEventController {
             get(uriComponents.expand(uriMap).toUri())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].player1Id").value(is(spongebob.getId())))
+            .andExpect(jsonPath("$[0].player1UsattNumber").value(is(spongebob.getUsattNumber())))
             .andExpect(jsonPath("$[0].player1Name").value(is(spongebob.getName())))
-            .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
-            .andExpect(jsonPath("$[0].player2Id").value(is(patrick.getId())))
+            .andExpect(jsonPath("$[0].player1SeedAsAlphabet").value(is("A")))
+            .andExpect(jsonPath("$[0].player2UsattNumber").value(is(patrick.getUsattNumber())))
             .andExpect(jsonPath("$[0].player2Name").value(is(patrick.getName())))
-            .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
+            .andExpect(jsonPath("$[0].player2SeedAsAlphabet").value(is("B")))
             .andExpect(jsonPath("$[0].matchId").value(is(spongebobVsPatrick.getId())))
-            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
 
-            .andExpect(jsonPath("$[1].player1Id").value(is(spongebob.getId())))
+            .andExpect(jsonPath("$[1].player1UsattNumber").value(is(spongebob.getUsattNumber())))
             .andExpect(jsonPath("$[1].player1Name").value(is(spongebob.getName())))
-            .andExpect(jsonPath("$[1].player1Seed").value(is("A")))
-            .andExpect(jsonPath("$[1].player2Id").value(is(squidward.getId())))
+            .andExpect(jsonPath("$[1].player1SeedAsAlphabet").value(is("A")))
+            .andExpect(jsonPath("$[1].player2UsattNumber").value(is(squidward.getUsattNumber())))
             .andExpect(jsonPath("$[1].player2Name").value(is(squidward.getName())))
-            .andExpect(jsonPath("$[1].player2Seed").value(is("C")))
+            .andExpect(jsonPath("$[1].player2SeedAsAlphabet").value(is("C")))
             .andExpect(jsonPath("$[1].matchId").value(is(spongebobVsSquidward.getId())))
-            .andExpect(jsonPath("$[1].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)))
 
-            .andExpect(jsonPath("$[2].player1Id").value(is(patrick.getId())))
+            .andExpect(jsonPath("$[2].player1UsattNumber").value(is(patrick.getUsattNumber())))
             .andExpect(jsonPath("$[2].player1Name").value(is(patrick.getName())))
-            .andExpect(jsonPath("$[2].player1Seed").value(is("B")))
-            .andExpect(jsonPath("$[2].player2Id").value(is(squidward.getId())))
+            .andExpect(jsonPath("$[2].player1SeedAsAlphabet").value(is("B")))
+            .andExpect(jsonPath("$[2].player2UsattNumber").value(is(squidward.getUsattNumber())))
             .andExpect(jsonPath("$[2].player2Name").value(is(squidward.getName())))
-            .andExpect(jsonPath("$[2].player2Seed").value(is("C")))
-            .andExpect(jsonPath("$[2].matchId").value(is(spongebobVsSquidward.getId())))
-            .andExpect(jsonPath("$[2].resultCode").value(nullValue()));
+            .andExpect(jsonPath("$[2].player2SeedAsAlphabet").value(is("C")))
+            .andExpect(jsonPath("$[2].matchId").value(is(spongebobVsSquidward.getId())));
     }
 
     @Test
     @DisplayName("should be able to return match sheets, skipping matches whose players are not yet identified")
     public void testRoundRobinMatchSheetListSkipMatchesWithUnidentifiedPlayers() throws Exception {
+        final EventDto event = TestHelper.createEventDto();
         final Match matchWithNoPlayers = Match.builder()
             .player1Id(null)
             .player2Id(null)
@@ -252,7 +250,7 @@ public class TestEventController {
         when(mockChallongeMatchRepository.findByChallongeUrl(challongeUrl))
             .thenReturn(List.of(spongebobVsPatrick, matchWithNoPlayers));
 
-        addEvent(TestHelper.createEventDto());
+        addEvent(event);
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path("/rest/v0/events/{challongeUrl}/roundRobinMatchList")
             .build();
@@ -264,14 +262,15 @@ public class TestEventController {
             get(uriComponents.expand(uriMap).toUri())
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].player1Id").value(is(spongebob.getId())))
-            .andExpect(jsonPath("$[0].player1Name").value(is(spongebob.getName())))
-            .andExpect(jsonPath("$[0].player1Seed").value(is("A")))
-            .andExpect(jsonPath("$[0].player2Id").value(is(patrick.getId())))
-            .andExpect(jsonPath("$[0].player2Name").value(is(patrick.getName())))
-            .andExpect(jsonPath("$[0].player2Seed").value(is("B")))
+            .andExpect(jsonPath("$[0].eventName").value(is(event.getName())))
             .andExpect(jsonPath("$[0].matchId").value(is(spongebobVsPatrick.getId())))
-            .andExpect(jsonPath("$[0].resultCode").value(is(Match.RESULT_CODE_WIN_BY_PLAYING)));
+            .andExpect(jsonPath("$[0].player1UsattNumber").value(is(spongebob.getUsattNumber())))
+            .andExpect(jsonPath("$[0].player1Name").value(is(spongebob.getName())))
+            .andExpect(jsonPath("$[0].player1SeedAsAlphabet").value(is("A")))
+            .andExpect(jsonPath("$[0].player2UsattNumber").value(is(patrick.getUsattNumber())))
+            .andExpect(jsonPath("$[0].player2Name").value(is(patrick.getName())))
+            .andExpect(jsonPath("$[0].player2SeedAsAlphabet").value(is("B")))
+            .andExpect(jsonPath("$[0].matchId").value(is(spongebobVsPatrick.getId())));
     }
 
     @Test

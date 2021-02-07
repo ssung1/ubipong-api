@@ -1,9 +1,11 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
 import com.eatsleeppong.ubipong.manager.EventManager;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchSheetMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
 import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
@@ -18,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
@@ -28,6 +31,7 @@ public class EventController {
     private final EventRepositoryImpl eventRepository;
     private final EventMapper eventMapper;
     private final MatchResultMapper matchResultMapper;
+    private final MatchSheetMapper matchSheetMapper;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +
@@ -70,10 +74,13 @@ public class EventController {
     @ApiOperation(value = "Round Robin Match List", notes = "This returns all the matches of a round robin " +
         "event.  It is useful for generating match sheets, but the UI is responsible for all formatting.")
     @GetMapping(value = "/{challongeUrl}/roundRobinMatchList")
-    public List<RoundRobinMatch> getRoundRobinMatchList(
+    public List<MatchSheetDto> getRoundRobinMatchList(
         @ApiParam(value = "The URL of the challonge tournament") @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventManager.createRoundRobinMatchList(challongeUrl);
+//        return eventManager.createRoundRobinMatchList(challongeUrl);
+        return eventRepository.getOneByChallongeUrl(challongeUrl).getMatchSheetList().stream()
+            .map(matchSheetMapper::mapMatchSheetToMatchSheetDto)
+            .collect(Collectors.toUnmodifiableList());
     }
 
     @ApiOperation(value = "Event", notes = "This creates an event both on the database and on challonge.com.  " +
