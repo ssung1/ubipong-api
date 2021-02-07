@@ -39,7 +39,8 @@ public class EventManager {
         RoundRobinCell cell = new RoundRobinCell();
         if (match.isResultValid()) {
             cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
-            cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
+            // cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
+            cell.setWinForPlayer1(match.isWinForPlayer1());
 
             cell.setGameList(match.getGameList().stream().map(g -> {
                 final Game game = new Game();
