@@ -128,4 +128,8 @@ public class Event {
             .map(this::mapMatchToMatchResult)
             .collect(Collectors.toUnmodifiableList());
     }
+
+    public List<MatchSheet> getMatchSheetList() {
+        return null;
+    }
 }

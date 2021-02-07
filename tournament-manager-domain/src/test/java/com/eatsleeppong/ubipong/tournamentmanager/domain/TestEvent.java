@@ -134,4 +134,28 @@ public class TestEvent {
         assertThat(spongebobVsSquidward.getLoserReferenceId(), is(String.valueOf(squidward.getUsattNumber())));
         assertThat(spongebobVsSquidward.getScoreSummary(), is(List.of(11, -5, 9, 9)));
     }
+
+    @Test
+    @DisplayName("should return a list of match sheets")
+    public void testGetMatchSheetList() {
+        // for this test, we cannot have any pending matches
+        when(event.getMatchRepository().findByChallongeUrl(event.getChallongeUrl()))
+            .thenReturn(List.of(
+                TestHelper.createMatch1(), TestHelper.createMatch2(),
+                TestHelper.createMatch2().withPlayer1Id(player1Id)
+            ));
+
+        final List<MatchSheet> matchSheetList = event.getMatchSheetList();
+        assertThat(matchSheetList, hasSize(2));
+
+        final MatchSheet spongebobVsPatrick = matchSheetList.get(0);
+        assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
+        assertThat(spongebobVsPatrick.getPlayer1Name(), is(spongebob.getName()));
+        assertThat(spongebobVsPatrick.getPlayer2Name(), is(patrick.getName()));
+
+        final MatchSheet spongebobVsSquidward = matchSheetList.get(1);
+        assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
+        assertThat(spongebobVsSquidward.getPlayer1Name(), is(spongebob.getName()));
+        assertThat(spongebobVsSquidward.getPlayer2Name(), is(squidward.getName()));
+    }
 }

@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 
+/**
+ * A tournament contains a number of events.  It is basic unit of rating; that is,
+ * a player's rating may change after a tournament but not during.
+ */
 @Value
 @Builder
 @With
