@@ -81,8 +81,8 @@ public class EventController {
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto addEvent(@RequestBody EventDto eventDto) {
-
         return eventMapper.mapEventToEventDto(
-            eventMapper.mapSpringJpaEventToEvent(eventManager.addEvent(eventDto)));
+            eventRepository.save(eventMapper.mapEventDtoToEvent(eventDto))
+        );
     }
 }

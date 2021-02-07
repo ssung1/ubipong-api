@@ -1,18 +1,15 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinMatch;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -175,12 +172,6 @@ public class EventManager {
         }
 
         return resultAsList.toArray(new RoundRobinCell[0][0]);
-    }
-
-    public SpringJpaEvent addEvent(EventDto eventDto) {
-        final Event eventToAdd = eventMapper.mapEventDtoToEvent(eventDto);
-        final Event addedEvent = eventRepository.save(eventToAdd);
-        return eventMapper.mapEventToSpringJpaEvent(addedEvent);
     }
 
     public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {
