@@ -129,7 +129,26 @@ public class Event {
             .collect(Collectors.toUnmodifiableList());
     }
 
+    private MatchSheet mapMatchToMatchSheet(final Match match) {
+        final Map<Integer, Player> playerMap = getPlayerMap();
+        final Player player1 = playerMap.get(match.getPlayer1Id());
+        final Player player2 = playerMap.get(match.getPlayer2Id());
+        return MatchSheet.builder()
+            .eventName(getName())
+            .matchId(match.getId())
+            .player1UsattNumber(player1.getUsattNumber())
+            .player1Name(player1.getName())
+            .player1Seed(player1.getEventSeed())
+            .player2UsattNumber(player2.getUsattNumber())
+            .player2Name(player2.getName())
+            .player2Seed(player2.getEventSeed())
+            .build();
+    }
+
     public List<MatchSheet> getMatchSheetList() {
-        return null;
+        return getMatchList().stream()
+            .filter(Match::arePlayersValid)
+            .map(this::mapMatchToMatchSheet)
+            .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -12,17 +12,19 @@ import lombok.Value;
  */
 @Value
 @Builder
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE) // replace with @Jacksonized after VSCode is fixed
-@AllArgsConstructor // remove after VSCode is fixed
 public class MatchSheet {
     private String eventName;
+    private Integer matchId;
+
+    private Integer player1UsattNumber;
+    private Integer player2UsattNumber;
 
     private String player1Name;
     private String player2Name;
 
     /**
-     * Seeding of the player within the event
+     * Seeding of the player within the event, starting with 0
      */
-    private String player1Seed;
-    private String player2Seed;
+    private Integer player1Seed;
+    private Integer player2Seed;
 }

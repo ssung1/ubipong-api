@@ -137,26 +137,26 @@ public class TestEvent {
 
     @Test
     @DisplayName("should return a list of match sheets")
-    @Disabled("finish later")
     public void testGetMatchSheetList() {
-        // for this test, we cannot have any pending matches
+        final Match spongebobVsPatrick = TestHelper.createMatch1();
+        final Match matchWithNoPlayers = Match.builder()
+            .player1Id(null)
+            .player2Id(null)
+            .build();
         when(event.getMatchRepository().findByChallongeUrl(event.getChallongeUrl()))
-            .thenReturn(List.of(
-//                TestHelper.createMatch1(), TestHelper.createMatch2(),
-//                TestHelper.createMatch2().withPlayer1Id(player1Id)
-            ));
+            .thenReturn(List.of(spongebobVsPatrick, matchWithNoPlayers));
 
-//        final List<MatchSheet> matchSheetList = event.getMatchSheetList();
-//        assertThat(matchSheetList, hasSize(2));
-//
-//        final MatchSheet spongebobVsPatrick = matchSheetList.get(0);
-//        assertThat(spongebobVsPatrick.getEventName(), is(event.getName()));
-//        assertThat(spongebobVsPatrick.getPlayer1Name(), is(spongebob.getName()));
-//        assertThat(spongebobVsPatrick.getPlayer2Name(), is(patrick.getName()));
-//
-//        final MatchSheet spongebobVsSquidward = matchSheetList.get(1);
-//        assertThat(spongebobVsSquidward.getEventName(), is(event.getName()));
-//        assertThat(spongebobVsSquidward.getPlayer1Name(), is(spongebob.getName()));
-//        assertThat(spongebobVsSquidward.getPlayer2Name(), is(squidward.getName()));
+        final List<MatchSheet> matchSheetList = event.getMatchSheetList();
+        assertThat(matchSheetList, hasSize(1));
+
+        final MatchSheet spongebobVsPatrickSheet = matchSheetList.get(0);
+        assertThat(spongebobVsPatrickSheet.getEventName(), is(event.getName()));
+        assertThat(spongebobVsPatrickSheet.getMatchId(), is(spongebobVsPatrick.getId()));
+        assertThat(spongebobVsPatrickSheet.getPlayer1UsattNumber(), is(spongebob.getUsattNumber()));
+        assertThat(spongebobVsPatrickSheet.getPlayer1Name(), is(spongebob.getName()));
+        assertThat(spongebobVsPatrickSheet.getPlayer1Seed(), is(0));
+        assertThat(spongebobVsPatrickSheet.getPlayer2UsattNumber(), is(patrick.getUsattNumber()));
+        assertThat(spongebobVsPatrickSheet.getPlayer2Name(), is(patrick.getName()));
+        assertThat(spongebobVsPatrickSheet.getPlayer2Seed(), is(1));
     }
 }
