@@ -173,36 +173,4 @@ public class EventManager {
 
         return resultAsList.toArray(new RoundRobinCell[0][0]);
     }
-
-    public List<RoundRobinMatch> createRoundRobinMatchList(final String challongeUrl) {
-        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        final List<Match> matchList = event.getMatchList();
-
-        final Map<Integer, Player> playerMap = event.getPlayerMap();
-
-        return matchList.stream().filter(Match::arePlayersValid).map(m -> {
-            final RoundRobinMatch roundRobinMatch = new RoundRobinMatch();
-            final Integer player1Id = m.getPlayer1Id();
-            final Integer player2Id = m.getPlayer2Id();
-            final Player player1 = playerMap.get(player1Id);
-            final Player player2 = playerMap.get(player2Id);
-
-            roundRobinMatch.setMatchId(m.getId());
-
-            if(m.isResultValid()) {
-                roundRobinMatch.setResultCode(Match.RESULT_CODE_WIN_BY_PLAYING);
-            }
-
-            roundRobinMatch.setPlayer1Id(player1Id);
-            roundRobinMatch.setPlayer2Id(player2Id);
-
-            roundRobinMatch.setPlayer1Name(player1.getName());
-            roundRobinMatch.setPlayer2Name(player2.getName());
-
-            roundRobinMatch.setPlayer1Seed(player1.getEventSeedAsAlphabet());
-            roundRobinMatch.setPlayer2Seed(player2.getEventSeedAsAlphabet());
-
-            return roundRobinMatch;
-        }).collect(Collectors.toList());
-    }
 }

@@ -249,29 +249,6 @@ public class TestEventManager {
     }
 
     @Test
-    public void testCreateRoundRobinMatch() {
-        addEvent(createEvent());
-        final List<RoundRobinMatch> roundRobinMatchList = subject.createRoundRobinMatchList(challongeUrl);
-
-        assertThat(roundRobinMatchList, hasSize(3));
-
-        assertThat(roundRobinMatchList.get(0).getPlayer1Seed(), is("A"));
-        assertThat(roundRobinMatchList.get(0).getPlayer1Name(), is(spongebobName));
-        assertThat(roundRobinMatchList.get(0).getPlayer2Seed(), is("B"));
-        assertThat(roundRobinMatchList.get(0).getPlayer2Name(), is(patrickName));
-
-        assertThat(roundRobinMatchList.get(1).getPlayer1Seed(), is("B"));
-        assertThat(roundRobinMatchList.get(1).getPlayer1Name(), is(patrickName));
-        assertThat(roundRobinMatchList.get(1).getPlayer2Seed(), is("C"));
-        assertThat(roundRobinMatchList.get(1).getPlayer2Name(), is(squidwardName));
-
-        assertThat(roundRobinMatchList.get(2).getPlayer1Seed(), is("A"));
-        assertThat(roundRobinMatchList.get(2).getPlayer1Name(), is(spongebobName));
-        assertThat(roundRobinMatchList.get(2).getPlayer2Seed(), is("C"));
-        assertThat(roundRobinMatchList.get(2).getPlayer2Name(), is(squidwardName));
-    }
-
-    @Test
     @DisplayName("add an event in our own database and a tournament on challonge.com")
     public void testAddEventLinkedToChallonge() {
         final EventDto event = createEvent();
