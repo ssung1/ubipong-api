@@ -8,6 +8,10 @@ import lombok.With;
 @Builder
 @With
 public class Organization {
+    String id;
+    /**
+     * unique, externally visible identifier
+     */
     String name;
     String logo;
 }

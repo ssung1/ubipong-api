@@ -8,6 +8,7 @@ import lombok.With;
 @Builder
 @With
 public class User {
+    String id;
     /**
      * unique, externally visible identifier
      */
