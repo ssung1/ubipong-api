@@ -1,7 +1,7 @@
 package com.eatsleeppong.ubipong;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
-import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

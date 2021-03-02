@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.Date;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 
