@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

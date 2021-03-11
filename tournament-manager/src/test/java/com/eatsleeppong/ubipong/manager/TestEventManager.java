@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.manager;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;

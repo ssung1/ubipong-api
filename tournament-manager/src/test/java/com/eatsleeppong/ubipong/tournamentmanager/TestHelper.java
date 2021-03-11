@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.List;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaEvent;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;

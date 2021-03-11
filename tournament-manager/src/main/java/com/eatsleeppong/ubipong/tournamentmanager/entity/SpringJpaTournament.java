@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.entity;
+package com.eatsleeppong.ubipong.tournamentmanager.entity;
 
 import lombok.*;
 

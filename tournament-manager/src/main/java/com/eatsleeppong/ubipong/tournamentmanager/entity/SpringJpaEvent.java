@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.entity;
+package com.eatsleeppong.ubipong.tournamentmanager.entity;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import lombok.Data;
@@ -10,7 +10,7 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import javax.persistence.*;
 
 @Data
-@Entity(name="event")
+@Entity(name = "event")
 // the events with a tournament must have unique names
 @Table(name = "event", indexes = {
     @Index(name = "tournament_id_name_idx", columnList = "tournamentId, name", unique = true)

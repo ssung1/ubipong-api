@@ -1,6 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
-import com.eatsleeppong.ubipong.entity.SpringJpaTournament;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaTournamentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
