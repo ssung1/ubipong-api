@@ -76,7 +76,6 @@ public class EventController {
     public List<MatchSheetDto> getRoundRobinMatchList(
         @ApiParam(value = "The URL of the challonge tournament") @PathVariable("challongeUrl") String challongeUrl
     ) {
-//        return eventManager.createRoundRobinMatchList(challongeUrl);
         return eventRepository.getOneByChallongeUrl(challongeUrl).getMatchSheetList().stream()
             .map(matchSheetMapper::mapMatchSheetToMatchSheetDto)
             .collect(Collectors.toUnmodifiableList());
