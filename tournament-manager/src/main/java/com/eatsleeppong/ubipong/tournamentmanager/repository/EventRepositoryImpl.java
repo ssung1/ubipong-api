@@ -49,10 +49,7 @@ public class EventRepositoryImpl implements EventRepository {
         return eventMapper.mapSpringJpaEventToEvent(savedSpringJpaEvent);
     }
 
-    @Override
-    public Event getOne(final Integer id) {
-        final SpringJpaEvent springJpaEvent = springJpaEventRepository.getOne(id);
-
+    private Event mapSpringJpaEventToEvent(final SpringJpaEvent springJpaEvent) {
         final ChallongeTournamentWrapper challongeTournamentWrapper =
             challongeTournamentRepository.getTournament(springJpaEvent.getChallongeUrl());
 
@@ -62,6 +59,13 @@ public class EventRepositoryImpl implements EventRepository {
         return eventMapper
             .mapSpringJpaEventToEvent(springJpaEvent)
             .withStatus(eventStatus);
+    }
+
+    @Override
+    public Event getOne(final Integer id) {
+        final SpringJpaEvent springJpaEvent = springJpaEventRepository.getOne(id);
+
+        return mapSpringJpaEventToEvent(springJpaEvent);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public List<Event> findByTournamentId(final Integer tournamentId) {
         return springJpaEventRepository.findByTournamentId(tournamentId).stream()
-            .map(eventMapper::mapSpringJpaEventToEvent)
+            .map(this::mapSpringJpaEventToEvent)
             .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -310,4 +310,20 @@ public class TestEventController {
             .andExpect(jsonPath("$[1].eventName").value(is(eventName)))
             .andExpect(jsonPath("$[1].resultString").value(is("11 -5 9 9")));
     }
+
+    @Test
+    @DisplayName("should find list of events of a given tournament ID")
+    public void testGetEventListByTournamentId() throws Exception {
+        final EventDto event = TestHelper.createEventDto();
+        final EventDto addedEvent = addEvent(event);
+
+        mockMvc.perform(
+            get("/rest/v0/events/search/find-by-tournament-id")
+                .queryParam("tournament-id", String.valueOf(addedEvent.getTournamentId()))
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("[0].id").value(is(addedEvent.getId())))
+            .andExpect(jsonPath("[0].name").value(is(eventName)))
+            .andExpect(jsonPath("[0].challongeUrl").value(is(challongeUrl)))
+            .andExpect(jsonPath("[0].status").value(is(EventStatusDto.STARTED.getValue())));
+    }
 }
