@@ -321,6 +321,7 @@ public class TestEventController {
             get("/rest/v0/events/search/find-by-tournament-id")
                 .queryParam("tournament-id", String.valueOf(addedEvent.getTournamentId()))
                 .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
             .andExpect(jsonPath("[0].id").value(is(addedEvent.getId())))
             .andExpect(jsonPath("[0].name").value(is(eventName)))
             .andExpect(jsonPath("[0].challongeUrl").value(is(challongeUrl)))

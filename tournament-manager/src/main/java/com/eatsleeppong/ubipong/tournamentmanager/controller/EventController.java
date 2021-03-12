@@ -93,7 +93,7 @@ public class EventController {
 
     @ApiOperation(value = "Event List", notes = "This returns a list of events of a given tournament ID.")
     @GetMapping(value = "/search/find-by-tournament-id")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public List<EventDto> findByTournamentId(@RequestParam("tournament-id") Integer tournamentId) {
         return eventRepository.findByTournamentId(tournamentId).stream()
             .map(eventMapper::mapEventToEventDto)
