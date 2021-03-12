@@ -95,6 +95,9 @@ public class TestTournamentController {
                 TestHelper.createPlayerPatrick(),
                 TestHelper.createPlayerSpongebob(),
                 TestHelper.createPlayerSquidward()));
+
+        when(mockChallongeTournamentRepository.getTournament(TestHelper.CHALLONGE_URL))
+            .thenReturn(TestHelper.createChallongeTournamentWrapper());
     }
 
     @Test
