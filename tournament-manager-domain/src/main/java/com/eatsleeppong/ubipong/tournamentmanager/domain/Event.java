@@ -1,5 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,11 @@ public class Event {
     private final MatchRepository matchRepository;
 
     Integer id;
+
+    /**
+     * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
+     */
+    Integer tournamentId;
 
     /**
      * naming scheme:  {orgName}_{yyyyMM}_{event}_{type}_{groupNumber}
@@ -76,10 +82,7 @@ public class Event {
     @Default
     EventStatus status = EventStatus.CREATED;
 
-    /**
-     * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
-     */
-    Integer tournamentId;
+    Instant startTime;
 
     public List<Player> getPlayerList() {
         final List<Player> playerListWithoutSeed = playerRepository.findByChallongeUrl(challongeUrl);

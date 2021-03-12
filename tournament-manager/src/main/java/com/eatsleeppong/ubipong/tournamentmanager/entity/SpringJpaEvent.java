@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.entity;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
@@ -31,6 +32,11 @@ public class SpringJpaEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
     private Integer id;
+
+    /**
+     * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
+     */
+    private Integer tournamentId;
 
     /**
      * naming scheme:  {orgName}_{yyyyMM}_{event}_{type}_{groupNumber}
@@ -64,10 +70,7 @@ public class SpringJpaEvent {
      */
     private String name;
 
-    /**
-     * References Tournament, (not ChallongeTournament, which is equivalent to Event in this application)
-     */
-    private Integer tournamentId;
+    private Date startTime;
 
     @Transient
     private ChallongeTournament challongeTournament;
