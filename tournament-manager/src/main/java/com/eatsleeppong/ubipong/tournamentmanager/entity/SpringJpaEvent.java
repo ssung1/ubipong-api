@@ -71,7 +71,4 @@ public class SpringJpaEvent {
     private String name;
 
     private Date startTime;
-
-    @Transient
-    private ChallongeTournament challongeTournament;
 }
