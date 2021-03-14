@@ -27,7 +27,7 @@
 
 ## VS Code ##
 /bin
-.vscode/settings.json
+/.vscode
 
 ## Lombok ##
 lombok.config
