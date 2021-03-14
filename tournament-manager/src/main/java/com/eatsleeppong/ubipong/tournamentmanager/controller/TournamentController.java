@@ -4,6 +4,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 
+import java.security.Principal;
+
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -39,7 +41,7 @@ public class TournamentController {
     @ApiOperation(value = "Tournament", notes = "Add a new tournament")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Tournament addTournament(@RequestBody Tournament tournament) {
+    public Tournament addTournament(@RequestBody Tournament tournament, Principal principal) {
         return tournamentRepository.save(tournament);
     }
 

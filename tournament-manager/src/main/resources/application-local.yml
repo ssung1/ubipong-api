@@ -3,13 +3,13 @@ spring:
   
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url:
+    url: jdbc:h2:mem:testdb
     username:
     password:
   
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     show-sql: true
   
   h2:
@@ -19,6 +19,14 @@ spring:
       # go to http://{host}/{path} to see the sql admin console
       path: /h2-console
 
+  security:
+    enabled: false
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "https://dev-66577045.okta.com/oauth2/default"
+          jwk-set-uri: "https://dev-66577045.okta.com/oauth2/default/v1/keys"
+          
 challonge:
   host: api.challonge.com
   api-key: this-is-the-api-key-from-challonge
