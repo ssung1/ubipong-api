@@ -114,6 +114,23 @@ public class TestTournamentController {
     }
 
     @Test
+    @DisplayName("should get a list of tournaments")
+    public void testGetTournamentList() throws Exception {
+        final Tournament tournament = addTournament(TestHelper.createTournament());
+
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path(tournamentContext)
+            .build();
+
+        mockMvc.perform(
+            get(uriComponents.toUri()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(is(tournament.getId())))
+            .andExpect(jsonPath("$[0].name").value(is(tournament.getName())))
+            .andExpect(jsonPath("$[0].tournamentDate").value(is(tournament.getTournamentDate().toString())));
+    }
+
+    @Test
     @DisplayName("should get a tournament by ID")
     public void testGetTournament() throws Exception {
         final Tournament tournament = addTournament(TestHelper.createTournament());

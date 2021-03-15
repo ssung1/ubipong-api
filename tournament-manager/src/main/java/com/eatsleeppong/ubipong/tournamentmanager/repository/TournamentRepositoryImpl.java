@@ -1,6 +1,10 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
@@ -31,5 +35,14 @@ public class TournamentRepositoryImpl implements TournamentRepository {
         final SpringJpaTournament addedSpringJpaTournament =
             springJpaTournamentRepository.save(springJpaTournamentToAdd);
         return tournamentMapper.mapSpringJpaTournamentToTournament(addedSpringJpaTournament);
+    }
+
+    @Override
+    public List<Tournament> findAll() {
+        final List<SpringJpaTournament> springJpaTournamentList =
+            springJpaTournamentRepository.findAll();
+        return springJpaTournamentList.stream()
+            .map(tournamentMapper::mapSpringJpaTournamentToTournament)
+            .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -5,6 +5,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 
 import java.security.Principal;
+import java.util.List;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,12 @@ public class TournamentController {
     @ResponseStatus(HttpStatus.CREATED)
     public Tournament addTournament(@RequestBody Tournament tournament, Principal principal) {
         return tournamentRepository.save(tournament);
+    }
+
+    @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")
+    @GetMapping()
+    public List<Tournament> getTournamentList(Principal principal) {
+        return tournamentRepository.findAll();
     }
 
     @ApiOperation(value = "Tournament", notes = "Get tournament details")
