@@ -1,19 +1,10 @@
-package com.eatsleeppong.ubipong.tournamentmanager;
+package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.List;
-
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 
 /**
  * Tournament Setup:

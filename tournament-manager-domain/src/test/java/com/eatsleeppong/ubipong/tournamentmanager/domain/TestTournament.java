@@ -1,7 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
-
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
