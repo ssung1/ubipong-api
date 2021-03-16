@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,11 +30,14 @@ import lombok.With;
 @AllArgsConstructor // remove after VSCode is fixed
 public class Tournament {
     @JsonIgnore
-    private final EventRepository eventRepository;
+    EventRepository eventRepository;
 
-    private final Integer id;
-    private final String name;
-    private final Instant tournamentDate;
+    Integer id;
+    String name;
+    Instant tournamentDate;
+
+    @JsonIgnore
+    Set<UserRole> userRoleSet;
 
     @JsonIgnore
     public TournamentResult getResult() {
