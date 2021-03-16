@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,10 @@ public class TestTournamentController {
     private final Player squidward = TestHelper.createPlayerSquidward();
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    // this is just a helper to set up tests
+    @Autowired
+    private TournamentRepositoryImpl tournamentRepositoryImpl;
 
     // this is just a helper to set up tests
     @Autowired
@@ -125,6 +130,30 @@ public class TestTournamentController {
         mockMvc.perform(
             get(uriComponents.toUri()))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(is(tournament.getId())))
+            .andExpect(jsonPath("$[0].name").value(is(tournament.getName())))
+            .andExpect(jsonPath("$[0].tournamentDate").value(is(tournament.getTournamentDate().toString())));
+    }
+
+    @Disabled
+    @Test
+    @DisplayName("should only get a list of tournaments belonging to the user")
+    public void testGetTournamentListOfUser() throws Exception {
+        final Tournament tournament = addTournament(TestHelper.createTournament());
+
+        // this one should not show up on tournamentList
+        final Tournament otherTournament = TestHelper.createTournament()
+            .withName("not " + tournament.getName());
+        tournamentRepositoryImpl.save(otherTournament);
+
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .path(tournamentContext)
+            .build();
+
+        mockMvc.perform(
+            get(uriComponents.toUri()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(hasSize(1)))
             .andExpect(jsonPath("$[0].id").value(is(tournament.getId())))
             .andExpect(jsonPath("$[0].name").value(is(tournament.getName())))
             .andExpect(jsonPath("$[0].tournamentDate").value(is(tournament.getTournamentDate().toString())));
