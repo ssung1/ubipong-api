@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,6 +46,8 @@ import static org.hamcrest.MatcherAssert.*;
 @WithMockUser
 public class TestTournamentController {
     private final String tournamentContext = "/rest/v0/tournaments";
+    // default user when using @WithMockUser
+    private final String userId = "user";
 
     private final Player spongebob = TestHelper.createPlayerSpongebob();
     private final Player patrick = TestHelper.createPlayerPatrick();

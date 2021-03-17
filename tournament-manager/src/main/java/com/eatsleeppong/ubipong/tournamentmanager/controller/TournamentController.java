@@ -1,11 +1,15 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
@@ -42,8 +46,16 @@ public class TournamentController {
     @ApiOperation(value = "Tournament", notes = "Add a new tournament")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Tournament addTournament(@RequestBody Tournament tournament, Principal principal) {
-        return tournamentRepository.save(tournament);
+    public Tournament addTournament(@RequestBody final Tournament tournament, final Principal principal) {
+        // later we need to build a proper user ID
+        String userId = "test1";
+        if (principal != null) {
+            userId = principal.getName();
+        }
+
+        final UserRole userRole = UserRole.builder().userId(userId).role(Role.TOURNAMENT_ADMIN).build();
+
+        return tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)));
     }
 
     @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")
