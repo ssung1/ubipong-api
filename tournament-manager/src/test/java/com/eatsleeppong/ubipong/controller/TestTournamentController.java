@@ -130,12 +130,18 @@ public class TestTournamentController {
             .path(tournamentContext)
             .build();
 
+        final String tournaments = "$._embedded.tournaments";
+        final String pager = "$.page";
         mockMvc.perform(
             get(uriComponents.toUri()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(is(tournament.getId())))
-            .andExpect(jsonPath("$[0].name").value(is(tournament.getName())))
-            .andExpect(jsonPath("$[0].tournamentDate").value(is(tournament.getTournamentDate().toString())));
+            .andExpect(jsonPath(tournaments + ".[0].id").value(is(tournament.getId())))
+            .andExpect(jsonPath(tournaments + ".[0].name").value(is(tournament.getName())))
+            .andExpect(jsonPath(tournaments + ".[0].tournamentDate").value(is(tournament.getTournamentDate().toString())))
+            .andExpect(jsonPath(pager + ".size").isNumber())
+            .andExpect(jsonPath(pager + ".totalElements").value(is(1)))
+            .andExpect(jsonPath(pager + ".totalPages").value(is(1)))
+            .andExpect(jsonPath(pager + ".number").value(is(0)));
     }
 
     @Disabled

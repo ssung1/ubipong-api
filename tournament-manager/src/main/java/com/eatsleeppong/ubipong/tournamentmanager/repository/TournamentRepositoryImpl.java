@@ -13,6 +13,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserRoleMapper;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -67,5 +69,13 @@ public class TournamentRepositoryImpl implements TournamentRepository {
         return springJpaTournamentList.stream()
             .map(tournamentMapper::mapSpringJpaTournamentToTournament)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public Page<Tournament> findAll(Pageable pageable) {
+        final Page<SpringJpaTournament> springJpaTournamentPage =
+            springJpaTournamentRepository.findAll(pageable);
+
+        return springJpaTournamentPage.map(tournamentMapper::mapSpringJpaTournamentToTournament);
     }
 }

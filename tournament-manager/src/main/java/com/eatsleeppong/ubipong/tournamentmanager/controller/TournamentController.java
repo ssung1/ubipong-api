@@ -15,6 +15,11 @@ import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,8 +65,9 @@ public class TournamentController {
 
     @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")
     @GetMapping()
-    public List<Tournament> getTournamentList(Principal principal) {
-        return tournamentRepository.findAll();
+    public PagedModel<EntityModel<Tournament>> getTournamentList(Pageable pageable,
+        PagedResourcesAssembler<Tournament> assembler) {
+        return assembler.toModel(tournamentRepository.findAll(pageable));
     }
 
     @ApiOperation(value = "Tournament", notes = "Get tournament details")
