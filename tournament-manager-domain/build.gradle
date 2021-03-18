@@ -41,8 +41,11 @@ dependencies {
     // swagger API documentation
     compileOnly 'io.springfox:springfox-boot-starter:3.0.0'
 
-    // spring stuff
+    // junit, mockito, and other testing needs
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // for pageable
+    implementation 'org.springframework.data:spring-data-commons'
 }
 
 test {
