@@ -18,6 +18,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.PlayerRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 
@@ -176,6 +178,19 @@ public class TestHelper {
         return UserRole.builder()
             .userId(TOURNAMENT_OWNER_ID)
             .role(Role.TOURNAMENT_ADMIN)
+            .build();
+    }
+
+    public static UserExternalReference createUserExternalReference() {
+        return UserExternalReference.builder()
+            .userReference(TOURNAMENT_OWNER_ID + "-external")
+            .build();
+    }
+
+    public static User createUser() {
+        return User.builder()
+            .id(TOURNAMENT_OWNER_ID)
+            .externalReference(createUserExternalReference())
             .build();
     }
 }

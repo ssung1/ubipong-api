@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 @Entity(name = "user")
 @Table(name = "user", indexes = {
-    @Index(name = "email_idx", columnList = "email", unique = true)
+    @Index(name = "external_reference_idx", columnList = "externalReference", unique = true)
 })
 public class SpringJpaUser {
     @Id
     private String id;
-    private String email;
+    private String externalReference;
 }
