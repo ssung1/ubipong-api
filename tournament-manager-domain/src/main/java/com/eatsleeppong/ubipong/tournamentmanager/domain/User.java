@@ -12,5 +12,5 @@ public class User {
     /**
      * unique, externally visible identifier
      */
-    String email;
+    UserExternalReference externalReference;
 }

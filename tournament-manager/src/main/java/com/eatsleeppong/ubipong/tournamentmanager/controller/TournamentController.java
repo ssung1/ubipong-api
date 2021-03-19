@@ -6,6 +6,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class TournamentController {
     private final TournamentRepository tournamentRepository;
     private final TournamentResultMapper tournamentResultMapper;
+    private final UserMapper userMapper;
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
@@ -51,13 +54,9 @@ public class TournamentController {
     @ApiOperation(value = "Tournament", notes = "Add a new tournament")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Tournament addTournament(@RequestBody final Tournament tournament, final Principal principal) {
+    public Tournament addTournament(@RequestBody final Tournament tournament) {
         // later we need to build a proper user ID
         String userId = "test1";
-        if (principal != null) {
-            userId = principal.getName();
-        }
-
         final UserRole userRole = UserRole.builder().userId(userId).role(Role.TOURNAMENT_ADMIN).build();
 
         return tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)));
