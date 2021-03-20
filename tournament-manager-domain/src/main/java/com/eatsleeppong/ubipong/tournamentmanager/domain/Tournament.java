@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
@@ -33,6 +35,7 @@ public class Tournament {
     EventRepository eventRepository;
 
     Integer id;
+    @Size(max = 60)
     String name;
     Instant tournamentDate;
 

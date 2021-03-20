@@ -14,6 +14,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

@@ -46,6 +46,9 @@ dependencies {
 
     // for pageable
     implementation 'org.springframework.data:spring-data-commons'
+
+    // for validation annotations
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 test {
