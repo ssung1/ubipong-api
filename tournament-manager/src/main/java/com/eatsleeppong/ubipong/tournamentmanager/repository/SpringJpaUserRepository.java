@@ -9,6 +9,6 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface SpringJpaUserRepository extends JpaRepository<SpringJpaUser, String> {
-    SpringJpaUser findByExternalReference(@Param("externalReference") String externalReference);
+    List<SpringJpaUser> findByExternalReference(@Param("externalReference") String externalReference);
 }
 

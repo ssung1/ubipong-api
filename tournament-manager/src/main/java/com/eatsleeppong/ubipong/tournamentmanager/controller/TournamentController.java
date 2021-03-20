@@ -4,6 +4,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
@@ -32,6 +34,7 @@ public class TournamentController {
     private final TournamentRepository tournamentRepository;
     private final TournamentResultMapper tournamentResultMapper;
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
@@ -55,9 +58,17 @@ public class TournamentController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Tournament addTournament(@RequestBody final Tournament tournament) {
-        // later we need to build a proper user ID
-        String userId = "test1";
-        final UserRole userRole = UserRole.builder().userId(userId).role(Role.TOURNAMENT_ADMIN).build();
+        final UserExternalReference externalReference = userMapper.mapAuthenticationToExternalReference(
+            SecurityContextHolder.getContext().getAuthentication());
+        final List<User> userList = userRepository.findByExternalReference(externalReference);
+        User user;
+        if (userList.isEmpty()) {
+            user = userMapper.mapExternalReferenceToUser(externalReference);
+            userRepository.save(user);
+        } else {
+            user = userList.get(0);
+        }
+        final UserRole userRole = UserRole.builder().userId(user.getId()).role(Role.TOURNAMENT_ADMIN).build();
 
         return tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)));
     }

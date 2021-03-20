@@ -9,6 +9,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUserTournamentRole;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 
 import org.junit.jupiter.api.DisplayName;
@@ -50,9 +51,11 @@ public class TestUserRepositoryImpl {
     public void testGetOneByExternalReference() {
         final User addedUser = addUser(TestHelper.createUser());
 
-        final User user = userRepository.getOneByExternalReference(addedUser.getExternalReference());
+        final List<User> userList = userRepository.findByExternalReference(addedUser.getExternalReference());
 
-        assertThat(user, notNullValue());
+        assertThat(userList, notNullValue());
+        assertThat(userList, hasSize(1));
+        final User user = userList.get(0);
         assertThat(user.getId(), is(addedUser.getId()));
     }
 }
