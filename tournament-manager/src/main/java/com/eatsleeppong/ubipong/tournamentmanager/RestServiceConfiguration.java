@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong;
+package com.eatsleeppong.ubipong.tournamentmanager;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;

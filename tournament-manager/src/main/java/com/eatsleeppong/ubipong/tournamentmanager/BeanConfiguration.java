@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong;
+package com.eatsleeppong.ubipong.tournamentmanager;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
