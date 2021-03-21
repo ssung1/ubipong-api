@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.*;
 
 @SpringBootTest
-// only need to specify classes if enabling Swagger
-// @SpringBootTest(classes = UbipongApplication.class)
 @ActiveProfiles("test")
 public class TestUbipongApplication {
 	@Value("${challonge.api-key}")
