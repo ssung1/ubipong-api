@@ -202,6 +202,21 @@ public class TestEventController {
     }
 
     @Test
+    @DisplayName("should return client error if event name is too long")
+    public void testAddEventClientErrorEventNameTooLong() throws Exception {
+        final EventDto event = TestHelper.createEventDto().withName(
+            "long long long long long long long long long long long long long long long long long long long long ");
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(
+            post("/rest/v0/events")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(event)))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     @DisplayName("should be able to return list of matche sheets for round robin")
     public void testRoundRobinMatchSheetList() throws Exception {
         addEvent(TestHelper.createEventDto());

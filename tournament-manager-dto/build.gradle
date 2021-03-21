@@ -45,6 +45,9 @@ dependencies {
 
     // test stuff using spring to manage dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // for validation annotations
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 test {

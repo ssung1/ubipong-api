@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/rest/v0/events")
@@ -86,7 +88,7 @@ public class EventController {
         "This endpoint should be used instead of /crud/events.")
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDto addEvent(@RequestBody EventDto eventDto) {
+    public EventDto addEvent(@RequestBody @Valid final EventDto eventDto) {
         return eventMapper.mapEventToEventDto(
             eventRepository.save(eventMapper.mapEventDtoToEvent(eventDto))
         );
