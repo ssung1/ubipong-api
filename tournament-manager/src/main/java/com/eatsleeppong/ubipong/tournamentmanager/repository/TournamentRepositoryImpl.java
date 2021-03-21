@@ -59,7 +59,8 @@ public class TournamentRepositoryImpl implements TournamentRepository {
             })
             .forEach(userRole -> springJpaUserTournamentRoleRepository.save(userRole));
 
-        return tournamentMapper.mapSpringJpaTournamentToTournament(addedSpringJpaTournament);
+        return tournamentMapper.mapSpringJpaTournamentToTournament(addedSpringJpaTournament)
+            .withUserRoleSet(tournament.getUserRoleSet());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
@@ -124,6 +125,7 @@ public class TestTournamentController {
         assertThat(addedTournament.getId(), notNullValue());
         assertThat(addedTournament.getName(), is(tournamentToAdd.getName()));
         assertThat(addedTournament.getTournamentDate(), is(tournamentToAdd.getTournamentDate()));
+        assertThat(addedTournament.getUserRoleSet(), hasItem(hasProperty("role", is(Role.TOURNAMENT_ADMIN))));
     }
 
     @Test

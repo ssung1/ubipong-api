@@ -39,7 +39,7 @@ public class Tournament {
     String name;
     Instant tournamentDate;
 
-    @JsonIgnore
+    // input is ignored for now...
     Set<UserRole> userRoleSet;
 
     @JsonIgnore
