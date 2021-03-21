@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.manager;
+package com.eatsleeppong.ubipong.tournamentmanager.manager;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;

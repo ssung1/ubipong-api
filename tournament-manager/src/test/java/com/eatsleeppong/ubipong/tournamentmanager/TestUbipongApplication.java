@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong;
+package com.eatsleeppong.ubipong.tournamentmanager;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;

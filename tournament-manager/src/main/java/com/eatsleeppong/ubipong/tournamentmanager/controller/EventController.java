@@ -1,6 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
-import com.eatsleeppong.ubipong.manager.EventManager;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
@@ -10,6 +9,8 @@ import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
+import com.eatsleeppong.ubipong.tournamentmanager.manager.EventManager;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
