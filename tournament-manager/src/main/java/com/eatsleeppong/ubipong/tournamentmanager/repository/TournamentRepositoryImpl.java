@@ -31,14 +31,15 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     private final SpringJpaUserTournamentRoleRepository springJpaUserTournamentRoleRepository;
     private final UserRoleMapper userRoleMapper;
 
+    private Set<UserRole> findUserRoleByTournamentId(final Integer tournamentId) {
+        return springJpaUserTournamentRoleRepository.findByTournamentId(tournamentId).stream()
+            .map(userRoleMapper::mapSpringJpaUserTournamentRoleToUserRole)
+            .collect(Collectors.toUnmodifiableSet());
+    }
+
     @Override
     public Tournament getOne(final Integer id) {
-        Set<UserRole> userRoleSet =
-            springJpaUserTournamentRoleRepository.findAllByTournamentId(id).stream()
-            .map(springJpaUserTournamentRole -> {
-                return userRoleMapper.mapSpringJpaUserTournamentRoleToUserRole(springJpaUserTournamentRole);
-            })
-            .collect(Collectors.toUnmodifiableSet());
+        Set<UserRole> userRoleSet = findUserRoleByTournamentId(id);
 
         return tournamentMapper
             .mapSpringJpaTournamentToTournament(springJpaTournamentRepository.getOne(id))
@@ -64,35 +65,14 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     }
 
     @Override
-    public List<Tournament> findAll() {
-        final List<SpringJpaTournament> springJpaTournamentList =
-            springJpaTournamentRepository.findAll();
-        return springJpaTournamentList.stream()
-            .map(springJpaTournament -> {
-                Set<UserRole> userRoleSet =
-                    springJpaUserTournamentRoleRepository.findAllByTournamentId(springJpaTournament.getId()).stream()
-                    .map(userRoleMapper::mapSpringJpaUserTournamentRoleToUserRole)
-                    .collect(Collectors.toUnmodifiableSet());
-
-                return tournamentMapper.mapSpringJpaTournamentToTournament(springJpaTournament)
-                    .withUserRoleSet(userRoleSet);
-            })
-            .collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
     public Page<Tournament> findAll(Pageable pageable) {
         final Page<SpringJpaTournament> springJpaTournamentPage =
             springJpaTournamentRepository.findAll(pageable);
 
         return springJpaTournamentPage.map(springJpaTournament -> {
-                Set<UserRole> userRoleSet =
-                springJpaUserTournamentRoleRepository.findAllByTournamentId(springJpaTournament.getId()).stream()
-                .map(userRoleMapper::mapSpringJpaUserTournamentRoleToUserRole)
-                .collect(Collectors.toUnmodifiableSet());
-
+            Set<UserRole> userRoleSet = findUserRoleByTournamentId(springJpaTournament.getId());
             return tournamentMapper.mapSpringJpaTournamentToTournament(springJpaTournament)
                 .withUserRoleSet(userRoleSet);
-            });
+        });
     }
 }

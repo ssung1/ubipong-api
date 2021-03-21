@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 @RepositoryRestResource(collectionResourceRel = "userTournamentRolls", path = "userTournamentRoles")
 public interface SpringJpaUserTournamentRoleRepository extends JpaRepository<SpringJpaUserTournamentRole, Integer> {
-    Set<SpringJpaUserTournamentRole> findAllByUserId(@Param("userId") String userId);
-    Set<SpringJpaUserTournamentRole> findAllByTournamentId(@Param("tournamentId") Integer tournamentId);
+    Set<SpringJpaUserTournamentRole> findByUserId(@Param("userId") String userId);
+    Set<SpringJpaUserTournamentRole> findByTournamentId(@Param("tournamentId") Integer tournamentId);
 }

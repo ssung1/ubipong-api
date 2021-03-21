@@ -10,6 +10,5 @@ import org.springframework.data.domain.Pageable;
 public interface TournamentRepository {
     Tournament save(@Valid Tournament tournament);
     Tournament getOne(Integer id);
-    List<Tournament> findAll();
     Page<Tournament> findAll(Pageable pageable);
 }
