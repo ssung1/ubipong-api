@@ -145,6 +145,7 @@ public class TestTournamentController {
             .andExpect(jsonPath(tournaments + ".[0].id").value(is(tournament.getId())))
             .andExpect(jsonPath(tournaments + ".[0].name").value(is(tournament.getName())))
             .andExpect(jsonPath(tournaments + ".[0].tournamentDate").value(is(tournament.getTournamentDate().toString())))
+            .andExpect(jsonPath(tournaments + ".[0].userRoleSet[0].userId").value(is(TestHelper.TOURNAMENT_OWNER_ID)))
             .andExpect(jsonPath(pager + ".size").isNumber())
             .andExpect(jsonPath(pager + ".totalElements").value(is(1)))
             .andExpect(jsonPath(pager + ".totalPages").value(is(1)))
@@ -169,7 +170,8 @@ public class TestTournamentController {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(is(tournament.getId())))
             .andExpect(jsonPath("$.name").value(is(tournament.getName())))
-            .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())));
+            .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())))
+            .andExpect(jsonPath("$.userRoleSet[0].userId").value(is(TestHelper.TOURNAMENT_OWNER_ID)));
     }
 
     @Test
