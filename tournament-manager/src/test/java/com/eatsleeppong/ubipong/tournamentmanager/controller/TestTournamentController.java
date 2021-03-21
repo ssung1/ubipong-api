@@ -4,6 +4,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,17 +78,8 @@ public class TestTournamentController {
     private MockMvc mockMvc;
 
     private Tournament addTournament(final Tournament tournament) throws Exception {
-        final MvcResult mvcResult = mockMvc.perform(
-            post(tournamentContext)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(tournament.withId(null))))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(notNullValue()))
-            .andExpect(jsonPath("$.name").value(is(tournament.getName())))
-            .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())))
-            .andReturn();
-
-        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Tournament.class);
+        final Set<UserRole> userRoleSet = Collections.singleton(TestHelper.createUserRole());
+        return tournamentRepositoryImpl.save(tournament.withUserRoleSet(userRoleSet));
     }
 
     @BeforeEach
@@ -114,7 +107,19 @@ public class TestTournamentController {
     @DisplayName("should be able to add a tournament")
     public void testAddTournament() throws Exception {
         final Tournament tournamentToAdd = TestHelper.createTournament().withId(null);
-        final Tournament addedTournament = addTournament(tournamentToAdd);
+
+        final MvcResult mvcResult = mockMvc.perform(
+            post(tournamentContext)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tournamentToAdd)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").value(notNullValue()))
+            .andExpect(jsonPath("$.name").value(is(tournamentToAdd.getName())))
+            .andExpect(jsonPath("$.tournamentDate").value(is(tournamentToAdd.getTournamentDate().toString())))
+            .andReturn();
+
+        final Tournament addedTournament = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+            Tournament.class);
 
         assertThat(addedTournament.getId(), notNullValue());
         assertThat(addedTournament.getName(), is(tournamentToAdd.getName()));
