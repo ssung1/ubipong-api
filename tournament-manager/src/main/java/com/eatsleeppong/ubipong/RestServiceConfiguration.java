@@ -28,7 +28,7 @@ public class RestServiceConfiguration {
         return new RepositoryRestConfigurer() {
             @Override
             public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry corsRegistry) {
-                corsRegistry.addMapping("/**").allowedOrigins(allowedOrigins);
+                corsRegistry.addMapping("/**").allowedOriginPatterns(allowedOrigins);
                 config.setReturnBodyOnCreate(true)
                     .exposeIdsFor(
                         SpringJpaTournament.class,
@@ -47,7 +47,7 @@ public class RestServiceConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins(allowedOrigins);
+                registry.addMapping("/**").allowedOriginPatterns(allowedOrigins);
             }
         };
     }

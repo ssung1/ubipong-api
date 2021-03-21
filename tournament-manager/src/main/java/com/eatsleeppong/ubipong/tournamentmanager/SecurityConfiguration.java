@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -13,8 +14,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.cors(); // check cors configuration in RestServiceConfiguration first
         if (enabled) {
-            http.authorizeRequests().antMatchers("/**").authenticated();
+            http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/**").authenticated()
+                .anyRequest().permitAll();
         } else {
             http.authorizeRequests().antMatchers("/**").permitAll();
         }

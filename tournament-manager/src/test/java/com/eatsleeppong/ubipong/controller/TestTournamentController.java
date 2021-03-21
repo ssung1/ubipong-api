@@ -144,30 +144,6 @@ public class TestTournamentController {
             .andExpect(jsonPath(pager + ".number").value(is(0)));
     }
 
-    @Disabled
-    @Test
-    @DisplayName("should only get a list of tournaments belonging to the user")
-    public void testGetTournamentListOfUser() throws Exception {
-        final Tournament tournament = addTournament(TestHelper.createTournament());
-
-        // this one should not show up on tournamentList
-        final Tournament otherTournament = TestHelper.createTournament()
-            .withName("not " + tournament.getName());
-        tournamentRepositoryImpl.save(otherTournament);
-
-        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
-            .path(tournamentContext)
-            .build();
-
-        mockMvc.perform(
-            get(uriComponents.toUri()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").value(hasSize(1)))
-            .andExpect(jsonPath("$[0].id").value(is(tournament.getId())))
-            .andExpect(jsonPath("$[0].name").value(is(tournament.getName())))
-            .andExpect(jsonPath("$[0].tournamentDate").value(is(tournament.getTournamentDate().toString())));
-    }
-
     @Test
     @DisplayName("should get a tournament by ID")
     public void testGetTournament() throws Exception {
