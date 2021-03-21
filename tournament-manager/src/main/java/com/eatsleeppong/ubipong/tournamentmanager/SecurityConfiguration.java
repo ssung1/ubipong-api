@@ -13,8 +13,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.cors(); // check cors configuration in RestServiceConfiguration first
+        http.csrf().disable()
+            .cors() // check cors configuration in RestServiceConfiguration first
+            .and().oauth2ResourceServer().jwt(); // use oauth2 JWT authentication
         if (enabled) {
             http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/**").authenticated()
