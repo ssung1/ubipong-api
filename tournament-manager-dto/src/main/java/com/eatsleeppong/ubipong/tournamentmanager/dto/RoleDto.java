@@ -3,9 +3,9 @@ package com.eatsleeppong.ubipong.tournamentmanager.dto;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoleDto {
-    ORGANIZATION_ADMIN("organization admin"),
-    TOURNAMENT_ADMIN("tournament admin"),
-    SCORE_ENTRY("score entry"),
+    ORGANIZATION_ADMIN("organization_admin"),
+    TOURNAMENT_ADMIN("tournament_admin"),
+    SCORE_ENTRY("score_entry"),
     EVERYONE("everyone");
 
     private final String value;

@@ -66,6 +66,10 @@ public class TestTournamentController {
     @Autowired
     private EventRepositoryImpl eventRepositoryImpl;
 
+    // this is just a helper to set up tests
+    @Autowired
+    private UserRepositoryImpl userRepositoryImpl;
+
     @MockBean
     private ChallongeTournamentRepository mockChallongeTournamentRepository;
 
@@ -85,6 +89,7 @@ public class TestTournamentController {
 
     @BeforeEach
     public void setupObjectMapper() {
+        userRepositoryImpl.save(TestHelper.createUser());
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
@@ -171,7 +176,7 @@ public class TestTournamentController {
             .andExpect(jsonPath("$.id").value(is(tournament.getId())))
             .andExpect(jsonPath("$.name").value(is(tournament.getName())))
             .andExpect(jsonPath("$.tournamentDate").value(is(tournament.getTournamentDate().toString())))
-            .andExpect(jsonPath("$.userRoleSet[0].userId").value(is(TestHelper.TOURNAMENT_OWNER_ID)));
+            .andExpect(jsonPath("$.userRoleSet[0].user").value(is(TestHelper.TOURNAMENT_OWNER_REFERENCE)));
     }
 
     @Test

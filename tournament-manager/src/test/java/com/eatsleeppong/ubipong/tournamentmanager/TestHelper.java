@@ -51,6 +51,7 @@ public class TestHelper {
     public static final String CHALLONGE_URL = "esp_201903_pg_rr_1";
     public static final String EVENT_NAME = "Preliminary Group 1";
     public static final String TOURNAMENT_OWNER_ID = "gary";
+    public static final String TOURNAMENT_OWNER_REFERENCE = "gary@atlantic-ocean.gov";
 
     public static Tournament createTournament() {
         final EventRepository mockEventRepository = mock(EventRepository.class);
@@ -183,7 +184,7 @@ public class TestHelper {
 
     public static UserExternalReference createUserExternalReference() {
         return UserExternalReference.builder()
-            .userReference(TOURNAMENT_OWNER_ID + "-external")
+            .userReference(TOURNAMENT_OWNER_REFERENCE)
             .build();
     }
 

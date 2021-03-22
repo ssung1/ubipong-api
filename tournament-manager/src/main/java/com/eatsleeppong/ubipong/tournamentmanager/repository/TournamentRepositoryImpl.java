@@ -39,7 +39,7 @@ public class TournamentRepositoryImpl implements TournamentRepository {
 
     @Override
     public Tournament getOne(final Integer id) {
-        Set<UserRole> userRoleSet = findUserRoleByTournamentId(id);
+        final Set<UserRole> userRoleSet = findUserRoleByTournamentId(id);
 
         return tournamentMapper
             .mapSpringJpaTournamentToTournament(springJpaTournamentRepository.getOne(id))
@@ -70,7 +70,7 @@ public class TournamentRepositoryImpl implements TournamentRepository {
             springJpaTournamentRepository.findAll(pageable);
 
         return springJpaTournamentPage.map(springJpaTournament -> {
-            Set<UserRole> userRoleSet = findUserRoleByTournamentId(springJpaTournament.getId());
+            final Set<UserRole> userRoleSet = findUserRoleByTournamentId(springJpaTournament.getId());
             return tournamentMapper.mapSpringJpaTournamentToTournament(springJpaTournament)
                 .withUserRoleSet(userRoleSet);
         });

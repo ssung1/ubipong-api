@@ -7,6 +7,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.TournamentDto;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 
@@ -37,6 +39,7 @@ public class TournamentController {
     private final TournamentResultMapper tournamentResultMapper;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final TournamentMapper tournamentMapper;
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
@@ -84,9 +87,9 @@ public class TournamentController {
 
     @ApiOperation(value = "Tournament", notes = "Get tournament details")
     @GetMapping("/{id}")
-    public Tournament getTournament(
+    public TournamentDto getTournament(
         @PathVariable("id") final Integer id
     ) {
-        return tournamentRepository.getOne(id);
+        return tournamentMapper.mapTournamentToTournamentDto(tournamentRepository.getOne(id));
     }
 }
