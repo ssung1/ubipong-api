@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.RoleDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.UserRoleDto;
