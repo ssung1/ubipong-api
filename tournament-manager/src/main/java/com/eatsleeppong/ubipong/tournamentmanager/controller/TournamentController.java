@@ -62,7 +62,7 @@ public class TournamentController {
     @ApiOperation(value = "Tournament", notes = "Add a new tournament")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Tournament addTournament(@RequestBody final Tournament tournament) {
+    public TournamentDto addTournament(@RequestBody final Tournament tournament) {
         final UserExternalReference externalReference = userMapper.mapAuthenticationToExternalReference(
             SecurityContextHolder.getContext().getAuthentication());
         final List<User> userList = userRepository.findByExternalReference(externalReference);
@@ -75,7 +75,9 @@ public class TournamentController {
         }
         final UserRole userRole = UserRole.builder().userId(user.getId()).role(Role.TOURNAMENT_ADMIN).build();
 
-        return tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)));
+        return tournamentMapper.mapTournamentToTournamentDto(
+            tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)))
+        );
     }
 
     @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")

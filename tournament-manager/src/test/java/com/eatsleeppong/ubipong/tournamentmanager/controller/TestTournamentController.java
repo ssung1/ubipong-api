@@ -6,6 +6,8 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.RoleDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.TournamentDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -124,13 +126,13 @@ public class TestTournamentController {
             .andExpect(jsonPath("$.tournamentDate").value(is(tournamentToAdd.getTournamentDate().toString())))
             .andReturn();
 
-        final Tournament addedTournament = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-            Tournament.class);
+        final TournamentDto addedTournament = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+            TournamentDto.class);
 
         assertThat(addedTournament.getId(), notNullValue());
         assertThat(addedTournament.getName(), is(tournamentToAdd.getName()));
         assertThat(addedTournament.getTournamentDate(), is(tournamentToAdd.getTournamentDate()));
-        assertThat(addedTournament.getUserRoleSet(), hasItem(hasProperty("role", is(Role.TOURNAMENT_ADMIN))));
+        assertThat(addedTournament.getUserRoleSet(), hasItem(hasProperty("role", is(RoleDto.TOURNAMENT_ADMIN))));
     }
 
     @Test
