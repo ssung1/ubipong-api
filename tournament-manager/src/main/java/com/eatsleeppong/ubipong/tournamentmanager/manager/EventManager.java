@@ -17,29 +17,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EventManager {
     private final EventRepository eventRepository;
-    private final EventMapper eventMapper;
-
-    /**
-     * win or loss -- if player 1 wins, it is a "win"
-     * if player 1 loses, it is a "loss"
-     */
-    private boolean isWinForPlayer1(Integer player1, Integer player2,
-        Integer winner) {
-        if (player1.equals(winner)) {
-            return true;
-        }
-        return false;
-    }
 
     private RoundRobinCell createRoundRobinCell(Match match) {
-        Integer player1 = match.getPlayer1Id();
-        Integer player2 = match.getPlayer2Id();
-        Integer winner = match.getWinnerId();
-
         RoundRobinCell cell = new RoundRobinCell();
         if (match.isResultValid()) {
             cell.setType(RoundRobinCell.TYPE_MATCH_COMPLETE);
-            // cell.setWinForPlayer1(isWinForPlayer1(player1, player2, winner));
             cell.setWinForPlayer1(match.isWinForPlayer1());
 
             cell.setGameList(match.getGameList().stream().map(g -> {
