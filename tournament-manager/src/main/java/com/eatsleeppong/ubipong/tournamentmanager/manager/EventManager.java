@@ -36,37 +36,26 @@ public class EventManager {
                 return game;
             }).collect(Collectors.toUnmodifiableList()));
 
-            updateCellContent(cell);
+            cell.setContent(getCellContent(match));
         }
 
         return cell;
     }
 
-    private String convertToGameSummary(List<Game> gameList) {
-        return gameList.stream()
-                .map(g -> {
-                    if (g.isWinForPlayer1()) {
-                        return g.getPlayer2Score();
-                    } else {
-                        return -g.getPlayer1Score();
-                    }
-                })
-                .map(String::valueOf)
-                .collect(Collectors.joining(" "));
-    }
-
-    private void updateCellContent(RoundRobinCell cell) {
+    private String getCellContent(Match match) {
         StringBuilder content = new StringBuilder();
-        if (cell.isWinForPlayer1()) {
+        if (match.isWinForPlayer1()) {
             content.append("W");
         } else {
             content.append("L");
         }
 
         content.append(" ");
-        content.append(convertToGameSummary(cell.getGameList()));
+        content.append(match.getScoreSummary().stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(" ")));
 
-        cell.setContent(content.toString());
+        return content.toString();
     }
 
     /**
