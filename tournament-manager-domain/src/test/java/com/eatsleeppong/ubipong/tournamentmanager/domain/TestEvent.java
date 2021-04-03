@@ -159,4 +159,61 @@ public class TestEvent {
         assertThat(spongebobVsPatrickSheet.getPlayer2Name(), is(patrick.getName()));
         assertThat(spongebobVsPatrickSheet.getPlayer2Seed(), is(1));
     }
+
+    /**
+     * spongebob vs patrick: patrick wins 3 5 1 (ID: 100)
+     * spongebob vs squidward: spongebob wins 11 -5 9 9 (ID: 101)
+     * patrick vs squidward: not played yet (ID: 102)
+     * 
+     *                   A               B               C
+     * A spongbob                        L -3 -5 -1      W 11 -5 9 9
+     * B patrick         W 3 5 1
+     * C squidward       L -11 5 -9 -9   
+     */
+    @Test
+    @DisplayName("should return a grid of round robin matches")
+    public void testGetRoundRobinGrid() {
+        final List<List<RoundRobinCell>> roundRobinGrid = event.getRoundRobinGrid();
+
+        final List<RoundRobinCell> row0 = roundRobinGrid.get(0);
+        assertThat(row0.get(0).getType(), is(RoundRobinCellType.EMPTY));
+        assertThat(row0.get(1).getType(), is(RoundRobinCellType.EMPTY));
+        assertThat(row0.get(2).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row0.get(2).getContent(), is("A"));
+        assertThat(row0.get(3).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row0.get(3).getContent(), is("B"));
+        assertThat(row0.get(4).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row0.get(4).getContent(), is("C"));
+
+        final List<RoundRobinCell> row1 = roundRobinGrid.get(1);
+        assertThat(row1.get(0).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row1.get(0).getContent(), is("A"));
+        assertThat(row1.get(1).getType(), is(RoundRobinCellType.NAME));
+        assertThat(row1.get(1).getContent(), is("spongebob"));
+        assertThat(row1.get(2).getType(), is(RoundRobinCellType.EMPTY));
+        assertThat(row1.get(3).getType(), is(RoundRobinCellType.MATCH_COMPLETE));
+        assertThat(row1.get(3).getContent(), is("L -3 -5 -1"));
+        assertThat(row1.get(4).getType(), is(RoundRobinCellType.MATCH_COMPLETE));
+        assertThat(row1.get(4).getContent(), is("W 11 -5 9 9"));
+
+        final List<RoundRobinCell> row2 = roundRobinGrid.get(2);
+        assertThat(row2.get(0).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row2.get(0).getContent(), is("B"));
+        assertThat(row2.get(1).getType(), is(RoundRobinCellType.NAME));
+        assertThat(row2.get(1).getContent(), is("patrick"));
+        assertThat(row2.get(2).getType(), is(RoundRobinCellType.MATCH_COMPLETE));
+        assertThat(row2.get(2).getContent(), is("W 3 5 1"));
+        assertThat(row2.get(3).getType(), is(RoundRobinCellType.EMPTY));
+        assertThat(row2.get(4).getType(), is(RoundRobinCellType.MATCH_INCOMPLETE));
+
+        final List<RoundRobinCell> row3 = roundRobinGrid.get(3);
+        assertThat(row3.get(0).getType(), is(RoundRobinCellType.TEXT));
+        assertThat(row3.get(0).getContent(), is("C"));
+        assertThat(row3.get(1).getType(), is(RoundRobinCellType.NAME));
+        assertThat(row3.get(1).getContent(), is("squidward"));
+        assertThat(row3.get(2).getType(), is(RoundRobinCellType.MATCH_COMPLETE));
+        assertThat(row3.get(2).getContent(), is("L -11 5 -9 -9"));
+        assertThat(row3.get(3).getType(), is(RoundRobinCellType.MATCH_INCOMPLETE));
+        assertThat(row3.get(4).getType(), is(RoundRobinCellType.EMPTY));
+    }
 }

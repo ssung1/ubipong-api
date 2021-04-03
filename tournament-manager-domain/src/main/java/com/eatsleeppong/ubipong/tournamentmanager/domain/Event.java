@@ -1,10 +1,13 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -155,5 +158,70 @@ public class Event {
             .filter(Match::arePlayersValid)
             .map(this::mapMatchToMatchSheet)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    private Optional<Match> filterMatchByPlayerIdTransposed(List<Match> matchList, Integer player1Id,
+        Integer player2Id) {
+
+        return matchList.stream()
+            .filter(match -> 
+                player1Id.equals(match.getPlayer2Id()) && player2Id.equals(match.getPlayer1Id()))
+            .findFirst()
+            .map(Match::transpose);
+    }
+
+    private Optional<Match> filterMatchByPlayerId(List<Match> matchList, Integer player1Id, Integer player2Id) {
+        return matchList.stream()
+            .filter(match -> 
+                player1Id.equals(match.getPlayer1Id()) && player2Id.equals(match.getPlayer2Id()))
+            .findFirst()
+            .or(() -> this.filterMatchByPlayerIdTransposed(matchList, player1Id, player2Id));
+    }
+
+    public List<List<RoundRobinCell>> getRoundRobinGrid() {
+        final RoundRobinCell empty = RoundRobinCell.builder().type(RoundRobinCellType.EMPTY).build();
+        final List<List<RoundRobinCell>> roundRobinGrid = new ArrayList<>();
+        final List<Player> playerList = getPlayerList();
+        final List<Match> matchList = getMatchList();
+
+        // header or first row: blank, blank, A, B, C, ...
+        final List<RoundRobinCell> topHeader = new ArrayList<>();
+
+        topHeader.add(RoundRobinCell.builder().build());
+        topHeader.add(RoundRobinCell.builder().build());
+        topHeader.addAll(getPlayerList().stream()
+            .map(Player::getEventSeedAsAlphabet)
+            .map(seed -> RoundRobinCell.builder().type(RoundRobinCellType.TEXT).content(seed).build())
+            .collect(Collectors.toUnmodifiableList()));
+
+        // for each player: A, player, match, match, match, ...
+        //                  B, player, match, match, match, ...
+        //                  C, player, match, match, match, ...
+        //                  ...
+        final List<List<RoundRobinCell>> playerRowList = playerList.stream().map(player -> {
+            final List<RoundRobinCell> playerRow = new ArrayList<>();
+            playerRow.add(RoundRobinCell.builder()
+                .type(RoundRobinCellType.TEXT)
+                .content(player.getEventSeedAsAlphabet())
+                .build());
+            playerRow.add(RoundRobinCell.builder()
+                .type(RoundRobinCellType.NAME)
+                .content(player.getName())
+                .build());
+
+            final List<Player> opponentList = getPlayerList();
+            final List<RoundRobinCell> cells = opponentList.stream()
+                .map(opponent -> filterMatchByPlayerId(matchList, player.getId(), opponent.getId())
+                    .map(Match::toRoundRobinCell).orElse(empty))
+                .collect(Collectors.toUnmodifiableList());
+
+            playerRow.addAll(cells);
+            return Collections.unmodifiableList(playerRow);
+        })
+        .collect(Collectors.toUnmodifiableList());
+
+        roundRobinGrid.add(topHeader);
+        roundRobinGrid.addAll(playerRowList);
+        return roundRobinGrid;
     }
 }
