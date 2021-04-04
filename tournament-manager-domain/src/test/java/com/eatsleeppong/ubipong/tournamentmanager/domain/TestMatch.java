@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
 import java.util.List;
@@ -169,5 +170,32 @@ public class TestMatch {
     public void testGetNumberOfGamesWonByPlayer2() {
         assertThat(TestHelper.createMatch1().getGamesWonByPlayer2(), is(3L));
         assertThat(TestHelper.createMatch2().getGamesWonByPlayer2(), is(1L));
+    }
+
+    @Test
+    @DisplayName("should return a round robin cell representation of this match (match complete)")
+    public void testToRoundRobinCellMatchComplete() {
+        assertThat(TestHelper.createMatch1().toRoundRobinCell(), is(
+            RoundRobinCell.builder()
+                .type(RoundRobinCellType.MATCH_COMPLETE)
+                .content("L -3 -5 -1")
+                .winForPlayer1(false)
+                .winByDefault(false)
+                .gameList(TestHelper.createMatch1().getGameList())
+                .build()
+        ));
+    }
+
+    @Test
+    @DisplayName("should return a round robin cell representation of this match (match incomplete)")
+    public void testToRoundRobinCellMatchIncomplete() {
+        assertThat(TestHelper.createMatch3().toRoundRobinCell(), is(
+            RoundRobinCell.builder()
+                .type(RoundRobinCellType.MATCH_INCOMPLETE)
+                .winForPlayer1(false)
+                .winByDefault(false)
+                .gameList(TestHelper.createMatch3().getGameList())
+                .build()
+        ));
     }
 }

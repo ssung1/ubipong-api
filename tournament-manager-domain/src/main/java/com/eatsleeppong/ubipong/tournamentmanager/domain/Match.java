@@ -125,4 +125,32 @@ public class Match {
             return this;
         }
     }
+
+    public RoundRobinCellWinLossIndicator getRoundRobinWinLossIndicator() {
+        if (isWinForPlayer1()) {
+            return RoundRobinCellWinLossIndicator.WIN;
+        } else {
+            return RoundRobinCellWinLossIndicator.LOSS;
+        }
+    }
+
+    public RoundRobinCell toRoundRobinCell() {
+        if (isResultValid()) {
+            return RoundRobinCell.builder()
+                .type(RoundRobinCellType.MATCH_COMPLETE)
+                .content(getRoundRobinWinLossIndicator().getValue() + " " +
+                    getScoreSummary().stream().map(String::valueOf).collect(Collectors.joining(" ")))
+                .winForPlayer1(isWinForPlayer1())
+                .winByDefault(RESULT_CODE_WIN_BY_DEFAULT.equals(getResultCode()))
+                .gameList(getGameList())
+                .build();
+        } else {
+            return RoundRobinCell.builder()
+                .type(RoundRobinCellType.MATCH_INCOMPLETE)
+                .winForPlayer1(false)
+                .winByDefault(RESULT_CODE_WIN_BY_DEFAULT.equals(getResultCode()))
+                .gameList(getGameList())
+                .build();
+        }
+   }
 }
