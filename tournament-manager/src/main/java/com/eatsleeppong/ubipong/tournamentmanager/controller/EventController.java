@@ -1,9 +1,11 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellDto;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchSheetMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.mapper.RoundRobinCellMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
 import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
@@ -34,6 +36,7 @@ public class EventController {
     private final EventMapper eventMapper;
     private final MatchResultMapper matchResultMapper;
     private final MatchSheetMapper matchSheetMapper;
+    private final RoundRobinCellMapper roundRobinCellMapper;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +
@@ -46,10 +49,17 @@ public class EventController {
         "</pre>")
     @GetMapping(value = "/{challongeUrl}/roundRobinGrid",
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public RoundRobinCell[][] getRoundRobinGrid(
+    public RoundRobinCellDto[][] getRoundRobinGrid(
         @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventManager.createRoundRobinGrid(challongeUrl);
+        // return eventManager.createRoundRobinGrid(challongeUrl);
+        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
+        return event.getRoundRobinGrid().stream()
+            .map(row -> 
+                row.stream()
+                    .map(roundRobinCellMapper::mapRoundRobinCellToRoundRobinCellDto)
+                    .toArray(RoundRobinCellDto[]::new))
+            .toArray(RoundRobinCellDto[][]::new);
     }
 
     @ApiOperation(value = "Event", notes = "This is mainly used to get details that are only on challonge.com, " +

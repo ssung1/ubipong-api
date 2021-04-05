@@ -3,6 +3,8 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventStatusDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellDto;
+import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellTypeDto;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
@@ -114,31 +116,31 @@ public class TestEventController {
 
             // first row is header, with (blank) (blank) A B C ...
             .andExpect(jsonPath("[0]").isArray())
-            .andExpect(jsonPath("[0][0].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[0][0].type").value(is(RoundRobinCellTypeDto.EMPTY.getValue())))
             .andExpect(jsonPath("[0][0].content").value(is("")))
-            .andExpect(jsonPath("[0][1].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[0][1].type").value(is(RoundRobinCellTypeDto.EMPTY.getValue())))
             .andExpect(jsonPath("[0][1].content").value(is("")))
-            .andExpect(jsonPath("[0][2].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[0][2].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[0][2].content").value(is("A")))
-            .andExpect(jsonPath("[0][3].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[0][3].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[0][3].content").value(is("B")))
-            .andExpect(jsonPath("[0][4].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[0][4].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[0][4].content").value(is("C")))
 
             // second row is for scores, with A spongebob score score ...
             .andExpect(jsonPath("[1]").isArray())
-            .andExpect(jsonPath("[1][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[1][0].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[1][0].content").value(is("A")))
-            .andExpect(jsonPath("[1][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[1][1].type").value(is(RoundRobinCellTypeDto.NAME.getValue())))
             .andExpect(jsonPath("[1][1].content").value(is(spongebob.getName())))
-            .andExpect(jsonPath("[1][2].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[1][2].type").value(is(RoundRobinCellTypeDto.EMPTY.getValue())))
             .andExpect(jsonPath("[1][2].content").value(is("")))
-            .andExpect(jsonPath("[1][3].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
+            .andExpect(jsonPath("[1][3].type").value(is(RoundRobinCellTypeDto.MATCH_COMPLETE.getValue())))
             .andExpect(jsonPath("[1][3].content").value(is("L -3 -5 -1")))
             .andExpect(jsonPath("[1][3].gameList[0].player1Score").value(is(3)))
             .andExpect(jsonPath("[1][3].gameList[0].player2Score").value(is(11)))
             .andExpect(jsonPath("[1][3].gameList[0].winForPlayer1").value(is(false)))
-            .andExpect(jsonPath("[1][4].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
+            .andExpect(jsonPath("[1][4].type").value(is(RoundRobinCellTypeDto.MATCH_COMPLETE.getValue())))
             .andExpect(jsonPath("[1][4].content").value(is("W 11 -5 9 9")))
             .andExpect(jsonPath("[1][4].gameList[0].player1Score").value(is(13)))
             .andExpect(jsonPath("[1][4].gameList[0].player2Score").value(is(11)))
@@ -146,31 +148,31 @@ public class TestEventController {
     
             // third row is for scores, with B patrick score score ...
             .andExpect(jsonPath("[2]").isArray())
-            .andExpect(jsonPath("[2][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[2][0].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[2][0].content").value(is("B")))
-            .andExpect(jsonPath("[2][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[2][1].type").value(is(RoundRobinCellTypeDto.NAME.getValue())))
             .andExpect(jsonPath("[2][1].content").value(is(patrick.getName())))
-            .andExpect(jsonPath("[2][2].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
+            .andExpect(jsonPath("[2][2].type").value(is(RoundRobinCellTypeDto.MATCH_COMPLETE.getValue())))
             .andExpect(jsonPath("[2][2].content").value(is("W 3 5 1")))
             .andExpect(jsonPath("[2][2].gameList[0].player1Score").value(is(11)))
             .andExpect(jsonPath("[2][2].gameList[0].player2Score").value(is(3)))
             .andExpect(jsonPath("[2][2].gameList[0].winForPlayer1").value(is(true)))
-            .andExpect(jsonPath("[2][3].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[2][3].type").value(is(RoundRobinCellTypeDto.EMPTY.getValue())))
             .andExpect(jsonPath("[2][3].content").value(is("")))
-            .andExpect(jsonPath("[2][4].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[2][4].type").value(is(RoundRobinCellTypeDto.MATCH_INCOMPLETE.getValue())))
             .andExpect(jsonPath("[2][4].content").value(is("")))
 
             // fourth row is for scores, with C squidward score score ...
             .andExpect(jsonPath("[3]").isArray())
-            .andExpect(jsonPath("[3][0].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[3][0].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
             .andExpect(jsonPath("[3][0].content").value(is("C")))
-            .andExpect(jsonPath("[3][1].type").value(is(RoundRobinCell.TYPE_TEXT)))
+            .andExpect(jsonPath("[3][1].type").value(is(RoundRobinCellTypeDto.NAME.getValue())))
             .andExpect(jsonPath("[3][1].content").value(is(squidward.getName())))
-            .andExpect(jsonPath("[3][2].type").value(is(RoundRobinCell.TYPE_MATCH_COMPLETE)))
+            .andExpect(jsonPath("[3][2].type").value(is(RoundRobinCellTypeDto.MATCH_COMPLETE.getValue())))
             .andExpect(jsonPath("[3][2].content").value(is("L -11 5 -9 -9")))
-            .andExpect(jsonPath("[3][3].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[3][3].type").value(is(RoundRobinCellTypeDto.MATCH_INCOMPLETE.getValue())))
             .andExpect(jsonPath("[3][3].content").value(is("")))
-            .andExpect(jsonPath("[3][4].type").value(is(RoundRobinCell.TYPE_EMPTY)))
+            .andExpect(jsonPath("[3][4].type").value(is(RoundRobinCellTypeDto.EMPTY.getValue())))
             .andExpect(jsonPath("[3][4].content").value(is("")));
     }
 
