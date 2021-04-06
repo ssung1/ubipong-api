@@ -11,7 +11,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
