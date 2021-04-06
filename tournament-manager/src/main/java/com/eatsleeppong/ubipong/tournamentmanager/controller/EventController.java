@@ -10,8 +10,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl
 import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.response.RoundRobinCell;
-import com.eatsleeppong.ubipong.tournamentmanager.manager.EventManager;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +29,6 @@ import javax.validation.Valid;
 @RequestMapping("/rest/v0/events")
 public class EventController {
 
-    private final EventManager eventManager;
     private final EventRepositoryImpl eventRepository;
     private final EventMapper eventMapper;
     private final MatchResultMapper matchResultMapper;
@@ -52,7 +49,6 @@ public class EventController {
     public RoundRobinCellDto[][] getRoundRobinGrid(
         @PathVariable("challongeUrl") String challongeUrl
     ) {
-        // return eventManager.createRoundRobinGrid(challongeUrl);
         final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
         return event.getRoundRobinGrid().stream()
             .map(row -> 
