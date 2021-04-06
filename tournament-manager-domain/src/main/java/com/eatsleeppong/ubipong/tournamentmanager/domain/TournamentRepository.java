@@ -1,7 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;

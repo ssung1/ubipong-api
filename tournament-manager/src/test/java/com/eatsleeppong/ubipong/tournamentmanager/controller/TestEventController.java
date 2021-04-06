@@ -3,10 +3,8 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventStatusDto;
-import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellTypeDto;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
@@ -14,7 +12,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournament
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +34,6 @@ import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;

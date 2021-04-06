@@ -12,17 +12,13 @@ import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Set;
-
-import javax.validation.Valid;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;

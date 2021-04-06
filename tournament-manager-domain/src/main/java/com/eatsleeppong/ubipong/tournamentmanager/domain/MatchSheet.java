@@ -1,9 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 
 /**

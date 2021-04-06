@@ -1,13 +1,9 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
-import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
-import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

@@ -5,10 +5,8 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
@@ -25,11 +23,8 @@ import static org.hamcrest.Matchers.*;
 
 public class TestChallongeMatchRepository {
     private final Integer spongebobId = 1;
-    private final String spongebobName = "spongebob";
     private final Integer patrickId = 2;
-    private final String patrickName = "patrick";
     private final Integer squidwardId = 3;
-    private final String squidwardName = "squidward";
     private final String challongeUrl = "esp_201903_pg_rr_1";
     private final String host = "api.challonge.com";
     private final String apiKey = "this-is-api-key-from-challonge.com";

@@ -1,7 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;

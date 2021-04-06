@@ -3,7 +3,6 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.RoleDto;
@@ -14,7 +13,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;

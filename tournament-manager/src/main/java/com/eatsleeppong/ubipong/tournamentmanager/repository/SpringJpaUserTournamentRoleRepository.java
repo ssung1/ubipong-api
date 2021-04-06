@@ -1,6 +1,5 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
-import java.util.List;
 import java.util.Set;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUserTournamentRole;

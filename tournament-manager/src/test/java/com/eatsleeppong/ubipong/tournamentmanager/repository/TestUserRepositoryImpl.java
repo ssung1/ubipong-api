@@ -1,16 +1,9 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-
 import java.util.List;
 
-import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
-import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUserTournamentRole;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

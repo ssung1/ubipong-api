@@ -1,9 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
-import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUserTournamentRole;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,12 +17,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Value
 @AllArgsConstructor
-@Slf4j
 public class TournamentRepositoryImpl implements TournamentRepository {
     private final SpringJpaTournamentRepository springJpaTournamentRepository;
     private final TournamentMapper tournamentMapper;

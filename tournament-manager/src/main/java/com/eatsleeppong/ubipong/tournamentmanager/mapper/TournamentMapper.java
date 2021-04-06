@@ -1,21 +1,16 @@
 package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.TournamentDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.UserRoleDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,6 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
-import com.eatsleeppong.ubipong.tournamentmanager.repository.SpringJpaTournamentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +18,6 @@ import static org.hamcrest.Matchers.*;
 @Transactional
 @ActiveProfiles("test")
 class TestSpringJpaTournamentRepository {
-    private final Integer tournamentId = 1234987;
     private final String tournamentName = "Eat Sleep Pong Open 2019";
     private final String tournamentDate = "2019-03-15T00:00:00-05:00";
 

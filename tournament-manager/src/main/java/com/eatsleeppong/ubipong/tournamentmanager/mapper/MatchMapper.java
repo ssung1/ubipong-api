@@ -1,13 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.mapper;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
-import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 
 import org.springframework.stereotype.Component;

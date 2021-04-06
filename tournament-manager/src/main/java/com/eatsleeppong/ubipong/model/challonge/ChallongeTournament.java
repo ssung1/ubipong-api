@@ -2,8 +2,6 @@ package com.eatsleeppong.ubipong.model.challonge;
 
 import lombok.Data;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
