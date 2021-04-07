@@ -13,6 +13,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.eatsleeppong.ubipong.ratingmanager.dto.TournamentResultDto;
@@ -61,14 +62,10 @@ public class TournamentController {
     public TournamentDto addTournament(@RequestBody final TournamentDto tournamentDto) {
         final UserExternalReference externalReference = userMapper.mapAuthenticationToExternalReference(
             SecurityContextHolder.getContext().getAuthentication());
-        final List<User> userList = userRepository.findByExternalReference(externalReference);
-        User user;
-        if (userList.isEmpty()) {
-            user = userMapper.mapExternalReferenceToUser(externalReference);
-            userRepository.save(user);
-        } else {
-            user = userList.get(0);
-        }
+        final User user = userRepository.findByExternalReference(externalReference).orElseGet(() -> {
+            final User newUser = userMapper.mapExternalReferenceToUser(externalReference);
+            return userRepository.save(newUser);
+        });
         final UserRole userRole = UserRole.builder().userId(user.getId()).role(Role.TOURNAMENT_ADMIN).build();
 
         final Tournament tournament = tournamentMapper.mapTournamentDtoToTournament(tournamentDto);

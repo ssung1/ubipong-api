@@ -1,9 +1,9 @@
 package com.eatsleeppong.ubipong.tournamentmanager.domain;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
     User save(User user);
     User getOne(String userId);
-    List<User> findByExternalReference(UserExternalReference externalReference);
+    Optional<User> findByExternalReference(UserExternalReference externalReference);
 }

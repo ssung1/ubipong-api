@@ -1,9 +1,11 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUser;
 import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
@@ -29,9 +31,8 @@ public class UserRepositoryImpl implements UserRepository {
         return userMapper.mapSpringJpaUserToUser(springJpaUserRepository.getOne(userId));
     }
 
-    public List<User> findByExternalReference(UserExternalReference externalReference) {
-        return springJpaUserRepository.findByExternalReference(externalReference.getUserReference()).stream()
-            .map(userMapper::mapSpringJpaUserToUser)
-            .collect(Collectors.toUnmodifiableList());
+    public Optional<User> findByExternalReference(UserExternalReference externalReference) {
+        return springJpaUserRepository.findByExternalReference(externalReference.getUserReference())
+            .map(userMapper::mapSpringJpaUserToUser);
     }
 }

@@ -1,6 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,12 +46,10 @@ public class TestUserRepositoryImpl {
     public void testGetOneByExternalReference() {
         final User addedUser = addUser(TestHelper.createUser());
 
-        final List<User> userList = userRepository.findByExternalReference(addedUser.getExternalReference());
+        final Optional<User> user = userRepository.findByExternalReference(addedUser.getExternalReference());
 
-        assertThat(userList, notNullValue());
-        assertThat(userList, hasSize(1));
-        final User user = userList.get(0);
-        assertThat(user.getId(), is(addedUser.getId()));
+        assertTrue(user.isPresent());
+        assertThat(user.get().getId(), is(addedUser.getId()));
     }
 }
 
