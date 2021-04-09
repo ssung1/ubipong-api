@@ -4,7 +4,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchSheet;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("controllerMatchSheetMapper")
 public class MatchSheetMapper {
     private String mapNumberToAlphabet(final Integer number) {
         if (number > 26) {

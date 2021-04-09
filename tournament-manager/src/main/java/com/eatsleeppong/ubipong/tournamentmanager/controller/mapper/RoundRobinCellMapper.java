@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 
-@Component
+@Component("controllerRoundRobinCellMapper")
 @AllArgsConstructor
 public class RoundRobinCellMapper {
     private final GameMapper gameMapper;

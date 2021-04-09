@@ -11,7 +11,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUserTournament
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("controllerUserRoleMapper")
 public class UserRoleMapper {
     public UserRoleDto mapUserRoleAndUserToUserRoleDto(final UserRole userRole, final User user) {
         return UserRoleDto.builder()

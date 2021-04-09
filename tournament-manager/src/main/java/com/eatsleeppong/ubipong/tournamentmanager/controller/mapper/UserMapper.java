@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("controllerUserMapper")
 public class UserMapper {
     public static final UserExternalReference TEST_EXTERNAL_REFERENCE = UserExternalReference.builder()
         .userReference("testExternalReference")

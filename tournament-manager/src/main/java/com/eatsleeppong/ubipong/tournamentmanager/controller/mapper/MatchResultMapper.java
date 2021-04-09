@@ -8,7 +8,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchResult;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("controllerMatchResultMapper")
 public class MatchResultMapper {
     public MatchResultDto mapMatchResultToMatchResultDto(final MatchResult matchResult) {
         return MatchResultDto.builder()

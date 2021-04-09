@@ -5,7 +5,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("controllerGameMapper")
 public class GameMapper {
     public GameDto mapGameToGameDto(final Game game) {
         return GameDto.builder()

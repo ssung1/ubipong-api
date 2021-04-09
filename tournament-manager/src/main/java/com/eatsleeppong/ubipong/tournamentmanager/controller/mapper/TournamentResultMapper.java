@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 
-@Component
+@Component("controllerTournamentResultMapper")
 @AllArgsConstructor
 public class TournamentResultMapper {
 

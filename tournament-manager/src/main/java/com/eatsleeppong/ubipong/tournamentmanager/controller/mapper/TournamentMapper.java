@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 
-@Component
+@Component("controllerTournamentMapper")
 @AllArgsConstructor
 public class TournamentMapper {
     private final EventRepository eventRepository;
