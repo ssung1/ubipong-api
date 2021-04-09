@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.MatchMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 
@@ -13,7 +14,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

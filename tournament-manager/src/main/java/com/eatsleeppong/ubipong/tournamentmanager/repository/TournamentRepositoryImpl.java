@@ -5,11 +5,11 @@ import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.TournamentMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.UserRoleMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserRoleMapper;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

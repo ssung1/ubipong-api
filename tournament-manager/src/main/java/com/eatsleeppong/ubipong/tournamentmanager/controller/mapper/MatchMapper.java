@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.mapper;
+package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;

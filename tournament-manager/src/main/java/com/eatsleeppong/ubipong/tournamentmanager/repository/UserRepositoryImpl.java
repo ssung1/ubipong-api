@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUser;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.UserMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 

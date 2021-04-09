@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.PlayerMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.PlayerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

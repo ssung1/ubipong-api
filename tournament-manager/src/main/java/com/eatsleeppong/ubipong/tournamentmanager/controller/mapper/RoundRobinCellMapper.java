@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.mapper;
+package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
 
 import java.util.stream.Collectors;
 

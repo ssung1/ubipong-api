@@ -1,5 +1,8 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller;
 
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.TournamentMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.TournamentResultMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.UserMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
@@ -8,9 +11,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.TournamentDto;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentMapper;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.TournamentResultMapper;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.UserMapper;
 
 import java.util.List;
 import java.util.Optional;

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.UserMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 
 import org.junit.jupiter.api.DisplayName;

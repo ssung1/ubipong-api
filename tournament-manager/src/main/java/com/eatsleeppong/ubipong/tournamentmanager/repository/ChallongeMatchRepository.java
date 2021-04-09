@@ -1,9 +1,10 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
+import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.MatchMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
-import com.eatsleeppong.ubipong.tournamentmanager.mapper.MatchMapper;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

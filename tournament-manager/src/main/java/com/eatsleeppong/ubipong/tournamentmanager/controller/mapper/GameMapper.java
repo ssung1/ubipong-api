@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.mapper;
+package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
 
 import com.eatsleeppong.ubipong.tournamentmanager.dto.GameDto;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
