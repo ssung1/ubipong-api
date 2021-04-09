@@ -2,9 +2,9 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
-import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.MatchMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Game;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.mapper.MatchMapper;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;

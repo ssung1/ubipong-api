@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
+package com.eatsleeppong.ubipong.tournamentmanager.repository.mapper;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatch;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeMatchWrapper;
@@ -6,7 +6,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("repositoryMatchMapper")
 public class MatchMapper {
     private Integer mapParticipantMatchStateToMatchResultCode(final String matchState) {
         if (ChallongeMatch.STATE_COMPLETE.equalsIgnoreCase(matchState)) {
