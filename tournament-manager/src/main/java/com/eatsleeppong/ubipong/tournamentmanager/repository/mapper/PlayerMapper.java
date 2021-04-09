@@ -1,4 +1,4 @@
-package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
+package com.eatsleeppong.ubipong.tournamentmanager.repository.mapper;
 
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipant;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeParticipantWrapper;
@@ -6,7 +6,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Player;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("repositoryPlayerMapper")
 public class PlayerMapper {
     public Player mapChallongeParticipantWrapperToPlayer(ChallongeParticipantWrapper challongeParticipantWrapper) {
         return mapChallongeParticipantToPlayer(challongeParticipantWrapper.getParticipant());
