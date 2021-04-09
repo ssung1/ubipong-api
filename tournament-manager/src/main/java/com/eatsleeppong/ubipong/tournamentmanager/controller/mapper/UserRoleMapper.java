@@ -13,28 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserRoleMapper {
-    public SpringJpaUserTournamentRole mapUserRoleToSpringJpaUserTournamentRole(
-        final UserRole userRole, final Integer tournamentId) {
-
-        final SpringJpaUserTournamentRole springJpaUserTournamentRole = new SpringJpaUserTournamentRole();
-
-        springJpaUserTournamentRole.setId(UUID.randomUUID().toString());
-        springJpaUserTournamentRole.setTournamentId(tournamentId);
-        springJpaUserTournamentRole.setUserId(userRole.getUserId());
-        springJpaUserTournamentRole.setRole(userRole.getRole().name());
-
-        return springJpaUserTournamentRole;
-    }
-
-    public UserRole mapSpringJpaUserTournamentRoleToUserRole(
-        final SpringJpaUserTournamentRole springJpaUserTournamentRole) {
-        
-        return UserRole.builder()
-            .userId(springJpaUserTournamentRole.getUserId())
-            .role(Role.valueOf(springJpaUserTournamentRole.getRole()))
-            .build();
-    }
-
     public UserRoleDto mapUserRoleAndUserToUserRoleDto(final UserRole userRole, final User user) {
         return UserRoleDto.builder()
             .user(user.getExternalReference().getUserReference())
