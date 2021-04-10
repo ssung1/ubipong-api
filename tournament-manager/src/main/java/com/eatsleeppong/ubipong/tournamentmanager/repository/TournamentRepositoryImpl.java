@@ -5,7 +5,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaTournament;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.TournamentMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.mapper.TournamentMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.mapper.UserRoleMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
