@@ -8,7 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaEvent;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournament;
 import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
-import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.EventMapper;
+import com.eatsleeppong.ubipong.tournamentmanager.repository.mapper.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 
 import lombok.AllArgsConstructor;
