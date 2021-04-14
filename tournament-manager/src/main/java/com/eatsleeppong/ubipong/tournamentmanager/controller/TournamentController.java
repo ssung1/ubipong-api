@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/rest/v0/tournaments")
 public class TournamentController {
-    private final TournamentRepository tournamentRepository;
     private final TournamentResultMapper tournamentResultMapper;
     private final UserMapper userMapper;
     private final TournamentMapper tournamentMapper;
@@ -44,7 +43,7 @@ public class TournamentController {
     @GetMapping(value = "/{id}/result")
     public TournamentResultDto getResult(@PathVariable("id") final Integer id) {
         return tournamentResultMapper.mapTournamentResultToTournamentResultDto(
-            tournamentRepository.getOne(id).getResult()
+            useCaseTournamentHost.getTournamentResult(id)
         );
     }
 
@@ -53,7 +52,7 @@ public class TournamentController {
     @GetMapping(value = "/{id}/usatt-result", produces = "text/csv")
     public String getUsattResult(@PathVariable("id") final Integer id) {
         return tournamentResultMapper.mapTournamentResultToUsattCsv(
-            tournamentRepository.getOne(id).getResult()
+            useCaseTournamentHost.getTournamentResult(id)
         );
     }
 
@@ -74,7 +73,7 @@ public class TournamentController {
     @GetMapping()
     public PagedModel<EntityModel<Tournament>> getTournamentList(Pageable pageable,
         PagedResourcesAssembler<Tournament> assembler) {
-        return assembler.toModel(tournamentRepository.findAll(pageable));
+        return assembler.toModel(useCaseTournamentHost.getTournamentList(pageable));
     }
 
     @ApiOperation(value = "Tournament", notes = "Get tournament details")
@@ -82,6 +81,6 @@ public class TournamentController {
     public TournamentDto getTournament(
         @PathVariable("id") final Integer id
     ) {
-        return tournamentMapper.mapTournamentToTournamentDto(tournamentRepository.getOne(id));
+        return tournamentMapper.mapTournamentToTournamentDto(useCaseTournamentHost.getTournament(id));
     }
 }

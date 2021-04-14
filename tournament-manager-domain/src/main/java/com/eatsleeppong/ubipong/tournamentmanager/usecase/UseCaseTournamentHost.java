@@ -1,14 +1,18 @@
 package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 
+import java.util.List;
 import java.util.Set;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentResult;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -29,5 +33,17 @@ public class UseCaseTournamentHost {
             .build();
 
         return tournamentRepository.save(tournament.withUserRoleSet(Set.of(adminRole)));
+    }
+
+    public Page<Tournament> getTournamentList(Pageable pageable) {
+        return tournamentRepository.findAll(pageable);
+    }
+
+    public Tournament getTournament(final Integer id) {
+        return tournamentRepository.getOne(id);
+    }
+
+    public TournamentResult getTournamentResult(final Integer id) {
+        return getTournament(id).getResult();
     }
 }
