@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Entity(name = "userTournamentRole")
 @Table(name = "user_tournament_role", indexes = {
-    @Index(name = "user_id_tournament_id_role_idx", columnList = "userId, tournamentId, role", unique = true)
+    @Index(name = "user_id_tournament_id_idx", columnList = "userId, tournamentId", unique = true)
 })
 public class SpringJpaUserTournamentRole {
     @Id
