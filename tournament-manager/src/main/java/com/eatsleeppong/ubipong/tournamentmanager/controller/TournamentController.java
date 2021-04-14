@@ -11,6 +11,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRole;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.TournamentDto;
+import com.eatsleeppong.ubipong.tournamentmanager.usecase.UseCaseTournamentHost;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +36,8 @@ public class TournamentController {
     private final TournamentRepository tournamentRepository;
     private final TournamentResultMapper tournamentResultMapper;
     private final UserMapper userMapper;
-    private final UserRepository userRepository;
     private final TournamentMapper tournamentMapper;
+    private final UseCaseTournamentHost useCaseTournamentHost;
 
     @ApiOperation(value = "Tournament Result", notes = "This is used to generate the tournament report to the rating " +
         "authority after the tournament has ended.  It contains all the matches in the tournament in one big list.")
@@ -62,16 +63,12 @@ public class TournamentController {
     public TournamentDto addTournament(@RequestBody final TournamentDto tournamentDto) {
         final UserExternalReference externalReference = userMapper.mapAuthenticationToExternalReference(
             SecurityContextHolder.getContext().getAuthentication());
-        final User user = userRepository.findByExternalReference(externalReference).orElseGet(() -> {
-            final User newUser = userMapper.mapExternalReferenceToUser(externalReference);
-            return userRepository.save(newUser);
-        });
-        final UserRole userRole = UserRole.builder().userId(user.getId()).role(Role.TOURNAMENT_ADMIN).build();
+        final User user = userMapper.mapExternalReferenceToUser(externalReference);
 
         final Tournament tournament = tournamentMapper.mapTournamentDtoToTournament(tournamentDto);
+
         return tournamentMapper.mapTournamentToTournamentDto(
-            tournamentRepository.save(tournament.withUserRoleSet(Set.of(userRole)))
-        );
+            useCaseTournamentHost.addTournament(tournament, user));
     }
 
     @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")
