@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.User;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.UserExternalReference;
-import com.eatsleeppong.ubipong.tournamentmanager.entity.SpringJpaUser;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -37,6 +36,10 @@ public class UserMapper {
             .externalReference(externalReference)
             .id(UUID.randomUUID().toString())
             .build();
+    }
+
+    public User mapAuthenticationToUser(final Authentication authentication) {
+        return mapExternalReferenceToUser(mapAuthenticationToExternalReference(authentication));
     }
 }
 

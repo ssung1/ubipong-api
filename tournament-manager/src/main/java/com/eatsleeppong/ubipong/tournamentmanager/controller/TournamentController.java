@@ -61,9 +61,8 @@ public class TournamentController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TournamentDto addTournament(@RequestBody final TournamentDto tournamentDto) {
-        final UserExternalReference externalReference = userMapper.mapAuthenticationToExternalReference(
+        final User user = userMapper.mapAuthenticationToUser(
             SecurityContextHolder.getContext().getAuthentication());
-        final User user = userMapper.mapExternalReferenceToUser(externalReference);
 
         final Tournament tournament = tournamentMapper.mapTournamentDtoToTournament(tournamentDto);
 
