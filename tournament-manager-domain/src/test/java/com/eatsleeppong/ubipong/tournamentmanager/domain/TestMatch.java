@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Collections;
 import java.util.List;
 
+import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
+
 import static org.hamcrest.MatcherAssert.*;
 
 public class TestMatch {
