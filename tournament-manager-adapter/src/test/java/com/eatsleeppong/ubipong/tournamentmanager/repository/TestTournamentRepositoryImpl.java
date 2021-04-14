@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import java.util.Set;
 
+import com.eatsleeppong.ubipong.tournamentmanager.AdapterContextConfiguration;
 import com.eatsleeppong.ubipong.tournamentmanager.AdapterTestConfiguration;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
@@ -11,13 +12,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(classes = AdapterTestConfiguration.class)
+@SpringBootTest(classes = AdapterContextConfiguration.class)
+@Import(AdapterTestConfiguration.class)
 @ActiveProfiles("test")
 @Transactional
 public class TestTournamentRepositoryImpl {

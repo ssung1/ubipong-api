@@ -2,6 +2,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import org.junit.jupiter.api.Test;
 
+import com.eatsleeppong.ubipong.tournamentmanager.AdapterContextConfiguration;
 import com.eatsleeppong.ubipong.tournamentmanager.AdapterTestConfiguration;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
@@ -11,6 +12,7 @@ import com.eatsleeppong.ubipong.model.challonge.ChallongeTournamentWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +24,8 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 
-@SpringBootTest(classes = AdapterTestConfiguration.class)
+@SpringBootTest(classes = AdapterContextConfiguration.class)
+@Import(AdapterTestConfiguration.class)
 @ActiveProfiles("test")
 @Transactional
 public class TestEventRepositoryImpl {
