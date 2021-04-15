@@ -66,7 +66,7 @@ public class EventController {
     public EventDto getEvent(
         @PathVariable("id") Integer id
     ) {
-        return eventMapper.mapEventToEventDto(eventRepository.getOne(id));
+        return eventMapper.mapEventToEventDto(useCaseTournamentHost.getEvent(id));
     }
 
     @ApiOperation(value = "Event Result", notes = "This generates the results of an event.  It is like " +

@@ -131,6 +131,17 @@ public class TestUseCaseTournamentHost {
     }
 
     @Test
+    public void testGetEvent() {
+        final Integer id = 123;
+        final Event expectedEvent = TestHelper.createEvent();
+        when(mockEventRepository.getOne(id)).thenReturn(expectedEvent);
+
+        final Event event = useCaseTournamentHost.getEvent(id);
+
+        assertThat(event, is(expectedEvent));
+    }
+
+    @Test
     public void testGetRoundRobinGrid() {
         final String challongeUrl = TestHelper.CHALLONGE_URL;
         final Event event = TestHelper.createEvent();

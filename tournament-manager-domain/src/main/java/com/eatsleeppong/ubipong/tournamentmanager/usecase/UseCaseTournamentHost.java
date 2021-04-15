@@ -3,6 +3,7 @@ package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 import java.util.List;
 import java.util.Set;
 
+import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
@@ -48,6 +49,10 @@ public class UseCaseTournamentHost {
 
     public TournamentResult getTournamentResult(final Integer id) {
         return getTournament(id).getResult();
+    }
+
+    public Event getEvent(final Integer id) {
+        return eventRepository.getOne(id);
     }
 
     public List<List<RoundRobinCell>> getRoundRobinGrid(final String challongeUrl) {
