@@ -1,10 +1,13 @@
 package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchResult;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchSheet;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
@@ -57,5 +60,13 @@ public class UseCaseTournamentHost {
 
     public List<List<RoundRobinCell>> getRoundRobinGrid(final String challongeUrl) {
         return eventRepository.getOneByChallongeUrl(challongeUrl).getRoundRobinGrid();
+    }
+
+    public List<MatchResult> getMatchResultList(final String challongeUrl) {
+        return eventRepository.getOneByChallongeUrl(challongeUrl).getMatchResultList();
+    }
+
+    public List<MatchSheet> getRoundRobinMatchList(final String challongeUrl) {
+        return eventRepository.getOneByChallongeUrl(challongeUrl).getMatchSheetList();
     }
 }

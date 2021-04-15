@@ -74,11 +74,10 @@ public class EventController {
         "unsuitable for submission to the rating authority because rating must be calculated from all the" +
         "results in a tournament, together, in a single batch.")
     @GetMapping(value = "/{challongeUrl}/result")
-    public MatchResultDto[] getResult(@PathVariable("challongeUrl") String challongeUrl) {
-        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        return event.getMatchResultList().stream()
+    public List<MatchResultDto> getResult(@PathVariable("challongeUrl") String challongeUrl) {
+        return useCaseTournamentHost.getMatchResultList(challongeUrl).stream()
             .map(matchResultMapper::mapMatchResultToMatchResultDto)
-            .toArray(MatchResultDto[]::new);
+            .collect(Collectors.toUnmodifiableList());
     }
 
     @ApiOperation(value = "Round Robin Match List", notes = "This returns all the matches of a round robin " +
@@ -87,7 +86,7 @@ public class EventController {
     public List<MatchSheetDto> getRoundRobinMatchList(
         @ApiParam(value = "The URL of the challonge tournament") @PathVariable("challongeUrl") String challongeUrl
     ) {
-        return eventRepository.getOneByChallongeUrl(challongeUrl).getMatchSheetList().stream()
+        return useCaseTournamentHost.getRoundRobinMatchList(challongeUrl).stream()
             .map(matchSheetMapper::mapMatchSheetToMatchSheetDto)
             .collect(Collectors.toUnmodifiableList());
     }

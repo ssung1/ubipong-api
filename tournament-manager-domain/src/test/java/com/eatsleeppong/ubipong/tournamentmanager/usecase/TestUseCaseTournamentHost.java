@@ -3,6 +3,8 @@ package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchResult;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchSheet;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
@@ -150,5 +152,33 @@ public class TestUseCaseTournamentHost {
         final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(challongeUrl);
 
         assertThat(roundRobinGrid, is(event.getRoundRobinGrid()));
+    }
+
+    @Test
+    public void testGetMatchResultList() {
+        final String challongeUrl = TestHelper.CHALLONGE_URL;
+        final Event event = TestHelper.createEvent();
+        when(mockEventRepository.getOneByChallongeUrl(challongeUrl)).thenReturn(event);
+        // need to override event list because we cannot get result for incomplete
+        // matches
+        when(event.getMatchRepository().findByChallongeUrl(event.getChallongeUrl()))
+            .thenReturn(List.of(
+                TestHelper.createMatch1(), TestHelper.createMatch2()
+            ));
+
+        final List<MatchResult> matchResultList = useCaseTournamentHost.getMatchResultList(challongeUrl);
+
+        assertThat(matchResultList, is(event.getMatchResultList()));
+    }
+
+    @Test
+    public void testGetRoundRobinMatchList() {
+        final String challongeUrl = TestHelper.CHALLONGE_URL;
+        final Event event = TestHelper.createEvent();
+        when(mockEventRepository.getOneByChallongeUrl(challongeUrl)).thenReturn(event);
+
+        final List<MatchSheet> roundRobinGrid = useCaseTournamentHost.getRoundRobinMatchList(challongeUrl);
+
+        assertThat(roundRobinGrid, is(event.getMatchSheetList()));
     }
 }
