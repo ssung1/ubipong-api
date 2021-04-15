@@ -54,6 +54,10 @@ public class UseCaseTournamentHost {
         return getTournament(id).getResult();
     }
 
+    public Event addEvent(Event event) {
+        return eventRepository.save(event);
+    }
+
     public Event getEvent(final Integer id) {
         return eventRepository.getOne(id);
     }

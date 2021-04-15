@@ -97,7 +97,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto addEvent(@RequestBody @Valid final EventDto eventDto) {
         return eventMapper.mapEventToEventDto(
-            eventRepository.save(eventMapper.mapEventDtoToEvent(eventDto))
+            useCaseTournamentHost.addEvent(eventMapper.mapEventDtoToEvent(eventDto))
         );
     }
 

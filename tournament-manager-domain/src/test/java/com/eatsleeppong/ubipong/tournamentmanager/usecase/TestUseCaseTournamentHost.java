@@ -51,6 +51,8 @@ public class TestUseCaseTournamentHost {
             invocation.getArgument(0));
         when(mockUserRepository.save(any(User.class))).thenAnswer(invocation ->
             invocation.getArgument(0));
+        when(mockEventRepository.save(any(Event.class))).thenAnswer(invocation ->
+            invocation.getArgument(0));
     }
 
     @Test
@@ -130,6 +132,13 @@ public class TestUseCaseTournamentHost {
         final TournamentResult tournamentResult = useCaseTournamentHost.getTournamentResult(id);
 
         assertThat(tournamentResult, is(expectedTournament.getResult()));
+    }
+
+    @Test
+    public void testAddEvent() {
+        final Event event = TestHelper.createEvent();
+        final Event addedEvent = useCaseTournamentHost.addEvent(event);
+        assertThat(addedEvent, is(event));
     }
 
     @Test
