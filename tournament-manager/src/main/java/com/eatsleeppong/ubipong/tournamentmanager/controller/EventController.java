@@ -3,12 +3,14 @@ package com.eatsleeppong.ubipong.tournamentmanager.controller;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.MatchSheetDto;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.RoundRobinCellDto;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.EventRepositoryImpl;
+import com.eatsleeppong.ubipong.tournamentmanager.usecase.UseCaseTournamentHost;
 import com.eatsleeppong.ubipong.ratingmanager.dto.MatchResultDto;
 import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.EventMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.MatchResultMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.MatchSheetMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.controller.mapper.RoundRobinCellMapper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
 import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,7 @@ public class EventController {
     private final MatchResultMapper matchResultMapper;
     private final MatchSheetMapper matchSheetMapper;
     private final RoundRobinCellMapper roundRobinCellMapper;
+    private final UseCaseTournamentHost useCaseTournamentHost;
 
     @ApiOperation(value = "Round Robin Grid", notes = "This creates a grid of the contents that is useful for " +
         "displaying the draw and results of a round robin event. The response is a 2-dimensional JSON array.  " +
@@ -49,12 +52,11 @@ public class EventController {
     public RoundRobinCellDto[][] getRoundRobinGrid(
         @PathVariable("challongeUrl") String challongeUrl
     ) {
-        final Event event = eventRepository.getOneByChallongeUrl(challongeUrl);
-        return event.getRoundRobinGrid().stream()
-            .map(row -> 
-                row.stream()
-                    .map(roundRobinCellMapper::mapRoundRobinCellToRoundRobinCellDto)
-                    .toArray(RoundRobinCellDto[]::new))
+        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(challongeUrl);
+        return roundRobinGrid.stream()
+            .map(row -> row.stream()
+                .map(roundRobinCellMapper::mapRoundRobinCellToRoundRobinCellDto)
+                .toArray(RoundRobinCellDto[]::new))
             .toArray(RoundRobinCellDto[][]::new);
     }
 

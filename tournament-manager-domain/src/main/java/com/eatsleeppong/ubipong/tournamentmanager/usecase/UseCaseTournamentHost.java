@@ -3,7 +3,9 @@ package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 import java.util.List;
 import java.util.Set;
 
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentResult;
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 public class UseCaseTournamentHost {
     private final TournamentRepository tournamentRepository;
     private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
     public Tournament addTournament(final Tournament tournament, final User tournamentAdmin) {
         final User existingUser = userRepository.findByExternalReference(
@@ -45,5 +48,9 @@ public class UseCaseTournamentHost {
 
     public TournamentResult getTournamentResult(final Integer id) {
         return getTournament(id).getResult();
+    }
+
+    public List<List<RoundRobinCell>> getRoundRobinGrid(final String challongeUrl) {
+        return eventRepository.getOneByChallongeUrl(challongeUrl).getRoundRobinGrid();
     }
 }

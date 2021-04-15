@@ -2,7 +2,9 @@ package com.eatsleeppong.ubipong.tournamentmanager.usecase;
 
 import com.eatsleeppong.ubipong.tournamentmanager.TestHelper;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Role;
+import com.eatsleeppong.ubipong.tournamentmanager.domain.RoundRobinCell;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Tournament;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.TournamentResult;
@@ -13,6 +15,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.UserRoleRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +33,14 @@ import static org.hamcrest.MatcherAssert.*;
 
 public class TestUseCaseTournamentHost {
 
-    private TournamentRepository mockTournamentRepository = mock(TournamentRepository.class);
-    private UserRepository mockUserRepository = mock(UserRepository.class);
+    private final TournamentRepository mockTournamentRepository = mock(TournamentRepository.class);
+    private final UserRepository mockUserRepository = mock(UserRepository.class);
+    private final EventRepository mockEventRepository = mock(EventRepository.class);
 
     private UseCaseTournamentHost useCaseTournamentHost = new UseCaseTournamentHost(
         mockTournamentRepository,
-        mockUserRepository
+        mockUserRepository,
+        mockEventRepository
     );
 
     @BeforeEach
@@ -123,5 +128,16 @@ public class TestUseCaseTournamentHost {
         final TournamentResult tournamentResult = useCaseTournamentHost.getTournamentResult(id);
 
         assertThat(tournamentResult, is(expectedTournament.getResult()));
+    }
+
+    @Test
+    public void testGetRoundRobinGrid() {
+        final String challongeUrl = TestHelper.CHALLONGE_URL;
+        final Event event = TestHelper.createEvent();
+        when(mockEventRepository.getOneByChallongeUrl(challongeUrl)).thenReturn(event);
+
+        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(challongeUrl);
+
+        assertThat(roundRobinGrid, is(event.getRoundRobinGrid()));
     }
 }
