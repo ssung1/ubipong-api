@@ -31,7 +31,6 @@ import javax.validation.Valid;
 @RequestMapping("/rest/v0/events")
 public class EventController {
 
-    private final EventRepositoryImpl eventRepository;
     private final EventMapper eventMapper;
     private final MatchResultMapper matchResultMapper;
     private final MatchSheetMapper matchSheetMapper;
@@ -105,7 +104,7 @@ public class EventController {
     @GetMapping(value = "/search/find-by-tournament-id")
     @ResponseStatus(HttpStatus.OK)
     public List<EventDto> findByTournamentId(@RequestParam("tournament-id") Integer tournamentId) {
-        return eventRepository.findByTournamentId(tournamentId).stream()
+        return useCaseTournamentHost.findEventByTournamentId(tournamentId).stream()
             .map(eventMapper::mapEventToEventDto)
             .collect(Collectors.toUnmodifiableList());
     }

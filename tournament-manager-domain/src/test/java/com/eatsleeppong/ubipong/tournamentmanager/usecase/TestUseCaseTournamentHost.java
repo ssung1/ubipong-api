@@ -142,6 +142,16 @@ public class TestUseCaseTournamentHost {
     }
 
     @Test
+    public void testFindEventByTournamentId() {
+        final Integer tournamentId = 123;
+        final List<Event> expectedEventList = List.of(TestHelper.createEvent());
+
+        when(mockEventRepository.findByTournamentId(tournamentId)).thenReturn(expectedEventList);
+        final List<Event> eventList = useCaseTournamentHost.findEventByTournamentId(tournamentId);
+        assertThat(eventList, is(expectedEventList));
+    }
+
+    @Test
     public void testGetEvent() {
         final Integer id = 123;
         final Event expectedEvent = TestHelper.createEvent();

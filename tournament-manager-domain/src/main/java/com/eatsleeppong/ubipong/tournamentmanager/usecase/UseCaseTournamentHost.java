@@ -42,7 +42,7 @@ public class UseCaseTournamentHost {
         return tournamentRepository.save(tournament.withUserRoleSet(Set.of(adminRole)));
     }
 
-    public Page<Tournament> getTournamentList(Pageable pageable) {
+    public Page<Tournament> getTournamentList(final Pageable pageable) {
         return tournamentRepository.findAll(pageable);
     }
 
@@ -54,12 +54,16 @@ public class UseCaseTournamentHost {
         return getTournament(id).getResult();
     }
 
-    public Event addEvent(Event event) {
+    public Event addEvent(final Event event) {
         return eventRepository.save(event);
     }
 
     public Event getEvent(final Integer id) {
         return eventRepository.getOne(id);
+    }
+
+    public List<Event> findEventByTournamentId(final Integer tournamentId) {
+        return eventRepository.findByTournamentId(tournamentId);
     }
 
     public List<List<RoundRobinCell>> getRoundRobinGrid(final String challongeUrl) {
