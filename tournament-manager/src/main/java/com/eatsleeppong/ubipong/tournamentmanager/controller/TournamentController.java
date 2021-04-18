@@ -56,7 +56,7 @@ public class TournamentController {
         );
     }
 
-    @ApiOperation(value = "Tournament", notes = "Add a new tournament")
+    @ApiOperation(value = "Tournament", notes = "Add a new tournament.")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TournamentDto addTournament(@RequestBody final TournamentDto tournamentDto) {
@@ -69,14 +69,14 @@ public class TournamentController {
             useCaseTournamentHost.addTournament(tournament, user));
     }
 
-    @ApiOperation(value = "Tournament", notes = "Get a list of tournaments")
+    @ApiOperation(value = "Tournament", notes = "Get a list of tournaments.")
     @GetMapping()
     public PagedModel<EntityModel<Tournament>> getTournamentList(Pageable pageable,
         PagedResourcesAssembler<Tournament> assembler) {
         return assembler.toModel(useCaseTournamentHost.getTournamentList(pageable));
     }
 
-    @ApiOperation(value = "Tournament", notes = "Get tournament details")
+    @ApiOperation(value = "Tournament", notes = "Get tournament details.")
     @GetMapping("/{id}")
     public TournamentDto getTournament(
         @PathVariable("id") final Integer id

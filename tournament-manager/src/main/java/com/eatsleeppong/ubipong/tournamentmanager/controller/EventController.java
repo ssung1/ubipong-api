@@ -57,8 +57,7 @@ public class EventController {
             .toArray(RoundRobinCellDto[][]::new);
     }
 
-    @ApiOperation(value = "Event", notes = "This is mainly used to get details that are only on challonge.com, " +
-        "such as the event name.  For database-only event, use /crud/events")
+    @ApiOperation(value = "Event", notes = "Get event details.")
     @GetMapping(value = "/{id}")
     public EventDto getEvent(
         @PathVariable("id") Integer id
@@ -88,8 +87,7 @@ public class EventController {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    @ApiOperation(value = "Event", notes = "This creates an event both on the database and on challonge.com.  " +
-        "This endpoint should be used instead of /crud/events.")
+    @ApiOperation(value = "Event", notes = "Add a new event.")
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto addEvent(@RequestBody @Valid final EventDto eventDto) {
