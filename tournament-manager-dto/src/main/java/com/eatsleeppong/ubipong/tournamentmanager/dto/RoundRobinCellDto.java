@@ -22,9 +22,6 @@ public class RoundRobinCellDto {
     @Builder.Default
     String content = "";
 
-    boolean winForPlayer1;
-    boolean winByDefault;
-
     @Builder.Default
     List<GameDto> gameList = Collections.emptyList();
 }

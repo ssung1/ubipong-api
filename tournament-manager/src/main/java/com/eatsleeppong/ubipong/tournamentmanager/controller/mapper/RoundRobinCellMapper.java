@@ -19,8 +19,6 @@ public class RoundRobinCellMapper {
         return RoundRobinCellDto.builder()
             .type(RoundRobinCellTypeDto.valueOf(roundRobinCell.getType().name()))
             .content(roundRobinCell.getContent())
-            .winForPlayer1(roundRobinCell.isWinForPlayer1())
-            .winByDefault(roundRobinCell.isWinByDefault())
             .gameList(roundRobinCell.getGameList().stream()
                 .map(gameMapper::mapGameToGameDto).collect(Collectors.toUnmodifiableList()))
             .build();
