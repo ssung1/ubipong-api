@@ -33,6 +33,5 @@ public class EventDto {
     private EventStatusDto status = EventStatusDto.CREATED;
 
     @ApiModelProperty(value = "Starting time of the event, including date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant startTime;
 }

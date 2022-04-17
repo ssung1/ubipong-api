@@ -10,6 +10,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepos
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,30 +68,26 @@ public class TestEventController {
     @MockBean
     ChallongeTournamentRepository mockChallongeTournamentRepository;
 
-    private EventDto addEvent(EventDto event) throws Exception {
-        final ObjectMapper objectMapper = new ObjectMapper();
+    final ObjectMapper objectMapper = new ObjectMapper();
 
-        // final MvcResult mvcResult = mockMvc.perform(
-        //     post("/rest/v0/events")
-        //         .accept(MediaType.APPLICATION_JSON)
-        //         .contentType(MediaType.APPLICATION_JSON)
-        //         .content(objectMapper.writeValueAsString(event)))
-        //     .andExpect(status().isCreated())
-        //     .andExpect(jsonPath("id").value(not(is(0))))
-        //     .andExpect(jsonPath("name").value(is(event.getName())))
-        //     .andReturn();
+    private EventDto addEvent(EventDto event) throws Exception {
         final MvcResult mvcResult = mockMvc.perform(
             post("/rest/v0/events")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(event)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("id").value(not(is(0))))
+            .andExpect(jsonPath("name").value(is(event.getName())))
             .andReturn();
-
-        System.out.println(mvcResult.getResponse().getStatus());
-        System.out.println(mvcResult.getResponse().getContentAsString());
 
         final String responseContent = mvcResult.getResponse().getContentAsString();
         return objectMapper.readValue(responseContent, EventDto.class);
+    }
+
+    @BeforeEach
+    public void setupObjectMapper() {
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @BeforeEach
