@@ -52,6 +52,7 @@ public class TestHelper {
     public static final String EVENT_NAME = "Preliminary Group 1";
     public static final String TOURNAMENT_OWNER_ID = "gary";
     public static final String TOURNAMENT_OWNER_REFERENCE = "gary@atlantic-ocean.gov";
+    public static final Instant TOURNAMENT_START_TIME = Instant.parse("2019-06-23T00:00:00Z");
 
     public static Tournament createTournament() {
         final EventRepository mockEventRepository = mock(EventRepository.class);
@@ -86,6 +87,7 @@ public class TestHelper {
             .playerRepository(mockPlayerRepository)
             .matchRepository(mockMatchRepository)
             .tournamentId(TOURNAMENT_ID)
+            .startTime(TOURNAMENT_START_TIME)
             .build();
     }
 
@@ -95,6 +97,7 @@ public class TestHelper {
             .name(EVENT_NAME)
             .challongeUrl(CHALLONGE_URL)
             .tournamentId(TOURNAMENT_ID)
+            .startTime(TOURNAMENT_START_TIME)
             .build();
     }
 

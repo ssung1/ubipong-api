@@ -4,6 +4,8 @@ import java.time.Instant;
 
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,5 +32,7 @@ public class EventDto {
     @Default
     private EventStatusDto status = EventStatusDto.CREATED;
 
+    @ApiModelProperty(value = "Starting time of the event, including date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant startTime;
 }
