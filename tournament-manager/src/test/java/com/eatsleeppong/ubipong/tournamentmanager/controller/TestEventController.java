@@ -9,7 +9,9 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -87,7 +89,9 @@ public class TestEventController {
 
     @BeforeEach
     public void setupObjectMapper() {
-        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper
+            .registerModule(new JavaTimeModule())
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     @BeforeEach
@@ -202,6 +206,7 @@ public class TestEventController {
         assertThat(addedEvent.getName(), is(eventName));
         assertThat(addedEvent.getChallongeUrl(), is(challongeUrl));
         assertThat(addedEvent.getStatus(), is(EventStatusDto.CREATED));
+        assertThat(addedEvent.getStartTime(), is(event.getStartTime()));
     }
 
     @Test

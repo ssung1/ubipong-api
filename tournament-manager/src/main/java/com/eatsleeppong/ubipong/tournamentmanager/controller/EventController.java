@@ -14,6 +14,7 @@ import com.eatsleeppong.ubipong.tournamentmanager.dto.EventDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/rest/v0/events")
+@Slf4j
 public class EventController {
 
     private final EventMapper eventMapper;
@@ -91,6 +93,7 @@ public class EventController {
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto addEvent(@RequestBody @Valid final EventDto eventDto) {
+        log.info("Adding event: {}", eventDto);
         return eventMapper.mapEventToEventDto(
             useCaseTournamentHost.addEvent(eventMapper.mapEventDtoToEvent(eventDto))
         );

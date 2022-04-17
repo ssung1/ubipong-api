@@ -1,5 +1,8 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository.mapper;
 
+import java.time.Instant;
+import java.util.Date;
+
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
@@ -22,6 +25,7 @@ public class EventMapper {
         springJpaEvent.setTournamentId(event.getTournamentId());
         springJpaEvent.setId(event.getId());
         springJpaEvent.setChallongeUrl(event.getChallongeUrl());
+        springJpaEvent.setStartTime(mapInstantToDate(event.getStartTime()));
 
         return springJpaEvent;
     }
@@ -34,7 +38,22 @@ public class EventMapper {
             .name(springJpaEvent.getName())
             .playerRepository(playerRepository)
             .matchRepository(matchRepository)
+            .startTime(mapDateToInstant(springJpaEvent.getStartTime()))
             .build();
+    }
+
+    private Date mapInstantToDate(final Instant instant) {
+        if (instant == null) {
+            return null;
+        }
+        return Date.from(instant);
+    }
+
+    private Instant mapDateToInstant(final Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.toInstant();
     }
 
     public EventStatus mapChallongeTournamentStateToEventStatus(final String challongeTournamentState) {

@@ -52,7 +52,7 @@ public class TestHelper {
     public static final String EVENT_NAME = "Preliminary Group 1";
     public static final String TOURNAMENT_OWNER_ID = "gary";
     public static final String TOURNAMENT_OWNER_REFERENCE = "gary@atlantic-ocean.gov";
-    public static final Instant TOURNAMENT_START_TIME = Instant.parse("2019-06-23T00:00:00Z");
+    public static final Instant TOURNAMENT_START_TIME = Instant.parse("2019-06-23T09:00:00-04:00");
 
     public static Tournament createTournament() {
         final EventRepository mockEventRepository = mock(EventRepository.class);

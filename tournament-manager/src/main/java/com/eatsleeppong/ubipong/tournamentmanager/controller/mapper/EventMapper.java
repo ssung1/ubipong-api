@@ -1,5 +1,7 @@
 package com.eatsleeppong.ubipong.tournamentmanager.controller.mapper;
 
+import java.time.Instant;
+
 import com.eatsleeppong.ubipong.tournamentmanager.domain.Event;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.MatchRepository;
@@ -26,6 +28,7 @@ public class EventMapper {
             .playerRepository(playerRepository)
             .matchRepository(matchRepository)
             .status(EventStatus.valueOf(eventDto.getStatus().name()))
+            .startTime(eventDto.getStartTime())
             .build();
     }
 
@@ -36,6 +39,7 @@ public class EventMapper {
             .name(event.getName())
             .challongeUrl(event.getChallongeUrl())
             .status(EventStatusDto.valueOf(event.getStatus().name()))
+            .startTime(event.getStartTime())
             .build();
     }
 }
