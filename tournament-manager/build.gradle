@@ -64,6 +64,6 @@ test {
     // reports.html.enabled = false
     // for junit report, we simply save them to a shared path
     testResultsDirName = "${rootProject.buildDir}/test-results/${project.name}"
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
