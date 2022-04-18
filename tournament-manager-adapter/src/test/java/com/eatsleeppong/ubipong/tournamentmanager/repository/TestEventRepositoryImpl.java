@@ -1,6 +1,9 @@
 package com.eatsleeppong.ubipong.tournamentmanager.repository;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.eatsleeppong.ubipong.tournamentmanager.AdapterContextConfiguration;
 import com.eatsleeppong.ubipong.tournamentmanager.AdapterTestConfiguration;
@@ -60,11 +63,16 @@ public class TestEventRepositoryImpl {
         assertThat(addedEvent.getName(), is(eventToAdd.getName()));
     }
 
-    @Test
-    @DisplayName("should find an existing event in 'created' status")
-    public void testFindEventStatusCreated() {
+    @ParameterizedTest(name = "should be able to find event with status {1}")
+    @CsvSource({
+        "pending, CREATED",
+        "underway, STARTED",
+        "awaiting_review, AWAITING_REVIEW",
+        "complete, COMPLETED",
+    })
+    public void testFindEvent(final String challongeStatus, final EventStatus eventStatus) {
         final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
-        challongeTournamentWrapper.getTournament().setState("pending");
+        challongeTournamentWrapper.getTournament().setState(challongeStatus);
         when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
             challongeTournamentWrapper
         );
@@ -74,58 +82,7 @@ public class TestEventRepositoryImpl {
         assertThat(loadedEvent.getId(), is(event.getId()));
         assertThat(loadedEvent.getName(), is(event.getName()));
         assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-        assertThat(loadedEvent.getStatus(), is(EventStatus.CREATED));
-    }
-
-    @Test
-    @DisplayName("should find an existing event in 'started' status")
-    public void testFindEventStatusStarted() {
-        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
-        challongeTournamentWrapper.getTournament().setState("underway");
-        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
-            challongeTournamentWrapper
-        );
-
-        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
-
-        assertThat(loadedEvent.getId(), is(event.getId()));
-        assertThat(loadedEvent.getName(), is(event.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-        assertThat(loadedEvent.getStatus(), is(EventStatus.STARTED));
-    }
-
-    @Test
-    @DisplayName("should find an existing event in 'awaiting review' status")
-    public void testFindEventStatusAwaitingReview() {
-        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
-        challongeTournamentWrapper.getTournament().setState("awaiting_review");
-        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
-            challongeTournamentWrapper
-        );
-
-        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
-
-        assertThat(loadedEvent.getId(), is(event.getId()));
-        assertThat(loadedEvent.getName(), is(event.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-        assertThat(loadedEvent.getStatus(), is(EventStatus.AWAITING_REVIEW));
-    }
-
-    @Test
-    @DisplayName("should find an existing event in 'completed' status")
-    public void testFindEventStatusCompleted() {
-        final ChallongeTournamentWrapper challongeTournamentWrapper = TestHelper.createChallongeTournamentWrapper();
-        challongeTournamentWrapper.getTournament().setState("complete");
-        when(mockChallongeTournamentRepository.getTournament(event.getChallongeUrl())).thenReturn(
-            challongeTournamentWrapper
-        );
-
-        final Event loadedEvent = eventRepositoryImpl.getOne(event.getId());
-
-        assertThat(loadedEvent.getId(), is(event.getId()));
-        assertThat(loadedEvent.getName(), is(event.getName()));
-        assertThat(loadedEvent.getChallongeUrl(), is(event.getChallongeUrl()));
-        assertThat(loadedEvent.getStatus(), is(EventStatus.COMPLETED));
+        assertThat(loadedEvent.getStatus(), is(eventStatus));
     }
 
     @Test
