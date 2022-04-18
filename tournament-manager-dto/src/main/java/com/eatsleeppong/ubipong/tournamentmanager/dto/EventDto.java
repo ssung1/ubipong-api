@@ -28,7 +28,7 @@ public class EventDto {
     @Size(max = 60)
     private String name;
     
-    @ApiModelProperty(value = "Status of the event; ignored if creating a new event")
+    @ApiModelProperty(value = "Status of the event; can only be modified through challonge.com (for now)")
     @Default
     private EventStatusDto status = EventStatusDto.CREATED;
 

@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public class TestEventController {
     private final Player spongebob = TestHelper.createPlayerSpongebob();
     private final Player patrick = TestHelper.createPlayerPatrick();
     private final Player squidward = TestHelper.createPlayerSquidward();
-    
+
     private final Match spongebobVsPatrick = TestHelper.createMatch1();
     private final Match spongebobVsSquidward = TestHelper.createMatch2();
     private final Match patrickVsSquidward = TestHelper.createMatch3();
@@ -150,7 +151,7 @@ public class TestEventController {
             .andExpect(jsonPath("[1][4].gameList[0].player1Score").value(is(13)))
             .andExpect(jsonPath("[1][4].gameList[0].player2Score").value(is(11)))
             .andExpect(jsonPath("[1][4].gameList[0].winForPlayer1").value(is(true)))
-    
+
             // third row is for scores, with B patrick score score ...
             .andExpect(jsonPath("[2]").isArray())
             .andExpect(jsonPath("[2][0].type").value(is(RoundRobinCellTypeDto.TEXT.getValue())))
@@ -199,7 +200,7 @@ public class TestEventController {
     @Test
     @DisplayName("should be able to add an event")
     public void testAddEvent() throws Exception {
-        final EventDto event = TestHelper.createEventDto();
+        final EventDto event = TestHelper.createEventDto().withStatus(EventStatusDto.COMPLETED);
         final EventDto addedEvent = addEvent(event);
 
         assertThat(addedEvent.getId(), not(is(0)));
@@ -215,7 +216,6 @@ public class TestEventController {
         final EventDto event = TestHelper.createEventDto().withName(
             "long long long long long long long long long long long long long long long long long long long long ");
 
-        final ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(
             post("/rest/v0/events")
                 .accept(MediaType.APPLICATION_JSON)
@@ -328,7 +328,7 @@ public class TestEventController {
             .andExpect(jsonPath("$[0].winner").value(is(patrick.getName())))
             .andExpect(jsonPath("$[0].loser").value(is(spongebob.getName())))
             .andExpect(jsonPath("$[0].eventName").value(is(eventName)))
-            .andExpect(jsonPath("$[0].resultString").value(is("3 5 1"))) // because patrick won 11-3 11-5 11-1 
+            .andExpect(jsonPath("$[0].resultString").value(is("3 5 1"))) // because patrick won 11-3 11-5 11-1
 
             .andExpect(jsonPath("$[1].winner").value(is(spongebob.getName())))
             .andExpect(jsonPath("$[1].loser").value(is(squidward.getName())))
@@ -351,5 +351,34 @@ public class TestEventController {
             .andExpect(jsonPath("[0].name").value(is(eventName)))
             .andExpect(jsonPath("[0].challongeUrl").value(is(challongeUrl)))
             .andExpect(jsonPath("[0].status").value(is(EventStatusDto.STARTED.getValue())));
+    }
+
+    @Test
+    @DisplayName("should be able to update event")
+    public void testUpdateEvent() throws Exception {
+        final EventDto event = TestHelper.createEventDto();
+        final EventDto addedEvent = addEvent(event);
+
+        final EventDto updatedEvent = addedEvent
+            .withName("new name")
+            .withChallongeUrl("/new/challonge/url")
+            .withStartTime(Instant.parse("2020-01-01T00:00:00Z"));
+        final String updatedEventRequest = objectMapper.writeValueAsString(updatedEvent);
+
+        final MvcResult mvcResult = mockMvc.perform(
+            put("/rest/v0/events/{id}", updatedEvent.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedEventRequest))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        final String responseContent = mvcResult.getResponse().getContentAsString();
+        final EventDto response = objectMapper.readValue(responseContent, EventDto.class);
+
+        assertThat(response.getId(), is(updatedEvent.getId()));
+        assertThat(response.getName(), is(updatedEvent.getName()));
+        assertThat(response.getChallongeUrl(), is(updatedEvent.getChallongeUrl()));
+        assertThat(response.getStartTime(), is(updatedEvent.getStartTime()));
     }
 }

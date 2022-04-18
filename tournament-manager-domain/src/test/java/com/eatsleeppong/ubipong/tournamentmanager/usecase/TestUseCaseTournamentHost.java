@@ -138,7 +138,8 @@ public class TestUseCaseTournamentHost {
     public void testAddEvent() {
         final Event event = TestHelper.createEvent();
         final Event addedEvent = useCaseTournamentHost.addEvent(event);
-        assertThat(addedEvent, is(event));
+        // should be the same except for id
+        assertThat(addedEvent.withId(null), is(event.withId(null)));
     }
 
     @Test

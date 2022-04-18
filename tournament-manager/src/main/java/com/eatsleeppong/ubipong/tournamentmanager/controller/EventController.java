@@ -107,4 +107,14 @@ public class EventController {
             .map(eventMapper::mapEventToEventDto)
             .collect(Collectors.toUnmodifiableList());
     }
+
+    @ApiOperation(value = "Event", notes = "Update new event.")
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventDto addEvent(@PathVariable("id") Integer id, @RequestBody @Valid final EventDto eventDto) {
+        log.info("Updating event: id = {}, {}", id, eventDto);
+        return eventMapper.mapEventToEventDto(
+            useCaseTournamentHost.updateEvent(eventMapper.mapEventDtoToEvent(eventDto))
+        );
+    }
 }

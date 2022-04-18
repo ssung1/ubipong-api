@@ -55,6 +55,10 @@ public class UseCaseTournamentHost {
     }
 
     public Event addEvent(final Event event) {
+        return eventRepository.save(event.withId(null));
+    }
+
+    public Event updateEvent(final Event event) {
         return eventRepository.save(event);
     }
 
