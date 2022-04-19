@@ -16,6 +16,8 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.http.HttpStatus;
 
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.domain.EventStatus;
@@ -44,7 +46,15 @@ public class EventRepositoryImpl implements EventRepository {
 
         final ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
         challongeTournamentWrapper.setTournament(challongeTournament);
-        challongeTournamentRepository.createTournament(challongeTournamentWrapper);
+        try {
+            challongeTournamentRepository.createTournament(challongeTournamentWrapper);
+        } catch (final HttpClientErrorException e) {
+            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()){
+                log.info("Challonge tournament {} already exists", event.getChallongeUrl());
+            } else {
+                throw e;
+            }
+        }
 
         return eventMapper.mapSpringJpaEventToEvent(savedSpringJpaEvent);
     }
