@@ -59,7 +59,31 @@ public class ChallongeTournamentRepository {
         c.setObjectMapper(mapper);
         rs.setMessageConverters(Collections.singletonList(c));
 
-        return rs.postForObject(uriComponents.expand().toUri(),challongeTournamentWrapper,
+        return rs.postForObject(uriComponents.expand().toUri(), challongeTournamentWrapper,
                 ChallongeTournamentWrapper.class);
+    }
+
+    public void updateTournament(ChallongeTournamentWrapper challongeTournamentWrapper) {
+        final RestTemplate rs = new RestTemplate();
+
+        final UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .scheme("https").host(host)
+                .path("/v1")
+                .path("/tournaments")
+                .path(challongeTournamentWrapper.getTournament().getUrl() + ".json")
+                .queryParam("api_key", apiKey)
+                .build();
+
+        // create a special mapper that does not serialize nulls, because nulls will cause server error on
+        // challonge.com
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        // we need to apply our speial mapper to our RestTemplate
+        final MappingJackson2HttpMessageConverter c = new MappingJackson2HttpMessageConverter();
+        c.setObjectMapper(mapper);
+        rs.setMessageConverters(Collections.singletonList(c));
+
+        rs.put(uriComponents.expand().toUri(), challongeTournamentWrapper);
     }
 }
