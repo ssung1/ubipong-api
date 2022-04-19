@@ -55,14 +55,19 @@ public class TestEventRepositoryImpl {
     }
 
     @Test
-    @DisplayName("should be able to add event and a corresponding tournament on challonge.com if it doesn't exist")
-    public void testAddEventAndChallongeEventIfNotExists() {
+    @DisplayName("should be able to save event and a corresponding tournament on challonge.com if it doesn't exist")
+    public void testSaveEventAndAddChallongeTournamentIfNotExists() {
         reset(mockChallongeTournamentRepository);
+
         final Event eventToAdd = TestHelper.createEvent();
-        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+        when(mockChallongeTournamentRepository.getTournament(eventToAdd.getChallongeUrl()))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 
         final ArgumentCaptor<ChallongeTournamentWrapper> challongeTournamentWrapperArgumentCaptor = 
             ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
+
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+
         assertThat(addedEvent.getId(), notNullValue());
         assertThat(addedEvent.getTournamentId(), is(eventToAdd.getTournamentId()));
         assertThat(addedEvent.getChallongeUrl(), is(eventToAdd.getChallongeUrl()));
@@ -76,10 +81,13 @@ public class TestEventRepositoryImpl {
     }
 
     @Test
-    @DisplayName("should be able to add event and ignore error if corresponding tournament on challonge.com exists")
-    public void testAddEventOnlyIfChallongeEventExists() {
+    @DisplayName("should be able to save event and ignore error if corresponding tournament on challonge.com exists")
+    public void testSaveEventAndAddChallongeTournamentIgnoreChallongeError() {
         reset(mockChallongeTournamentRepository);
+
         final Event eventToAdd = TestHelper.createEvent();
+        when(mockChallongeTournamentRepository.getTournament(eventToAdd.getChallongeUrl()))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 
         final ArgumentCaptor<ChallongeTournamentWrapper> challongeTournamentWrapperArgumentCaptor = 
             ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
