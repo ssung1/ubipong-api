@@ -70,7 +70,7 @@ public class ChallongeTournamentRepository {
                 .scheme("https").host(host)
                 .path("/v1")
                 .path("/tournaments")
-                .path(challongeTournamentWrapper.getTournament().getUrl() + ".json")
+                .path("/" + challongeTournamentWrapper.getTournament().getUrl() + ".json")
                 .queryParam("api_key", apiKey)
                 .build();
 

@@ -111,6 +111,32 @@ public class TestEventRepositoryImpl {
             is(eventToAdd.getChallongeUrl()));
     }
 
+    @Test
+    @DisplayName("should be able to save event and update corresponding tournament on challonge.com if it exists")
+    public void testSaveEventAndUpdateChallongeTournamentExists() {
+        reset(mockChallongeTournamentRepository);
+
+        final Event eventToAdd = TestHelper.createEvent();
+        when(mockChallongeTournamentRepository.getTournament(eventToAdd.getChallongeUrl()))
+            .thenReturn(TestHelper.createChallongeTournamentWrapper());
+
+        final ArgumentCaptor<ChallongeTournamentWrapper> challongeTournamentWrapperArgumentCaptor = 
+            ArgumentCaptor.forClass(ChallongeTournamentWrapper.class);
+
+        final Event addedEvent = eventRepositoryImpl.save(eventToAdd);
+
+        assertThat(addedEvent.getId(), notNullValue());
+        assertThat(addedEvent.getTournamentId(), is(eventToAdd.getTournamentId()));
+        assertThat(addedEvent.getChallongeUrl(), is(eventToAdd.getChallongeUrl()));
+        assertThat(addedEvent.getName(), is(eventToAdd.getName()));
+
+        verify(mockChallongeTournamentRepository).updateTournament(
+            challongeTournamentWrapperArgumentCaptor.capture());
+
+        assertThat(challongeTournamentWrapperArgumentCaptor.getValue().getTournament().getUrl(),
+            is(eventToAdd.getChallongeUrl()));
+    }
+
     @ParameterizedTest(name = "should be able to find event with status {1}")
     @CsvSource({
         "pending, CREATED",

@@ -46,17 +46,32 @@ public class EventRepositoryImpl implements EventRepository {
 
         final ChallongeTournamentWrapper challongeTournamentWrapper = new ChallongeTournamentWrapper();
         challongeTournamentWrapper.setTournament(challongeTournament);
+
         try {
-            challongeTournamentRepository.createTournament(challongeTournamentWrapper);
-        } catch (final HttpClientErrorException e) {
-            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()){
-                log.info("Challonge tournament {} already exists", event.getChallongeUrl());
+            challongeTournamentRepository.getTournament(event.getChallongeUrl());
+            challongeTournamentRepository.updateTournament(challongeTournamentWrapper);
+        } catch (final HttpClientErrorException getTournamentException) {
+            if (getTournamentException.getStatusCode() == HttpStatus.NOT_FOUND) {
+                createChallongeTournament(challongeTournamentWrapper);
             } else {
-                throw e;
+                throw getTournamentException;
             }
         }
 
         return eventMapper.mapSpringJpaEventToEvent(savedSpringJpaEvent);
+    }
+    
+    private void createChallongeTournament(final ChallongeTournamentWrapper challongeTournamentWrapper) {
+        try {
+            challongeTournamentRepository.createTournament(challongeTournamentWrapper);
+        } catch (final HttpClientErrorException createTournamentException) {
+            if (HttpStatus.UNPROCESSABLE_ENTITY == createTournamentException.getStatusCode()){
+                log.info("Challonge tournament {} already exists",
+                    challongeTournamentWrapper.getTournament().getUrl());
+            } else {
+                throw createTournamentException;
+            }
+        }
     }
 
     private Event mapSpringJpaEventToEvent(final SpringJpaEvent springJpaEvent) {
