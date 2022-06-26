@@ -70,8 +70,8 @@ public class UseCaseTournamentHost {
         return eventRepository.findByTournamentId(tournamentId);
     }
 
-    public List<List<RoundRobinCell>> getRoundRobinGrid(final String challongeUrl) {
-        return eventRepository.getOneByChallongeUrl(challongeUrl).getRoundRobinGrid();
+    public List<List<RoundRobinCell>> getRoundRobinGrid(final Integer eventId) {
+        return eventRepository.getOne(eventId).getRoundRobinGrid();
     }
 
     public List<MatchResult> getMatchResultList(final String challongeUrl) {
