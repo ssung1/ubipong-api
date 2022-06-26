@@ -1,5 +1,7 @@
 spring:
   profiles: test
+  liquibase:
+    enabled: false
   
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
