@@ -46,12 +46,12 @@ public class EventController {
         "| B   | Patrick   |    | --        |     |\n" +
         "| C   | Squidward |    |           | --  |\n" +
         "</pre>")
-    @GetMapping(value = "/{challongeUrl}/roundRobinGrid",
+    @GetMapping(value = "/{id}/roundRobinGrid",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public RoundRobinCellDto[][] getRoundRobinGrid(
-        @PathVariable("challongeUrl") String challongeUrl
+        @PathVariable("id") Integer id
     ) {
-        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(challongeUrl);
+        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(id);
         return roundRobinGrid.stream()
             .map(row -> row.stream()
                 .map(roundRobinCellMapper::mapRoundRobinCellToRoundRobinCellDto)

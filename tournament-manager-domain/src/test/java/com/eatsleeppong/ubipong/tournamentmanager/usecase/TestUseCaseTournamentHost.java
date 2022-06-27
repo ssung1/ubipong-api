@@ -165,11 +165,11 @@ public class TestUseCaseTournamentHost {
 
     @Test
     public void testGetRoundRobinGrid() {
-        final String challongeUrl = TestHelper.CHALLONGE_URL;
         final Event event = TestHelper.createEvent();
-        when(mockEventRepository.getOneByChallongeUrl(challongeUrl)).thenReturn(event);
+        final Integer eventId = event.getId();
+        when(mockEventRepository.getOne(eventId)).thenReturn(event);
 
-        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(challongeUrl);
+        final List<List<RoundRobinCell>> roundRobinGrid = useCaseTournamentHost.getRoundRobinGrid(eventId);
 
         assertThat(roundRobinGrid, is(event.getRoundRobinGrid()));
     }

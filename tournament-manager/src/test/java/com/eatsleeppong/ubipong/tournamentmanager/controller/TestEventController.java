@@ -9,7 +9,6 @@ import com.eatsleeppong.ubipong.tournamentmanager.domain.Match;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeMatchRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeParticipantRepository;
 import com.eatsleeppong.ubipong.tournamentmanager.repository.ChallongeTournamentRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -112,9 +111,9 @@ public class TestEventController {
         //   A  spongebob                        L -3 -5 -1    W 11 -5 9 9
         //   B  patrick          W 3 5 1
         //   C  squidward        L -11 5 -9 -9
-        addEvent(TestHelper.createEventDto());
+        final EventDto addedEvent = addEvent(TestHelper.createEventDto());
         mockMvc.perform(
-            get("/rest/v0/events/" + challongeUrl + "/roundRobinGrid")
+            get("/rest/v0/events/" + String.valueOf(addedEvent.getId()) + "/roundRobinGrid")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             // multiple rows
