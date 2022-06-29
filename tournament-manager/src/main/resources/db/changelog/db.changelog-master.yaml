@@ -1,4 +1,8 @@
 databaseChangeLog:
 - preConditions:
-  - runningAs:
-      username: ubipong
+  - tableExists:
+      tableName: tournament
+  - tableExists:
+      tableName: event
+  - tableExists:
+      tableName: user
