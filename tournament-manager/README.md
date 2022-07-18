@@ -20,6 +20,18 @@ Deploy:
 
     heroku deploy:jar target/my-app.jar --app ubipong-api
 
+## System Properties
+
+These system properties must be set:
+
+- `challonge.api-key`: API key on <https://challonge.com>
+- `spring.datasource.url`: JDBC URL of the database
+- `spring.datasource.username`: database user
+- `spring.datasource.password`: database password
+- `spring.security.oauth2.resourceserver.jwt.issuer-uri`: OAuth authentication server URL
+- `spring.security.oauth2.resourceserver.jwt.jwk-set-uri`: OAuth authentication server public key URL
+- `spring.security.enabled`: false unless testing security
+
 ## Swagger UI
 
 ```
