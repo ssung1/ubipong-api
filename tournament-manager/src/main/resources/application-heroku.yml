@@ -20,8 +20,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: "https://dev-66577045.okta.com/oauth2/default"
-          jwk-set-uri: "https://dev-66577045.okta.com/oauth2/default/v1/keys"
+          issuer-uri: (set this in heroku)
+          jwk-set-uri: (set this in heroku)
           
 challonge:
   host: api.challonge.com
