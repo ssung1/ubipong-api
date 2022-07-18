@@ -1,4 +1,83 @@
-# ubipong-api
+# Ubipong API
+
+## Build
+
+```sh
+./gradlew build
+```
+
+## Unit Test
+
+Unit testing is part of the build, but we can explicitly test using:
+
+```sh
+./gradlew test
+```
+
+## Run Locally
+
+These system properties must be set:
+
+- `spring.profiles.active`: local
+- `challonge.api-key`: API key on <https://challonge.com>
+- `spring.datasource.url`: JDBC URL of the database
+- `spring.datasource.username`: database user
+- `spring.datasource.password`: database password
+- `spring.security.oauth2.resourceserver.jwt.issuer-uri`: OAuth authentication server URL
+- `spring.security.oauth2.resourceserver.jwt.jwk-set-uri`: OAuth authentication server public key URL
+- `spring.security.enabled`: false, unless testing security
+
+## Test
+
+Swagger link:
+
+```
+https://{host}/swagger-ui/index.html
+```
+
+## Deploy
+
+Production URL is
+
+```
+https://ubipong-api.herokuapp.com
+```
+
+If Java plugin has not been installed:
+
+```sh
+heroku plugins:install java
+```
+
+If application does not yet exist on Heroku:
+
+```sh
+heroku create --no-remote ubipong-api
+```
+
+Make sure the system properties are set within the application (Config Vars)
+
+- `spring.profiles.active`: heroku
+- (...same properties as running locally) 
+ 
+Deploy:
+
+```sh
+heroku deploy:jar tournament-manager/build/libs/ubipong-DEV_SNAPSHOT.jar --app ubipong-api
+```
+
+--------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 ## Production Environment
 
