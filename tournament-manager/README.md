@@ -68,55 +68,6 @@ heroku deploy:jar tournament-manager/build/libs/ubipong-DEV_SNAPSHOT.jar --app u
 
 --------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-## Production Environment
-
-```
-https://ubipong-api.herokuapp.com
-```
-
-## Deploying to Heroku
-
-If Java plugin has not been installed:
-
-    heroku plugins:install java
-
-If application does not yet exist on Heroku:
-
-    heroku create --no-remote ubipong-api
-
-Deploy:
-
-    heroku deploy:jar target/my-app.jar --app ubipong-api
-
-## System Properties
-
-These system properties must be set:
-
-- `challonge.api-key`: API key on <https://challonge.com>
-- `spring.datasource.url`: JDBC URL of the database
-- `spring.datasource.username`: database user
-- `spring.datasource.password`: database password
-- `spring.security.oauth2.resourceserver.jwt.issuer-uri`: OAuth authentication server URL
-- `spring.security.oauth2.resourceserver.jwt.jwk-set-uri`: OAuth authentication server public key URL
-- `spring.security.enabled`: false unless testing security
-
-## Swagger UI
-
-```
-https://{host}/swagger-ui/index.html
-```
-
 ## Tournament Organization
 
 - Tournament (eg. Atlanta Giant Round Robin)
@@ -153,7 +104,7 @@ https://{host}/swagger-ui/index.html
 - Game
 
   A game is played until a player accumulates a number of points (called
-  points_to_win) and has at least 2 points more than the opponent.
+  `points_to_win`) and has at least 2 points more than the opponent.
 
 ## How to Run a Tournament
 
@@ -162,7 +113,7 @@ https://{host}/swagger-ui/index.html
 Create a tournament that contains all the events by issuing:
 
 ```
-POST https://{host}/crud/tournaments
+POST https://{host}/rest/v0/tournaments
 
 {
   "name": "Eat Sleep Pong Open 2019",
@@ -193,7 +144,8 @@ POST https://{host}/rest/v0/events
 {
   "tournamentId": 1,
   "name": "Preliminary Group 1",
-  "challongeUrl": "esp_201903_pg_rr_1"
+  "challongeUrl": "esp_201903_pg_rr_1",
+  "startTime": "2022-07-18T09:00:00-05:00"
 }
 ```
 
@@ -205,7 +157,8 @@ ID for the newly created event:
   "id": 101,
   "challongeUrl": "esp_201903_pg_rr_1",
   "name": "Preliminary Group 1",
-  "tournamentId": 1
+  "tournamentId": 1,
+  "startTime": "2022-07-18T09:00:00-05:00"
 }
 ```
 
@@ -245,7 +198,7 @@ where
 Events can now be retrieved through
 
 ```
-GET https://{host}/crud/events/{eventId}
+GET https://{host}/rest/v0/events/{eventId}
 ```
 
 ```json
@@ -254,60 +207,26 @@ GET https://{host}/crud/events/{eventId}
   "challongeUrl": "esp_201903_pg_rr_1",
   "name": "Preliminary Group 1",
   "tournamentId": 1,
-  "challongeTournament": null,
-  "_links": { ... }
-}
-```
-
-This shows the information in the database.  To see challonge.com details,
-use
-
-```
-GET https://{host}/rest/v0/events/{id}
-```
-
-shows the event details.
-
-```json
-{
-  "id": 9234850,
-  "challongeUrl": null,
-  "name": "esp_201903_pg_rr_1",
-  "tournamentId": null,
-  "challongeTournament": {
-    "id": 9234850,
-    "name": "Preliminary Group 1",
-    "url": "esp_201903_pg_rr_1",
-    "description": "Preliminary Group 1",
-    "subdomain": null,
-    "tournament_type": "round robin",
-    "game_name": "Table Tennis"
-  }
+  "status": "created"
 }
 ```
 
 To see all the events within a tournament, use
 
 ```
-GET https://{host}/crud/events/search/findByTournamentId?tournamentId={tournamentId}
+GET https://{host}/rest/v0/events/search/find-by-tournament-id?tournament-id={tournamentId}
 ```
 
 ```json
-{
-  "_embedded": {
-    "events": [
-      {
-        "id": 1,
-        "challongeUrl": "esp_201903_pg_rr_1",
-        "name": "Preliminary Group 1",
-        "tournamentId": 1,
-        "challongeTournament": null,
-        "_links": { ... }
-      }
-    ]
-  },
-  "_links": { ... }
-}
+[
+  {
+    "id": 1,
+    "challongeUrl": "esp_201903_pg_rr_1",
+    "name": "Preliminary Group 1",
+    "tournamentId": 1,
+    "status": "created"
+  }
+]
 ```
 
 ## Print Match Sheets
@@ -319,22 +238,22 @@ challonge.com, and start the "tournament".
 Then make this call:
 
 ```
-GET https://{host}/rest/v0/events/{challongeUrl}/roundRobinMatchList
+GET https://{host}/rest/v0/events/{eventId}/roundRobinMatchList
 ```
 
 ```json
 [
   {
+    "eventName": "Preliminary Group 1",
     "matchId": 222695811,
-    "status": 11,
     "player1Id": 83173696,
     "player2Id": 83173698,
-    "winnerId": null,
-    "resultCode": null,
-    "player1Seed": "B",
-    "player2Seed": "C",
     "player1Name": "patrick",
-    "player2Name": "squidward"
+    "player2Name": "squidward",
+    "player1SeedAsNumber": 2,
+    "player2SeedAsNumber": 3,
+    "player1SeedAsAlphabet": "B",
+    "player2SeedAsAlphabet": "C"
   }
 ]
 ```
@@ -357,7 +276,7 @@ As players complete each match, enter the scores in challonge.com.
 To view the current status of each event, use this API:
 
 ```
-https://{host}/rest/v0/events/{challongeUrl}/roundRobinGrid
+https://{host}/rest/v0/events/{eventId}/roundRobinGrid
 ```
 
 We would get a table of cells that contains the 
@@ -368,22 +287,22 @@ We would get a table of cells that contains the
     {
       "type": 11,
       "content": "",
-      "winForPlayer1": false,
-      "winByDefault": false,
-      "gameList": []
+      "gameList": [
+        {
+          "player1Score": 5,
+          "player2Score": 11,
+          "winForPlayer1": true
+        }
+      ]
     },
     {
       "type": 11,
       "content": "",
-      "winForPlayer1": false,
-      "winByDefault": false,
       "gameList": []
     },
     {
       "type": 14,
       "content": "A",
-      "winForPlayer1": false,
-      "winByDefault": false,
       "gameList": []
     },
     ...
@@ -407,7 +326,7 @@ would look like this:
 To look at the results of one event, try this
 
 ```
-GET https://{host}/rest/v0/events/{challongeUrl}/result
+GET https://{host}/rest/v0/events/{eventId}/result
 ```
 
 ```json
@@ -430,7 +349,7 @@ GET https://{host}/rest/v0/events/{challongeUrl}/result
 To get results of all the events of one tournament, so we can use this
 
 ```
-GET https://{host}/rest/v0/tournaments/{id}/result
+GET https://{host}/rest/v0/tournaments/{tournamentId}/result
 ```
 
 ```json
@@ -457,7 +376,7 @@ GET https://{host}/rest/v0/tournaments/{id}/result
 To get results for USATT reporting, do this
 
 ```
-GET https://{host}/rest/v0/tournaments/{id}/usatt-result
+GET https://{host}/rest/v0/tournaments/{tournamentId}/usatt-result
 ```
 
 ```csv
