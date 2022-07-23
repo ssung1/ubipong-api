@@ -1,10 +1,6 @@
-# Ubipong API
+# Ubipong Tournament Manager API
 
-## Build
-
-```sh
-./gradlew build
-```
+Part of <https://github.com/ssung1/ubipong-ecosystem>.
 
 ## Unit Test
 
@@ -37,10 +33,22 @@ https://{host}/swagger-ui/index.html
 
 ## Deploy
 
+Once the commits are merged into master branch, tag the version with
+
+```bash
+git tag v{yyyy-MM-dd}
+```
+
 Production URL is
 
 ```
 https://ubipong-api.herokuapp.com
+```
+
+Build the deployable `jar` file:
+
+```sh
+./gradlew build
 ```
 
 If Java plugin has not been installed:
@@ -134,7 +142,7 @@ details:
 
 Keep the tournament ID for future reference.
 
-### Adding Events
+## Adding Events
 
 For each event in the tournament, call
 
@@ -321,7 +329,7 @@ would look like this:
 | B   | Patrick   |    | --        |     |
 | C   | Squidward |    |           | --  |
 
-### Generate the Results File
+## Generate the Results File
 
 To look at the results of one event, try this
 
